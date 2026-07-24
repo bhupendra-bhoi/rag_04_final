@@ -1,0 +1,53 @@
+config_dir: config
+
+cache_dir: cache
+
+report_dir: reports
+
+temp_dir: temp
+
+# Query range configuration
+start_index: 0
+end_index: 20
+
+# Parallel execution configuration
+parallel: false
+max_workers: 1
+query_workers: 2
+
+# Evaluation configuration (shared across all configs)
+evaluation:
+  type: trace
+  provider: groq
+  config:
+    model: llama-3.3-70b-versatile
+    temperature: 0.0
+    max_tokens: 2000
+
+# Data loading configuration
+data_loader:
+  type: huggingface
+  config:
+    dataset_name: galileo-ai/ragbench
+    subset: covidqa
+    split: test
+    limit: 246
+
+# Data parser configuration
+# include_labels: false → content is "<title>\n\n<passage>" (clean for embeddings)
+# include_labels: true  → content is "Title: <title>\nPassage: <passage>"
+# NOTE: v6_qwen32b and v7_contextual were run with include_labels: true (old default)
+data_parser:
+  type: title_passage_combined
+  config:
+    include_labels: false
+
+# Data processing pipeline
+data_processing:
+  steps:
+    - type: deduplication
+      config:
+        strategy: content_hash
+
+# Report configuration
+report_strategy: detailed_query
