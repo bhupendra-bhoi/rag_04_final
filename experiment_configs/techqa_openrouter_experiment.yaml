@@ -1,0 +1,59 @@
+# techqa experiment — OpenRouter variant.
+#
+# Same techqa sweep as techqa_experiment.yaml, but every LLM call goes through
+# OpenRouter instead of Groq, so this can run in its own notebook in parallel
+# with the Groq run (and alongside the emanual/delucionqa OpenRouter runs).
+#
+# Isolated dirs (config/report/temp/cache) so nothing collides with the other
+# runs. Credentials: set OPENROUTER_API_KEY (comma-separate multiple keys to
+# rotate). Model: meta-llama/llama-3.3-70b-instruct (append ':free' for the
+# no-cost/rate-limited route, or keep as-is with paid credits).
+#
+# NOTE: techqa is the heaviest sweep — 5 docs/question, long technotes, bge-large
+# in v8, and step_back adds an extra LLM call per query in v5/v7/v8. It will use
+# the most OpenRouter tokens of the three subsets; watch your credit/limit usage.
+
+config_dir: rag-experiments/techqa-openrouter-experiment/config
+
+report_dir: rag-experiments/techqa-openrouter-experiment/reports
+
+cache:
+  enabled: true
+  cache_dir: ./cache_openrouter_techqa
+
+temp_dir: rag-experiments/techqa-openrouter-experiment/temp
+
+# The techqa test split has 314 rows; start small, then raise end_index to 314.
+start_index: 0
+end_index: 20
+
+parallel: false
+max_workers: 1
+query_workers: 2
+
+evaluation:
+  type: trace
+  provider: openrouter
+  config:
+    model: meta-llama/llama-3.3-70b-instruct
+    temperature: 0.0
+    max_tokens: 2000
+
+data_loader:
+  type: huggingface
+  config:
+    dataset_name: galileo-ai/ragbench
+    subset: techqa
+    split: test
+    limit: 314
+
+# techqa documents are raw technote text with no Title/Passage markers.
+data_parser: noop
+
+data_processing:
+  steps:
+    - type: deduplication
+      config:
+        strategy: content_hash
+
+report_strategy: detailed_query
