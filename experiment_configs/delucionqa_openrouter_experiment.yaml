@@ -1,0 +1,58 @@
+# delucionqa experiment — OpenRouter variant.
+#
+# delucionqa is the automotive owner's-manual subset of galileo-ai/ragbench
+# (vehicle Q&A over car-manual passages): each row is a short question answered
+# over ~3 clean manual snippets. Profile is close to emanual — terse questions
+# (median ~8 words), short docs (median ~199 words), dense relevance (median 2
+# of 3 docs relevant, the easiest retrieval of the three subsets), adherence 93%.
+# Documents have no Title/Passage markers, so we use the `noop` parser.
+#
+# All LLM calls go through OpenRouter. Isolated dirs (config/report/temp/cache)
+# so this runs in its own notebook, in parallel with the other experiments,
+# without contending for Groq's rate limit or colliding on files/cache.
+#
+# Credentials: set OPENROUTER_API_KEY (comma-separate multiple keys to rotate).
+
+config_dir: rag-experiments/delucionqa-openrouter-experiment/config
+
+report_dir: rag-experiments/delucionqa-openrouter-experiment/reports
+
+cache:
+  enabled: true
+  cache_dir: ./cache_openrouter_delucionqa
+
+temp_dir: rag-experiments/delucionqa-openrouter-experiment/temp
+
+# The delucionqa test split has 184 rows; start small, then raise end_index to 184.
+start_index: 0
+end_index: 20
+
+parallel: false
+max_workers: 1
+query_workers: 2
+
+evaluation:
+  type: trace
+  provider: openrouter
+  config:
+    model: meta-llama/llama-3.3-70b-instruct
+    temperature: 0.0
+    max_tokens: 2000
+
+data_loader:
+  type: huggingface
+  config:
+    dataset_name: galileo-ai/ragbench
+    subset: delucionqa
+    split: test
+    limit: 184
+
+data_parser: noop
+
+data_processing:
+  steps:
+    - type: deduplication
+      config:
+        strategy: content_hash
+
+report_strategy: detailed_query

@@ -1,0 +1,69 @@
+# TechQA (Customer Support domain) experiment.
+#
+# TechQA is the IBM technical-support subset of galileo-ai/ragbench: each row is
+# a user question answered over ~5 raw IBM technote documents. Unlike covidqa,
+# the documents have NO "Title:/Passage:" structure — they are raw technote text
+# (PROBLEM(ABSTRACT) / SYMPTOM / APAR STATUS / ERROR DESCRIPTION / ANSWER sections
+# plus subscription/tracking boilerplate). So we use the `noop` parser (same as
+# pubmedqa), which passes the raw text through unchanged.
+#
+# Gold TRACe labels (relevance/utilization/completeness/adherence + sentence keys)
+# are present on every row, so the standard TRACe evaluation path works unchanged.
+
+config_dir: rag-experiments/techqa-experiment/config
+
+report_dir: rag-experiments/techqa-experiment/reports
+
+# Cache configuration (applied to all RAG configs unless overridden in their YAML)
+cache:
+  enabled: true
+  cache_dir: ./cache
+
+# Directory for storing partial runs (JSONL files with query results).
+# Each config's results are saved as: temp_dir/<config_name>.jsonl (resumable).
+temp_dir: rag-experiments/techqa-experiment/temp
+
+# Query range configuration.
+# The techqa test split has 314 rows; start with a small slice, then raise
+# end_index (up to 314) once a config looks good.
+start_index: 0
+end_index: 20
+
+# Parallel execution configuration
+parallel: false
+max_workers: 1
+query_workers: 2
+
+# Evaluation configuration (shared across all configs)
+evaluation:
+  type: trace
+  provider: groq
+  config:
+    model: llama-3.3-70b-versatile
+    temperature: 0.0
+    max_tokens: 2000
+
+# Data loading configuration
+data_loader:
+  type: huggingface
+  config:
+    dataset_name: galileo-ai/ragbench
+    subset: techqa
+    split: test
+    limit: 314
+
+# Data parser configuration.
+# TechQA documents are raw technote text with no Title/Passage markers, so pass
+# them through as-is with the noop parser.
+data_parser:
+  type: noop
+
+# Data processing pipeline
+data_processing:
+  steps:
+    - type: deduplication
+      config:
+        strategy: content_hash
+
+# Report configuration
+report_strategy: detailed_query

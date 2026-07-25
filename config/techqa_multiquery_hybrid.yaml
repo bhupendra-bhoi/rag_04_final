@@ -1,0 +1,96 @@
+mode: dev
+name: techqa_multiquery_hybrid
+
+cache:
+  enabled: true
+  cache_dir: ./cache
+
+log_level: INFO
+
+providers:
+  groq:
+    type: groq
+    api_key_env: GROQ_API_KEY
+    params:
+      cooldown_seconds: 60
+
+chunking:
+  type: semantic
+  config:
+    max_words: 100
+    overlap_sentences: 2
+    similarity_threshold: 0.75
+
+    embedding:
+      type: sentence_transformer
+      config:
+        model_name: all-MiniLM-L6-v2
+
+embedding:
+  type: sentence_transformer
+  config:
+    model_name: all-MiniLM-L6-v2
+    dimension: 1024
+
+vector_store:
+  type: faiss
+  config:
+    dimension: 1024
+
+retrieval:
+  query_transform:
+    type: multi_query
+    provider: groq
+    config:
+      model: llama-3.1-8b-instant
+      num_queries: 4
+      temperature: 0.5
+      max_tokens: 256
+
+  search:
+    searches:
+      - type: dense
+        config:
+          top_k: 30
+
+      - type: sparse
+        config:
+          top_k: 30
+
+  fusion:
+    type: rrf
+    config:
+      k: 30
+
+  rerank:
+    type: cross_encoder
+    config:
+      model_name: BAAI/bge-reranker-v2-m3
+      top_k: 10
+
+generation:
+  strategy: default
+  provider: groq
+  config:
+    model: llama-3.1-8b-instant
+    temperature: 0.2
+    max_tokens: 1024
+
+    system_prompt: |
+      You are a precise technical customer-support assistant. Answer the QUESTION using ONLY the CONTEXT below. If the context does not contain enough information, reply exactly.
+      Be concise and accurate. Do not use outside knowledge.
+
+
+    user_prompt: |
+      Retrieved Context:
+      --------------------
+      {context}
+      --------------------
+
+      Question:
+      {query}
+
+      Produce the most accurate answer supported only by the retrieved context.
+
+      Answer:
+

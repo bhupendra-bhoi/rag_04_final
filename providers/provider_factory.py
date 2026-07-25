@@ -7,6 +7,13 @@ from providers.registry import provider_registry
 # Ensure strategies are registered before the factory uses the registry
 from providers.groq.groq_provider import GroqProvider  # noqa: F401
 
+# OpenRouter depends on the optional `openai` package; guard so the factory still
+# imports when it is not installed (Groq-only environments).
+try:
+    from providers.openrouter.openrouter_provider import OpenRouterProvider  # noqa: F401
+except ImportError:
+    pass
+
 
 class ProviderFactory:
 
@@ -66,8 +73,9 @@ class ProviderFactory:
             "config": config,
         }
         
-        # Add provider-specific parameters
-        if provider_type == ProviderType.GROQ:
+        # Add provider-specific parameters. Both Groq and OpenRouter support a
+        # per-key rate-limit cooldown.
+        if provider_type in (ProviderType.GROQ, ProviderType.OPENROUTER):
             cooldown_seconds = config.params.get("cooldown_seconds")
             if cooldown_seconds is not None:
                 kwargs["cooldown_seconds"] = cooldown_seconds
