@@ -1,11 +1,11 @@
 {
   "dataset": "galileo-ai/ragbench",
-  "config_name": "techqa_v6_rerank_only",
+  "config_name": "emanual_or_v8_hyde",
   "start_index": 0,
   "end_index": 20,
   "total_queries": 20,
-  "created_at": "2026-07-25T00:49:19.991147",
+  "created_at": "2026-07-25T00:11:03.422741",
   "status": "completed",
-  "completed_at": "2026-07-25T03:40:58.830531",
+  "completed_at": "2026-07-25T00:13:51.141981",
   "error_message": null
 }
