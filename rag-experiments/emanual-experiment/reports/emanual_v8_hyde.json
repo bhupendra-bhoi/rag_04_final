@@ -1,0 +1,1910 @@
+{
+  "title": "RAG Multi-Config Evaluation Report",
+  "strategy_name": "detailed_query",
+  "sections": [
+    {
+      "config_name": "emanual_v8_hyde",
+      "config_summary": {
+        "name": "emanual_v8_hyde",
+        "mode": "dev",
+        "providers": {
+          "groq": {
+            "type": "groq",
+            "api_key_env": "GROQ_API_KEY",
+            "params": {
+              "cooldown_seconds": 60
+            }
+          }
+        },
+        "chunking": {
+          "type": "fixed_word",
+          "config": {
+            "max_words": 128,
+            "overlap_words": 20
+          }
+        },
+        "embedding": {
+          "type": "sentence_transformer",
+          "config": {
+            "model_name": "BAAI/bge-base-en-v1.5",
+            "dimension": 768
+          }
+        },
+        "vector_store": {
+          "type": "faiss",
+          "config": {
+            "dimension": 768
+          }
+        },
+        "retrieval": {
+          "search": {
+            "searches": [
+              {
+                "type": "dense",
+                "config": {
+                  "top_k": 20
+                }
+              },
+              {
+                "type": "sparse",
+                "config": {
+                  "top_k": 20
+                }
+              }
+            ]
+          },
+          "query_transform": {
+            "type": "hyde",
+            "provider": "groq",
+            "config": {
+              "model": "llama-3.3-70b-versatile",
+              "temperature": 0.2,
+              "max_tokens": 256
+            }
+          },
+          "fusion": {
+            "type": "rrf",
+            "config": {
+              "top_k": 10,
+              "k": 60
+            }
+          },
+          "rerank": {
+            "type": "cross_encoder",
+            "config": {
+              "model_name": "BAAI/bge-reranker-v2-m3",
+              "top_k": 5
+            }
+          }
+        },
+        "generation": {
+          "strategy": "default",
+          "provider": "groq",
+          "config": {
+            "model": "llama-3.3-70b-versatile",
+            "temperature": 0.0,
+            "max_tokens": 512,
+            "system_prompt": "You are a consumer-electronics product-support assistant. Answer questions\nabout device features and settings using ONLY the provided user-manual passages.\n\nCRITICAL RULES:\n1. Answer ONLY from the passages provided. Do not use outside knowledge.\n2. Give exact, step-by-step instructions. Preserve menu paths, button names,\n   setting names, and on-screen labels verbatim\n   (e.g. \"Settings > Support > Self Diagnosis > Signal Information\").\n3. Be concise and procedural - give the steps, not background.\n4. If the passages do not contain the answer, respond with exactly:\n   \"The passages do not provide sufficient information to answer this question.\"\n5. Every step must be directly supported by the passages provided.\n",
+            "user_prompt": "Passages:\n{context}\n\nQuestion: {query}\n\nAnswer (from passages only, give exact steps and menu paths):\n"
+          }
+        },
+        "evaluation": {
+          "type": "trace",
+          "provider": "groq",
+          "config": {
+            "model": "llama-3.3-70b-versatile",
+            "temperature": 0.0,
+            "max_tokens": 2000
+          }
+        },
+        "cache": {
+          "enabled": true,
+          "cache_dir": "./cache"
+        },
+        "start_index": null,
+        "end_index": null,
+        "logging_config": {
+          "enabled": true,
+          "level": "INFO",
+          "show_progress": true
+        }
+      },
+      "per_query": [
+        {
+          "query": "I want to  enter into Ambient mode. How can I do that?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "beautiful screens, various visual information, and notifications. To enter Ambient Mode , press the button. To return to the TV mode, press the button. To shut off the TV, press the button. If you press the button when the TV is turned off, the TV turns on in Ambient Mode If you use a remote control other than the Samsung TV remote control, there may be restrictions to entering Ambient Mode Because this function is a QLED TV-specific function, it may not be supported depending on the model. For more information about the Ambient Mode , refer to the Ambient Universal Guide Universal Guide is an app that allows you to search for and enjoy various content such as TV shows, dramas, movies, and music in one place.",
+              "metadata": {
+                "doc_id": "sample_10_doc_2",
+                "sample_index": 10,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Using the Ambient Mode. Learn about the functions available in Ambient Mode, which is a QLED TV-specific function. Ambient Mode The image on your TV may differ from the image above depending on the model and geographical area. Ambient Mode , you can view beautiful screens, various visual information, and notifications. To enter Ambient Mode , press the button. To return to the TV mode, press the button. To shut off the TV, press the button. If you press the button when the TV is turned off, the TV turns on in Ambient Mode If you use a remote control other than the Samsung TV remote control, there may be restrictions to entering Ambient Mode Because this function is a QLED TV-specific function, it may not be supported",
+              "metadata": {
+                "doc_id": "sample_0_doc_2",
+                "sample_index": 0,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "up the Ambient Mode In this state, the TV can activate voice guides and process voice commands. Black screen state Ambient Mode , if the surroundings get to a specific level of darkness or there is no external operation, the TV turns soft-off. Then, when the surroundings get bright, the TV screen returns to the Ambient Mode You can change the auto brightness setting for Ambient Mode . For more information, refer to up the Ambient Mode In this state, the TV cannot activate voice guides and process voice commands. TV off state To enter Ambient Mode when the TV is turned off, press the button on the remote control. To enter TV mode when the TV is turned off, press the button. In TV mode, you can",
+              "metadata": {
+                "doc_id": "sample_34_doc_1",
+                "sample_index": 34,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "to up the Ambient Mode In this state, the TV can activate voice guides and process voice commands. Black screen state Ambient Mode , if the surroundings get to a specific level of darkness or there is no external operation, the TV turns soft-off. Then, when the surroundings get bright, the TV screen returns to the Ambient Mode You can change the auto brightness setting for Ambient Mode . For more information, refer to up the Ambient Mode In this state, the TV cannot activate voice guides and process voice commands. TV off state To enter Ambient Mode when the TV is turned off, press the button on the remote control. To enter TV mode when the TV is turned off, press the button. In TV mode, you",
+              "metadata": {
+                "doc_id": "sample_32_doc_2",
+                "sample_index": 32,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "function may not be supported depending on the model or geographical area. Source You can select an external device connected to the TV. For more information, refer to between external devices connected to the Search You can search the apps or games in Smart Hub services. To use this feature, the TV must be connected to the Internet. APPS You can enjoy a wide range of content including news, sports, weather, and games by installing the corresponding apps on your TV. To use this feature, the TV must be connected to the Internet. For more information, refer to the APPS Ambient Mode Ambient Mode , you can view beautiful screens, various visual information, and notifications. To enter Ambient Mode , press the button. To return to the TV",
+              "metadata": {
+                "doc_id": "sample_10_doc_2",
+                "sample_index": 10,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To enter Ambient Mode, press the button. \n\nNote: The passages do not specify which button to press, it only mentions \"press the button\".",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.0204,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.0408,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": "Where do I find signal information ?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "Checking digital channel signal info and strength. Settings Support Self Diagnosis Signal Information Try Now If your TV is attached to a separate, over-the-air antenna, you can use the signal strength information to adjust the antenna for increased signal strength and improved HD channel reception.",
+              "metadata": {
+                "doc_id": "sample_1_doc_0",
+                "sample_index": 1,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 45,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Dolby Digital Plus, you will hear no sound when you select Dolby Digital+ Settings Sound Expert Settings Digital Output Audio Format Dolby Digital+ Run Start Sound Test Settings Support Self Diagnosis Start Sound Test Make sure that the audio cable is connected to the correct audio output connector on the external device. For antenna or cable connections, check the signal information. A low signal level may cause sound distortions.",
+              "metadata": {
+                "doc_id": "sample_28_doc_0",
+                "sample_index": 28,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 69,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Finding the contact information for service. Settings Support About This TV Try Now You can view the address of the Samsung website, the call center phone number, your TV's model number, your TV's software version, Open Source License and other information you may need to get service support from a Samsung call agent or the Samsung website. You can also view information by scanning the QR code of your TV. You can also start this function by pressing and holding the button for 5 or more seconds. For standard remote control, press and hold the button for 5 or more seconds.",
+              "metadata": {
+                "doc_id": "sample_1_doc_2",
+                "sample_index": 1,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 101,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Connection Guide. You can view detailed information about external devices that can be connected to the TV. Source Connection Guide It shows you how to connect various external devices such as set-top boxes, game consoles, and PCs using pictures. If you select the connection method and an external device, the connection details appear. The image on your TV may differ from the image above depending on the model and geographical area.",
+              "metadata": {
+                "doc_id": "sample_23_doc_1",
+                "sample_index": 23,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 71,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Connection notes for mobile devices. To use the Smart View function, the mobile device must support a mirroring function such as Screen Mirroring or Smart View. To check whether your mobile device supports the mirroring function, please visit the mobile device manufacturer's website. To use Wi-Fi Direct, the mobile device must support the Wi-Fi Direct function. Please check if your mobile device supports Wi-Fi Direct. The mobile device and your Smart TV must be connected to each other on the same network. The video or audio may stop intermittently, depending on network conditions. When sharing content with other network-based devices such as those in an IP (Internet Protocol) storage system, sharing may not be supported due to the network's configuration, quality, or functionality, for example, if the network",
+              "metadata": {
+                "doc_id": "sample_13_doc_2",
+                "sample_index": 13,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "Settings > Support > Self Diagnosis > Signal Information > Try Now",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.1111,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.1111,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": "How can I view the channels that are serached by auto program function and How can I view first five favorite channel?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "up and down directional buttons to move to a channel you want to view, and then press the Select button. All Channels Displays the channels that have been automatically searched. Favorites Displays Favorites 1 Favorites 5 . Use the up and down directional buttons to move between the lists of favorites. Highlight the one you want, and then press Select. The channel list will now show only the channels in this list. This option is only available on specific models in specific geographical areas.",
+              "metadata": {
+                "doc_id": "sample_29_doc_0",
+                "sample_index": 29,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 84,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Using the Channel List. Change the channel or check programs on other digital channels. Live TV Channel List Using the Channel List , you can change the channel or check programs on other digital channels while watching TV. The Channel List screen contains the following icons: : A favorite channel : A locked channel. If you press the right directional button when viewing the Channel List screen, you can use the following functions: All Channels Displays the channels that the TV found during the Auto Program channel search. Favorites Displays Favorites 1 Favorites 5 Air Cable To allow you to select Air Cable as the DTV mode, move the focus to Air Cable , and then press the Select button. Air is suitable for homes equipped with separate,",
+              "metadata": {
+                "doc_id": "sample_2_doc_2",
+                "sample_index": 2,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Viewing and selecting channels on Favorites lists only. Live TV Channel List Press the right directional button on your remote control. Select Favorites Select the desired list among the five favorites lists on the screen. The channels in the selected favorites list appear. Only favorites lists that contain registered channels will display channels.",
+              "metadata": {
+                "doc_id": "sample_2_doc_1",
+                "sample_index": 2,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 53,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Component cables to deliver HD (high definition) picture quality. Many HD channels are upscaled from SD (Standard Definition) content. Look for a channel that is broadcasting HD content. Cable/Satellite Subscribers: Try HD channels from the channel lineup. Air/Cable Antenna Connection: Try HD channels after running the Auto Program function. Settings Broadcasting Auto Program Adjust the cable box or satellite box's video output resolution to 1080i or 720p. The compression of video content may cause picture distortions, especially in fast moving pictures from sports programs and action movies. If the signal reception is weak or poor, screen distortion may be visible but it is not a malfunction. Mobile phones used close to the TV (within 3.2 ft) may cause noise on analog and digital channels. If you're using a",
+              "metadata": {
+                "doc_id": "sample_4_doc_0",
+                "sample_index": 4,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Scanning for available channels. Settings Broadcasting Auto Program Try Now Do not use this function if your TV is connected to a cable box or satellite box. If the TV has saved channels, Auto Program deletes the existing list, and then saves the newly scanned channels.",
+              "metadata": {
+                "doc_id": "sample_2_doc_0",
+                "sample_index": 2,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 46,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To view the channels that are searched by the auto program function: \nPress the right directional button, then select \"All Channels\".\n\nTo view the first five favorite channels: \nPress the right directional button, then select \"Favorites\", then use the up and down directional buttons to move between the lists of favorites and highlight \"Favorites 1\" to \"Favorites 5\", then press Select.",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.4211,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.1579,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 0.375,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": "Can I configure Tint?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "Configuring advanced picture settings. Settings Picture Expert Settings Try Now Configure the screen settings to your taste by using the following functions: Backlight Try Now Brightness Try Now Contrast Try Now Sharpness Try Now Color Try Now Tint (G/R) Try Now Apply Picture Settings Try Now Digital Clean View Try Now Auto Motion Plus Settings Try Now When LED Clear Motion is set to , the screen appears darker than when it is Off Local Dimming This function may not be supported depending on the model or geographical area. Contrast Enhancer Try Now HDR+ Mode Try Now Automatically provide an optimal HDR effect based on the video source. The HDR (High Dynamic Range) technology implements video images that are very similar to the images seen through human eyes",
+              "metadata": {
+                "doc_id": "sample_3_doc_1",
+                "sample_index": 3,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "the Ambient Mode browser will be provided. You can select the following categories and content: Decor : Allows you to select beautiful screens. Info : Provides information such as weather, news headlines, and more. This function may not be supported depending on the geographical area. Photo : Allows you to set a picture stored in your mobile device as the wallpaper of the Ambient Mode screen. You can configure special layouts using your photos. To save photos from your mobile device to the TV and import them in Ambient Mode , use the SmartThings app on your mobile device. Setting up the Ambient Mode details In the Ambient Mode browser screen, move the focus to , and then press the Select button. You can change the following settings:",
+              "metadata": {
+                "doc_id": "sample_0_doc_0",
+                "sample_index": 0,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "window appears on the right and the following functions are available: Delete All You can delete all your notifications. Settings You can select services you want to be notified about. When you select Allow sound , notifications are displayed with a notification sound. Sources Connection HDMI 1 HDMI 2 USB 1 USB 2 Source Universal Remote Guide Settings When the focus is moved to the icon, a list of quick settings icons appears above the top of the menu. You can quickly set frequently used functions by clicking the icons. Picture Mode You can select the picture mode that provides the best viewing experience. To change the picture mode, press the Select button. To make fine adjustments, press the up directional button, and then select Picture Setup Sound",
+              "metadata": {
+                "doc_id": "sample_10_doc_2",
+                "sample_index": 10,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Using the SmartThings App. Monitor and configure the smart devices you have connected to the SmartThings service. SmartThings The image on your TV may differ from the image above depending on the model and geographical area. From your TV, you can monitor and configure smart devices you connected to the SmartThings service via the SmartThings app installed on them. You can receive notifications about the statuses of your smart devices. To use this function, you must be logged in to your Samsung account. This function may not be supported depending on the model or geographical area. Location selection list Press the Select button to identify all connected devices or the devices specific to a location. Sign In Go to the Samsung Account screen to create a new account",
+              "metadata": {
+                "doc_id": "sample_16_doc_2",
+                "sample_index": 16,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Mode browser screen, move the focus to , and then press the Select button. You can change the following settings: Brightness : Adjusts the screen brightness for Ambient Mode Color Tone : Adjusts the colors of the screen for Ambient Mode Auto Brightness : Changes the auto brightness setting for Ambient Mode When this function is set to Off , the brightness level of the TV screen is not automatically adjusted according to the ambient light level. Ambient Off Timer : Sets the time that the Ambient Mode screen turns off automatically. If there is no remote control input for the set time, the TV switches to the black screen state. Changing the background color of Ambient Mode To change the background color of Ambient Mode , move",
+              "metadata": {
+                "doc_id": "sample_0_doc_0",
+                "sample_index": 0,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "Settings > Picture > Expert Settings > Try Now > Tint (G/R) > Try Now",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.0323,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.0323,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": "How do I fix the missing/wrong color issue ?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "Solution Power Saving Mode Settings General Eco Solution Motion Lighting If the color on your TV screen is not correct or the black and white colors are off, run Start Picture Test Settings Support Self Diagnosis Start Picture Test If the test results indicate that the problem is not caused by the TV, do the following: Confirm that the video input connectors are connected to the correct external device video output connectors. Check the other connections as well. If the TV is connected to an external device via a component cable, confirm that the Pb, Pr, and Y jacks are plugged into their proper connectors. If the colors on your TV are correct but just a little too dark or bright, try adjusting the following settings first. Settings",
+              "metadata": {
+                "doc_id": "sample_4_doc_0",
+                "sample_index": 4,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "displayed properly, there may be a problem with an external device. Please check the connections. If the problem persists, check the signal strength or refer to the external device's user manual. Go to Picture and then adjust the Picture Mode Brightness Sharpness , and Color settings. Settings Picture Picture Mode Settings Picture Expert Settings Brightness Settings Picture Expert Settings Sharpness Settings Picture Expert Settings Color See if Power Saving Mode has been enabled. Settings General Eco Solution Power Saving Mode Try resetting the picture. Settings Picture Expert Settings Reset Picture Change Picture Size Settings 16:9 Standard Settings Picture Picture Size Settings 16:9 Standard If you are using AV or analog equipment, disconnect the adapter from the Component (Blue) input port on the TV and connect it to the",
+              "metadata": {
+                "doc_id": "sample_4_doc_0",
+                "sample_index": 4,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "used close to the TV (within 3.2 ft) may cause noise on analog and digital channels. If you're using a Component connection, make sure that the Component cables are connected to the correct jacks. Incorrect or loose connections may cause color problems or a blank screen. The problem Try this! The color is poor or the picture is not bright enough. There is a dotted line on the edge of the screen. The picture is black and white. If the test picture does not appear or there is noise or distortion, the TV may have a problem. Contact Samsung's Call Center for assistance. If the test picture is displayed properly, there may be a problem with an external device. Please check the connections. If the problem persists, check",
+              "metadata": {
+                "doc_id": "sample_4_doc_0",
+                "sample_index": 4,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Viewing UHD videos. Settings General External Device Manager HDMI UHD Color Try Now If an external UHD player is connected to the TV, use the HDMI UHD Color function to convert the TV's HDMI connector to a mode optimized for the UHD 50P/60P signals. When you select the HDMI connector you want to use for HDMI UHD Color , and then press the Select button to set the HDMI UHD Color function to , the TV screen flickers. The HDMI connection with HDMI UHD Color set to Off supports up to UHD 50P/60P 4:2:0 input signals, while the HDMI connection with HDMI UHD Color set to supports up to UHD 50P/60P 4:4:4 and 4:2:2 input signals. For more information, refer to Resolutions for UHD Input When you connect",
+              "metadata": {
+                "doc_id": "sample_31_doc_0",
+                "sample_index": 31,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Inverting the screen color. Settings General Accessibility Color Inversion Try Now You can invert the colors of the text and background displayed on the TV screen to make it easier to read them. Color Inversion is on, some Accessibility menus are not available. This function may not be supported depending on the model or geographical area.",
+              "metadata": {
+                "doc_id": "sample_3_doc_0",
+                "sample_index": 3,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 56,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To fix the missing/wrong color issue, follow these steps:\n\n1. Run the \"Start Picture Test\" by going to \"Settings > Support > Self Diagnosis > Start Picture Test\".\n2. If the test results indicate that the problem is not caused by the TV, confirm that the video input connectors are connected to the correct external device video output connectors.\n3. Check the other connections as well. If the TV is connected to an external device via a component cable, confirm that the Pb, Pr, and Y jacks are plugged into their proper connectors.\n4. If the colors on your TV are correct but just a little too dark or bright, try adjusting the following settings first: \"Settings > Picture > Picture Mode\", then adjust \"Brightness\", \"Sharpness\", and \"Color\" settings.\n5. Alternatively, go to \"Settings > Picture > Expert Settings\" and adjust \"Brightness\", \"Sharpness\", and \"Color\" settings.\n6. See if \"Power Saving Mode\" has been enabled by checking \"Settings > General > Eco Solution > Power Saving Mode\".\n7. Try resetting the picture by going to \"Settings > Picture > Expert Settings > Reset Picture\".",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.0893,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.1786,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 0.4,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": "How do I fix blurring issues on TV screen?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "on your TV are correct but just a little too dark or bright, try adjusting the following settings first. Settings Picture Expert Settings Backlight Settings Picture Expert Settings Contrast Settings Picture Expert Settings Brightness Settings Picture Expert Settings Sharpness Settings Picture Expert Settings Color Settings Picture Expert Settings Tint (G/R) If you notice ghosting or blurring on the screen, use the Auto Motion Plus Settings function to resolve the issue. Settings Picture Expert Settings Auto Motion Plus Settings The problem Try this! Unwanted Powering Off Problems Powering On Unable to find a Channel The TV image does not look as good as it did in the store. The picture is distorted. The color is wrong or missing. If your TV appears to turn off by itself, try disabling",
+              "metadata": {
+                "doc_id": "sample_4_doc_0",
+                "sample_index": 4,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Testing the picture. Settings Support Self Diagnosis Start Picture Test Try Now Before you review the list of problems and solutions below, use Start Picture Test to determine if the problem is caused by the TV. Start Picture Test displays a high definition picture you can examine for flaws or faults. The problem Try this! Flickering and Dimming Component Connections/ Screen Color Screen Brightness Ghosting, Blurring, or Juddering If your TV is flickering or dimming sporadically, you may need to disable some of the energy efficiency features. Disable Ambient Light Detection Power Saving Mode , or Motion Lighting Settings General Eco Solution Ambient Light Detection Settings General Eco Solution Power Saving Mode Settings General Eco Solution Motion Lighting If the color on your TV screen is not correct",
+              "metadata": {
+                "doc_id": "sample_4_doc_0",
+                "sample_index": 4,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "There Is a Problem with the Picture. When the TV has trouble with the picture, these steps may help resolve the problem.",
+              "metadata": {
+                "doc_id": "sample_4_doc_1",
+                "sample_index": 4,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 22,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "displayed properly, there may be a problem with an external device. Please check the connections. If the problem persists, check the signal strength or refer to the external device's user manual. Go to Picture and then adjust the Picture Mode Brightness Sharpness , and Color settings. Settings Picture Picture Mode Settings Picture Expert Settings Brightness Settings Picture Expert Settings Sharpness Settings Picture Expert Settings Color See if Power Saving Mode has been enabled. Settings General Eco Solution Power Saving Mode Try resetting the picture. Settings Picture Expert Settings Reset Picture Change Picture Size Settings 16:9 Standard Settings Picture Picture Size Settings 16:9 Standard If you are using AV or analog equipment, disconnect the adapter from the Component (Blue) input port on the TV and connect it to the",
+              "metadata": {
+                "doc_id": "sample_4_doc_0",
+                "sample_index": 4,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Solution Power Saving Mode Settings General Eco Solution Motion Lighting If the color on your TV screen is not correct or the black and white colors are off, run Start Picture Test Settings Support Self Diagnosis Start Picture Test If the test results indicate that the problem is not caused by the TV, do the following: Confirm that the video input connectors are connected to the correct external device video output connectors. Check the other connections as well. If the TV is connected to an external device via a component cable, confirm that the Pb, Pr, and Y jacks are plugged into their proper connectors. If the colors on your TV are correct but just a little too dark or bright, try adjusting the following settings first. Settings",
+              "metadata": {
+                "doc_id": "sample_4_doc_0",
+                "sample_index": 4,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To fix blurring issues on the TV screen, follow these steps: \nSettings > Picture Expert Settings > Auto Motion Plus Settings. \n\nIf the issue persists, try: \nSettings > Support > Self Diagnosis > Start Picture Test. \n\nThen, check the connections and signal strength, and refer to the external device's user manual if necessary. \n\nAdditionally, you can also try adjusting the Picture Mode, Brightness, Sharpness, and Color settings: \nSettings > Picture > Picture Mode > Settings > Picture Expert Settings > Brightness > Settings > Picture Expert Settings > Sharpness > Settings > Picture Expert Settings > Color.",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.0357,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.0357,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": "What is the use of universal guide?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "Using the Universal Guide App. Search for and enjoy content such as TV shows, dramas, movies, sports broadcasts, and music. Universal Guide The image on your TV may differ from the image above depending on the model and geographical area. Universal Guide is an app that allows you to search for and enjoy various content such as TV shows, dramas, movies, and music in one place. Universal Guide can recommend content tailored to your preferences and notify you of new drama series. You can use this feature on your mobile with Samsung SmartThings app. To enjoy the content from these apps on your TV, they must be installed on the TV. When you watch some paid content, you may need to make a payment using their associated app.",
+              "metadata": {
+                "doc_id": "sample_6_doc_0",
+                "sample_index": 6,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "beautiful screens, various visual information, and notifications. To enter Ambient Mode , press the button. To return to the TV mode, press the button. To shut off the TV, press the button. If you press the button when the TV is turned off, the TV turns on in Ambient Mode If you use a remote control other than the Samsung TV remote control, there may be restrictions to entering Ambient Mode Because this function is a QLED TV-specific function, it may not be supported depending on the model. For more information about the Ambient Mode , refer to the Ambient Universal Guide Universal Guide is an app that allows you to search for and enjoy various content such as TV shows, dramas, movies, and music in one place.",
+              "metadata": {
+                "doc_id": "sample_10_doc_2",
+                "sample_index": 10,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "allows you to search for and enjoy various content such as TV shows, dramas, movies, and music in one place. Universal Guide can recommend content tailored to your preferences and notify you of new drama series. For more information about the Universal Guide , refer to the Universal Guide Images may look blurry depending on the service provider's circumstances. This function may not be supported depending on the model or geographical area. The image on your TV may differ from the image above depending on the model and geographical area. Moving an item on the Home Screen Move the focus to the app you want to move, press the down directional button on the remote control, and then select Move . Move the app to the desired position",
+              "metadata": {
+                "doc_id": "sample_10_doc_2",
+                "sample_index": 10,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Using additional functions. You can use the following features on the Source screen. Connection Guide : Displays device connection instructions. Universal Remote : Lets you register external devices to your Samsung Smart Remote and control them using the Remote. This function may not be supported depending on the model or geographical area. For more information, refer to External Devices with the Samsung Smart Remote - Using the Universal",
+              "metadata": {
+                "doc_id": "sample_6_doc_2",
+                "sample_index": 6,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 68,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "window appears on the right and the following functions are available: Delete All You can delete all your notifications. Settings You can select services you want to be notified about. When you select Allow sound , notifications are displayed with a notification sound. Sources Connection HDMI 1 HDMI 2 USB 1 USB 2 Source Universal Remote Guide Settings When the focus is moved to the icon, a list of quick settings icons appears above the top of the menu. You can quickly set frequently used functions by clicking the icons. Picture Mode You can select the picture mode that provides the best viewing experience. To change the picture mode, press the Select button. To make fine adjustments, press the up directional button, and then select Picture Setup Sound",
+              "metadata": {
+                "doc_id": "sample_10_doc_2",
+                "sample_index": 10,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "The Universal Guide is an app that allows you to search for and enjoy various content such as TV shows, dramas, movies, and music in one place. It can recommend content tailored to your preferences and notify you of new drama series. \n\nTo use the Universal Guide, the passages do not provide a specific step-by-step guide, but it is mentioned that \"Universal Guide is an app that allows you to search for and enjoy various content such as TV shows, dramas, movies, and music in one place.\" and it can be accessed on the TV and also on your mobile with Samsung SmartThings app.",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.2778,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.1667,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 0.6,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": "What is the feature of Bixby guide?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "Running Bixby. Press and hold the button on your Samsung Smart Remote, say a command, and then release the button. The TV recognizes the voice command. To view the Bixby guide, press the button once: When you press the button for the first time, the Using Bixby button appears at the bottom of the screen. Press the Select button. The Using Bixby popup window appears and a tutorial on using Bixby is shown. When you press the button after the first time, the Enter My Bixby button appears at the bottom of the screen. Press the Select button to go to the My Bixby screen.",
+              "metadata": {
+                "doc_id": "sample_7_doc_1",
+                "sample_index": 7,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 105,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Setting accessibility settings using Bixby. Bixby lets you control your TV with voice commands spoken into the microphone built into the Samsung Smart Remote. To use Bixby , the TV must be set up and tuned and must be connected to the Internet. You can connect the TV to the Internet during the initial setup or do it later through the settings menu. There are many commands you can say to control the TV. These can be used together with Voice Guide to give you voice input and voice output. To speak a command, press and hold the button (located near the top of the Samsung Smart Remote, directly below the LED power indicator and above the directional button) and say the command, and then release the button.",
+              "metadata": {
+                "doc_id": "sample_47_doc_0",
+                "sample_index": 47,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Quick Guides. You can learn quickly how to run and use the frequently used functions, such as Bixby, Ambient Mode, and Smart Hub.",
+              "metadata": {
+                "doc_id": "sample_7_doc_0",
+                "sample_index": 7,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 23,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "button, say a command, and then release the button to run Bixby When you press the button, the Enter My Bixby menu appears at the bottom of the screen. Press to bring up the virtual numeric pad on the screen. Use the numeric keypad to enter numeric values. Select numbers and then select Done to enter a numeric value. Use to change the channel, enter a PIN, enter a ZIP code, etc. If the Color Button appears with a number strip on the screen, select the Color Button and then select a specific color by using the directional pad (up/down/left/right). Use this to access additional options that are specific to the feature in use. Use these colored buttons to access additional options that are specific to the feature",
+              "metadata": {
+                "doc_id": "sample_26_doc_1",
+                "sample_index": 26,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "specific to the feature in use. Use these colored buttons to access additional options that are specific to the feature in use. These buttons are not available in the U.S.A. and Canada. Moves the focus. Selects or runs a focused item. When pressed while you are watching content, detailed program information appears. Press to return to the previous menu. When pressed for 1 second or more, the running function is terminated. When pressed while you are watching a program, the previous channel appears. When pressed, the playback controls appear. Using these controls, you can control the media content that is playing. Move the button up or down to change the channel. To see the Guide screen, press the button. Press and hold the button up or down to",
+              "metadata": {
+                "doc_id": "sample_26_doc_1",
+                "sample_index": 26,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To view the Bixby guide, \n1. Press the button on your Samsung Smart Remote once. \n2. When you press the button for the first time, the \"Using Bixby\" button appears at the bottom of the screen. \n3. Press the \"Select\" button. \nThe \"Using Bixby\" popup window appears and a tutorial on using Bixby is shown.",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.1333,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.1333,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": "How to launch the last used app automatically?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "Launching the last used app automatically. Settings General Smart Features Autorun Last App Try Now Autorun Last App is set to , the last used app is automatically run when you turn on the TV. You can also turn this function on or off: press the Select button at the current menu. This function may not be supported depending on the app. Move Remove",
+              "metadata": {
+                "doc_id": "sample_8_doc_0",
+                "sample_index": 8,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 64,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Installing and running an app. Installing an app Move to the app you want to install, and then press the Select button. The detailed information screen appears. Select Install . When the installation is complete, the Open menu appears. Select Open to run the app immediately. You can view installed apps on the Settings screen. If the TV's internal memory is insufficient, you can install some specific apps on a USB device. You can run an app installed on a USB device only when the USB device is connected to the TV. If the USB device is disconnected while an app is running, the app is terminated. You cannot run an app installed on a USB device on a PC or another TV. Launching an app You can",
+              "metadata": {
+                "doc_id": "sample_8_doc_1",
+                "sample_index": 8,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Move Reinstall View Details Auto Update : ON Locking and unlocking apps Select an app to lock or unlock. Select Lock/Unlock The selected app is locked or unlocked. To lock or unlock an app, enter the PIN. The default PIN is You can set the PIN in Settings General System Manager Change PIN Moving apps Select an app to move. Select Move Move the app to the desired location. Press the Select button. The selected app is moved. This function may not be supported depending on the model or geographical area. Reinstalling an app Select the app to install again. Select Reinstall Reinstallation starts. Checking the app information details Select the app to check. Select View Details The app information screen appears. Automatically updating apps Installed apps can",
+              "metadata": {
+                "doc_id": "sample_8_doc_2",
+                "sample_index": 8,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "details Select the app to check. Select View Details The app information screen appears. Automatically updating apps Installed apps can be automatically updated. If you do not want apps automatically updated, set Auto Update OFF Automatic update is enabled only when the TV is connected to the Internet.",
+              "metadata": {
+                "doc_id": "sample_8_doc_2",
+                "sample_index": 8,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 48,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "the down directional button on the remote control, and then select Move . Move the app to the desired position by pressing the left or right directional button, and then press the Select button. The selected app is moved on the Home screen. Removing an item on the Home Screen Move the focus to the app you want to delete, press the down directional button on the remote control, and then select Remove . The selected app is deleted. You can add the apps you want to use often to the Home Screen using APPS. To add your favorite apps to the Home Screen, refer to purchased or installed",
+              "metadata": {
+                "doc_id": "sample_10_doc_2",
+                "sample_index": 10,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 109,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To launch the last used app automatically, follow these steps: \nSettings > General > Smart Features > Autorun Last App. \nThen, press the Select button at the current menu to turn this function on or off.",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.0682,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.0455,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 0.6667,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": "Where do I find the list of my favorite channels?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "Creating a Personal Favorites List. Designate frequently watched channels as favorite channels. Favorite channels are highlighted in the Edit Channels and Channel List screens with the symbol. You can create up to five favorites lists so that your family members can create their own personal favorites list.",
+              "metadata": {
+                "doc_id": "sample_9_doc_0",
+                "sample_index": 9,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 47,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Viewing and selecting channels on Favorites lists only. Live TV Channel List Press the right directional button on your remote control. Select Favorites Select the desired list among the five favorites lists on the screen. The channels in the selected favorites list appear. Only favorites lists that contain registered channels will display channels.",
+              "metadata": {
+                "doc_id": "sample_2_doc_1",
+                "sample_index": 2,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 53,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "currently watching, showing channel name, channel number, and program title. Use the up and down directional buttons to move within the channel list (or use the button to go up and down a page at a time). You can also use the button to enter a channel number and go to that channel directly. Press the right directional button in the Channel List to move to the Category List . Use the up and down directional buttons to move within this list. Press the Select button to choose a category you want from the Category List . The Category List contains All Channels and Favorites . Use the up and down directional buttons to move to a channel you want to view, and then press the Select button.",
+              "metadata": {
+                "doc_id": "sample_29_doc_0",
+                "sample_index": 29,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "up and down directional buttons to move to a channel you want to view, and then press the Select button. All Channels Displays the channels that have been automatically searched. Favorites Displays Favorites 1 Favorites 5 . Use the up and down directional buttons to move between the lists of favorites. Highlight the one you want, and then press Select. The channel list will now show only the channels in this list. This option is only available on specific models in specific geographical areas.",
+              "metadata": {
+                "doc_id": "sample_29_doc_0",
+                "sample_index": 29,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 84,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Using the Channel List. Change the channel or check programs on other digital channels. Live TV Channel List Using the Channel List , you can change the channel or check programs on other digital channels while watching TV. The Channel List screen contains the following icons: : A favorite channel : A locked channel. If you press the right directional button when viewing the Channel List screen, you can use the following functions: All Channels Displays the channels that the TV found during the Auto Program channel search. Favorites Displays Favorites 1 Favorites 5 Air Cable To allow you to select Air Cable as the DTV mode, move the focus to Air Cable , and then press the Select button. Air is suitable for homes equipped with separate,",
+              "metadata": {
+                "doc_id": "sample_2_doc_2",
+                "sample_index": 2,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To find the list of your favorite channels, follow these steps: \n\nPress the right directional button on your remote control. \nSelect \"Favorites\" \nSelect the desired list among the five favorites lists on the screen. \n\nAlternatively, you can also access your favorites list through the Channel List: \nUse the up and down directional buttons to move within the channel list. \nPress the right directional button in the Channel List to move to the Category List. \nUse the up and down directional buttons to move within this list. \nPress the Select button to choose \"Favorites\" from the Category List. \nUse the up and down directional buttons to move between the lists of favorites (Favorites 1 - Favorites 5). \nHighlight the one you want, and then press Select. \n\nThe channel list will now show only the channels in this list.",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.4167,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.3333,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 0.8,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": " I want to setup a  beautiful screens. How can I do that?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "the Ambient Mode browser will be provided. You can select the following categories and content: Decor : Allows you to select beautiful screens. Info : Provides information such as weather, news headlines, and more. This function may not be supported depending on the geographical area. Photo : Allows you to set a picture stored in your mobile device as the wallpaper of the Ambient Mode screen. You can configure special layouts using your photos. To save photos from your mobile device to the TV and import them in Ambient Mode , use the SmartThings app on your mobile device. Setting up the Ambient Mode details In the Ambient Mode browser screen, move the focus to , and then press the Select button. You can change the following settings:",
+              "metadata": {
+                "doc_id": "sample_0_doc_0",
+                "sample_index": 0,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Configuring advanced picture settings. Settings Picture Expert Settings Try Now Configure the screen settings to your taste by using the following functions: Backlight Try Now Brightness Try Now Contrast Try Now Sharpness Try Now Color Try Now Tint (G/R) Try Now Apply Picture Settings Try Now Digital Clean View Try Now Auto Motion Plus Settings Try Now When LED Clear Motion is set to , the screen appears darker than when it is Off Local Dimming This function may not be supported depending on the model or geographical area. Contrast Enhancer Try Now HDR+ Mode Try Now Automatically provide an optimal HDR effect based on the video source. The HDR (High Dynamic Range) technology implements video images that are very similar to the images seen through human eyes",
+              "metadata": {
+                "doc_id": "sample_3_doc_1",
+                "sample_index": 3,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "window appears on the right and the following functions are available: Delete All You can delete all your notifications. Settings You can select services you want to be notified about. When you select Allow sound , notifications are displayed with a notification sound. Sources Connection HDMI 1 HDMI 2 USB 1 USB 2 Source Universal Remote Guide Settings When the focus is moved to the icon, a list of quick settings icons appears above the top of the menu. You can quickly set frequently used functions by clicking the icons. Picture Mode You can select the picture mode that provides the best viewing experience. To change the picture mode, press the Select button. To make fine adjustments, press the up directional button, and then select Picture Setup Sound",
+              "metadata": {
+                "doc_id": "sample_10_doc_2",
+                "sample_index": 10,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "displayed properly, there may be a problem with an external device. Please check the connections. If the problem persists, check the signal strength or refer to the external device's user manual. Go to Picture and then adjust the Picture Mode Brightness Sharpness , and Color settings. Settings Picture Picture Mode Settings Picture Expert Settings Brightness Settings Picture Expert Settings Sharpness Settings Picture Expert Settings Color See if Power Saving Mode has been enabled. Settings General Eco Solution Power Saving Mode Try resetting the picture. Settings Picture Expert Settings Reset Picture Change Picture Size Settings 16:9 Standard Settings Picture Picture Size Settings 16:9 Standard If you are using AV or analog equipment, disconnect the adapter from the Component (Blue) input port on the TV and connect it to the",
+              "metadata": {
+                "doc_id": "sample_4_doc_0",
+                "sample_index": 4,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "I Want to Reset the TV. Initialize the settings to factory defaults. Reset Path Description Reset Settings Reset Smart Hub Reset Picture Reset Sound Languages supported by the app may be different from the user interface language. The ability to change the language depends on the service provider. Check with the service provider. Refer to the Help section on the application service provider's website. This problem may occur with high-bitrate files. Most files can be played back, but you might experience problems with high-bitrate files. Settings Support Self Diagnosis Reset Settings Support Self Diagnosis Reset Smart Hub Settings Picture Expert Settings Reset Picture Settings Sound Expert Settings Reset Sound Resets Picture Sound Broadcasting , and all other settings, except for the network settings, to the default settings. Resets",
+              "metadata": {
+                "doc_id": "sample_58_doc_0",
+                "sample_index": 58,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To set up beautiful screens, follow these steps: \nIn the Ambient Mode browser, select \"Decor\". \nThen, move the focus to the desired screen, and then press the \"Select\" button.",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.0328,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.0492,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": "How do I record using time Timeshift function?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "to Using the Recording and Timeshift",
+              "metadata": {
+                "doc_id": "sample_11_doc_0",
+                "sample_index": 11,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 6,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Using Timeshift. Play, pause, or rewind live TV. You can pause and rewind live TV by using Timeshift . Activating this function disables the Broadcasting function. Try Now To activate the Timeshift function while watching TV, press the button and then select Timeshift , or press the button. This function is not available in the U.S.A. and Canada. This function may not be supported depending on the model or geographical area. When the Timeshift function is running, some functions are not available in Settings Broadcasting To use Timeshift, you must connect a USB device for recording. Read all precautions before using the Timeshift function. For more information, refer to Using the Recording and Timeshift",
+              "metadata": {
+                "doc_id": "sample_11_doc_0",
+                "sample_index": 11,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 114,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Using the Instant and Schedule Recording options from the program info. window Recording the program you are watching To display a menu for recording a program or starting the Timeshift function, press the button while watching the program. You can select the following functions on the menu: Record : Immediately starts to record the program you are watching. Timeshift : Starts the Timeshift function. Stop : Stops the recording or the Timeshift function that is running. Info : Displays the details about the program you ware watching. Scheduling viewing from the program info window Press the Select button while viewing a program to display the program info window. In the program info window, use the left and right directional buttons to select a broadcast scheduled program, and then",
+              "metadata": {
+                "doc_id": "sample_11_doc_2",
+                "sample_index": 11,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "the Timeshift function to the recording function. When switching to the recording function, you can include the content recorded by the Timeshift function in the new recording. This function is only available when the Timeshift function is running. Go to Live TV Select to return to the current scenes of the program when the recording or Timeshift function is playing its past scenes. Stop Recording Stop Timeshift Ends the recording or Timeshift function. Info Displays the program info window of the program you are recording or time-shifting. Pause Play You can use the following functions when the video is paused. (Note that with the video paused, the TV does not play audio.) Slow Rewind Slow Forward : Allows you to play the video slowly (1/8, 1/4, 1/2) backward",
+              "metadata": {
+                "doc_id": "sample_33_doc_0",
+                "sample_index": 33,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Buttons and functions available while recording a program or. Timeshift Review available buttons and functions of how they are used while recording a program or Timeshift. This function is not available in the U.S.A. and Canada. This function may not be supported depending on the model or geographical area. The available buttons and functions may differ with the functions. When you press the down directional button, the control bar appears and the following options are available: Edit Recording Time You can set for what period of time the program will be recorded. This function is only available when a program is being recorded. Record You can switch from the Timeshift function to the recording function. When switching to the recording function, you can include the content recorded by",
+              "metadata": {
+                "doc_id": "sample_33_doc_0",
+                "sample_index": 33,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To record using the Timeshift function, follow these steps: \n1. Press the button while watching the program.\n2. Select \"Timeshift\" from the menu.\nAlternatively, you can also press the button to activate the Timeshift function.\nNote: You must connect a USB device for recording to use the Timeshift function.",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.2,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.1,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 0.5,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": "My IP auto setting failed. How to configure it?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "turned on. If it is, turn it off and then on. Enter the correct password if required. IP auto setting failed Configure the settings in IP Settings Settings General Network Network Status IP Settings Make sure that the DHCP server is enabled on the router, and then unplug the router and plug it back in. Reset the router if required. For wireless connection, enter the correct password if required. Unable to connect to the network Check all IP Settings Settings General Network Network Status IP Settings After checking the DHCP server status (must be active) on the router, remove the LAN cable, and then connect it again. For wireless connection, enter the correct password if required. Connected to a local network, but not to the Internet Make sure",
+              "metadata": {
+                "doc_id": "sample_12_doc_0",
+                "sample_index": 12,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Troubleshooting Internet connectivity issues. Try Now After reading the following content, troubleshoot the Internet connection issue. If the problem persists, contact your Internet Service Provider. No network cable found Make sure that the LAN cable is plugged in on both ends. If it is plugged in, make sure that the router is turned on. If the router is on, try turning it off and then on. Wireless network connection failed If a selected wireless router is not found, go to Open Network Settings , and then select the correct router. Settings General Network Open Network Settings Unable to connect to a wireless router Check if the router is turned on. If it is, turn it off and then on. Enter the correct password if required. IP auto setting",
+              "metadata": {
+                "doc_id": "sample_12_doc_0",
+                "sample_index": 12,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "wireless connection, enter the correct password if required. Connected to a local network, but not to the Internet Make sure that the Internet LAN cable is connected to the router's external LAN port. Check the DNS values in IP Settings Settings General Network Network Status IP Settings Network setup is complete, but unable to connect to the Internet If the problem persists, contact your Internet Service Provider.",
+              "metadata": {
+                "doc_id": "sample_12_doc_0",
+                "sample_index": 12,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 67,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Mode is set to Auto Changing the current time Settings General System Manager Time Clock Time Offset Time Offset adjusts the time through a network connection. This function is only available if Clock Mode is set to Auto and the TV is connected to the Internet though a local area network. Time Offset adjusts the time if the TV fails to receive time information through normal digital broadcast signals. Setting the clock manually Settings General System Manager Time Clock Clock Mode Manual When Clock Mode is set to Manual , you can directly enter the current time. Select the Date and Time by using the directional buttons on the remote control.",
+              "metadata": {
+                "doc_id": "sample_44_doc_0",
+                "sample_index": 44,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 111,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Setting up an Internet connection over IPv6. Configuring the IPv6 connection settings Settings General Network Expert Settings IPv6 This function may not be supported depending on the model or geographical area. Checking the Internet connection set up over IPv6 Settings General Network Expert Settings IPv6 Status This function may not be supported depending on the model or geographical area.",
+              "metadata": {
+                "doc_id": "sample_12_doc_1",
+                "sample_index": 12,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 59,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To configure the IP settings, follow these steps: \nSettings > General > Network > Network Status > IP Settings. \nMake sure that the DHCP server is enabled on the router, and then unplug the router and plug it back in. Reset the router if required.",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.1154,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.1538,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 0.6667,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": "How can I connect my mobile device to the TV?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "Connecting Your Mobile Device. Connect your mobile device to the TV on the same network to control the TV with the mobile device or enjoy the content of the mobile device on the TV. Use the SmartThings app on your mobile device to quickly and easily connect to the TV and control its main settings. In addition, you can remotely check and control the statuses of various devices such as Samsung smart devices, home appliances, and speakers registered to the server. Make sure that your TV supports SmartThings. You can check this with the Supported Device menu in the SmartThings app. To use the SmartThings app, you must be signed in to your Samsung account on the TV. This function may not be supported depending on the TV",
+              "metadata": {
+                "doc_id": "sample_13_doc_1",
+                "sample_index": 13,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Connecting to the TV via the SmartThings app. Turn on the TV. Start the SmartThings app on your mobile device. Tap Add Device on the dashboard of the SmartThings app. Connectable TVs are searched for. From the search results, select the model of your TV. Enter the PIN number displayed on the TV screen. Once the TV is registered with your Samsung account, you can use the SmartThings app to control the TV. If your TV is not found on your mobile device, turn both of them off and on, and then try again. If you have more than one TV, you can easily select the TV you want by setting different TV names at Settings General System Manager Device Name",
+              "metadata": {
+                "doc_id": "sample_13_doc_0",
+                "sample_index": 13,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 121,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Connection notes for mobile devices. To use the Smart View function, the mobile device must support a mirroring function such as Screen Mirroring or Smart View. To check whether your mobile device supports the mirroring function, please visit the mobile device manufacturer's website. To use Wi-Fi Direct, the mobile device must support the Wi-Fi Direct function. Please check if your mobile device supports Wi-Fi Direct. The mobile device and your Smart TV must be connected to each other on the same network. The video or audio may stop intermittently, depending on network conditions. When sharing content with other network-based devices such as those in an IP (Internet Protocol) storage system, sharing may not be supported due to the network's configuration, quality, or functionality, for example, if the network",
+              "metadata": {
+                "doc_id": "sample_13_doc_2",
+                "sample_index": 13,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Connecting an Antenna. You can connect an antenna cable to your TV. An antenna connection is not necessary if you connect a cable box or satellite box. Cable Box/Disc Player HDMI Game Console Audio Device Mobile Device External Storage Accessory ANT IN Connection Guide",
+              "metadata": {
+                "doc_id": "sample_24_doc_0",
+                "sample_index": 24,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 44,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Playing media content. Playing multimedia content on a PC or mobile device Select a device with media content in Source . The media content list in the device appears. Select a media content item from the list. The content is played. For more information about buttons, refer to and functions available while playing multimedia The content may not be played depending on the encoding method or file format. Furthermore, several functions may be restricted. Content on devices connected to the TV via your network may not play smoothly due to network communication problems. If this occurs, use a USB device. For more information about connecting to mobile devices, refer to Your Mobile Playing multimedia content on a USB device Connect a USB device to the USB port. When",
+              "metadata": {
+                "doc_id": "sample_17_doc_2",
+                "sample_index": 17,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To connect your mobile device to the TV, follow these steps: \n1. Turn on the TV. \n2. Start the SmartThings app on your mobile device. \n3. Tap \"Add Device\" on the dashboard of the SmartThings app. \n4. From the search results, select the model of your TV. \n5. Enter the PIN number displayed on the TV screen. \n\nNote: Make sure your TV supports SmartThings and that you are signed in to your Samsung account on the TV. If your TV is not found, turn both devices off and on, and then try again. You can also set different TV names at \"Settings > General > System Manager > Device Name\" if you have more than one TV.",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.3929,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.3571,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 0.9091,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": "How to configure Contrast and Sharpness?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "Configuring advanced picture settings. Settings Picture Expert Settings Try Now Configure the screen settings to your taste by using the following functions: Backlight Try Now Brightness Try Now Contrast Try Now Sharpness Try Now Color Try Now Tint (G/R) Try Now Apply Picture Settings Try Now Digital Clean View Try Now Auto Motion Plus Settings Try Now When LED Clear Motion is set to , the screen appears darker than when it is Off Local Dimming This function may not be supported depending on the model or geographical area. Contrast Enhancer Try Now HDR+ Mode Try Now Automatically provide an optimal HDR effect based on the video source. The HDR (High Dynamic Range) technology implements video images that are very similar to the images seen through human eyes",
+              "metadata": {
+                "doc_id": "sample_3_doc_1",
+                "sample_index": 3,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "displayed properly, there may be a problem with an external device. Please check the connections. If the problem persists, check the signal strength or refer to the external device's user manual. Go to Picture and then adjust the Picture Mode Brightness Sharpness , and Color settings. Settings Picture Picture Mode Settings Picture Expert Settings Brightness Settings Picture Expert Settings Sharpness Settings Picture Expert Settings Color See if Power Saving Mode has been enabled. Settings General Eco Solution Power Saving Mode Try resetting the picture. Settings Picture Expert Settings Reset Picture Change Picture Size Settings 16:9 Standard Settings Picture Picture Size Settings 16:9 Standard If you are using AV or analog equipment, disconnect the adapter from the Component (Blue) input port on the TV and connect it to the",
+              "metadata": {
+                "doc_id": "sample_4_doc_0",
+                "sample_index": 4,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "directly below the LED power indicator and above the directional button) and say the command, and then release the button. The TV will confirm the command. For example you can: Turn Voice Guide on: Press the button on the Samsung Smart Remote, and then say Voice Guide on Turn Video Description on: Press the button on the Samsung Smart Remote, and then say Video Description on Turn High Contrast on: Press the button on the Samsung Smart Remote, and then say High Contrast on",
+              "metadata": {
+                "doc_id": "sample_47_doc_0",
+                "sample_index": 47,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 84,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Adjusting the Picture Quality. Change the Picture Mode and adjust Expert Settings.",
+              "metadata": {
+                "doc_id": "sample_14_doc_1",
+                "sample_index": 14,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 12,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "The HDR (High Dynamic Range) technology implements video images that are very similar to the images seen through human eyes by finely adjusting the contrast of the source. This function may not be supported depending on the model or geographical area. Film Mode Try Now This function is only available when the input signal is TV, AV, Component (480i, 1080i), or HDMI (1080i). Color Tone Try Now White Balance Try Now Gamma Try Now RGB Only Mode Try Now Color Space Settings Try Now Reset Picture Try Now",
+              "metadata": {
+                "doc_id": "sample_3_doc_1",
+                "sample_index": 3,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 88,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To configure Contrast and Sharpness, follow these steps: \nSettings > Picture > Expert Settings > Contrast > Try Now \nSettings > Picture > Expert Settings > Sharpness > Try Now",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.0769,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.0769,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": "What are the steps to reset network?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "Resetting Your Network. Settings General Network Reset Network Try Now Restore the network settings to the factory default.",
+              "metadata": {
+                "doc_id": "sample_15_doc_0",
+                "sample_index": 15,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 18,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Restoring the TV to the factory settings. Settings Support Self Diagnosis Reset Try Now You can restore all TV settings (excluding the Internet and network settings) to the factory defaults. Select Reset . The security PIN entry window appears. Enter the security PIN, and then select Yes . All settings are then reset. The TV turns off and on again automatically and displays the Start Setup screen. For more information on Start Setup , refer to the user manual that came with the TV.",
+              "metadata": {
+                "doc_id": "sample_15_doc_1",
+                "sample_index": 15,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 84,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "turned on. If it is, turn it off and then on. Enter the correct password if required. IP auto setting failed Configure the settings in IP Settings Settings General Network Network Status IP Settings Make sure that the DHCP server is enabled on the router, and then unplug the router and plug it back in. Reset the router if required. For wireless connection, enter the correct password if required. Unable to connect to the network Check all IP Settings Settings General Network Network Status IP Settings After checking the DHCP server status (must be active) on the router, remove the LAN cable, and then connect it again. For wireless connection, enter the correct password if required. Connected to a local network, but not to the Internet Make sure",
+              "metadata": {
+                "doc_id": "sample_12_doc_0",
+                "sample_index": 12,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "I Want to Reset the TV. Initialize the settings to factory defaults. Reset Path Description Reset Settings Reset Smart Hub Reset Picture Reset Sound Languages supported by the app may be different from the user interface language. The ability to change the language depends on the service provider. Check with the service provider. Refer to the Help section on the application service provider's website. This problem may occur with high-bitrate files. Most files can be played back, but you might experience problems with high-bitrate files. Settings Support Self Diagnosis Reset Settings Support Self Diagnosis Reset Smart Hub Settings Picture Expert Settings Reset Picture Settings Sound Expert Settings Reset Sound Resets Picture Sound Broadcasting , and all other settings, except for the network settings, to the default settings. Resets",
+              "metadata": {
+                "doc_id": "sample_58_doc_0",
+                "sample_index": 58,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Troubleshooting Internet connectivity issues. Try Now After reading the following content, troubleshoot the Internet connection issue. If the problem persists, contact your Internet Service Provider. No network cable found Make sure that the LAN cable is plugged in on both ends. If it is plugged in, make sure that the router is turned on. If the router is on, try turning it off and then on. Wireless network connection failed If a selected wireless router is not found, go to Open Network Settings , and then select the correct router. Settings General Network Open Network Settings Unable to connect to a wireless router Check if the router is turned on. If it is, turn it off and then on. Enter the correct password if required. IP auto setting",
+              "metadata": {
+                "doc_id": "sample_12_doc_0",
+                "sample_index": 12,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "Settings > General > Network > Reset Network > Try Now \n\n(This will restore the network settings to the factory default.)",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.037,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.037,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 0.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": "How do I view a list of mobile devices registered to the TV?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "Connecting Your Mobile Device. Connect your mobile device to the TV on the same network to control the TV with the mobile device or enjoy the content of the mobile device on the TV. Use the SmartThings app on your mobile device to quickly and easily connect to the TV and control its main settings. In addition, you can remotely check and control the statuses of various devices such as Samsung smart devices, home appliances, and speakers registered to the server. Make sure that your TV supports SmartThings. You can check this with the Supported Device menu in the SmartThings app. To use the SmartThings app, you must be signed in to your Samsung account on the TV. This function may not be supported depending on the TV",
+              "metadata": {
+                "doc_id": "sample_13_doc_1",
+                "sample_index": 13,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Managing Mobile Devices. Settings General External Device Manager Device Connect Manager Try Now Access Notification Set whether to display a notification when a mobile device attempts to connect to the TV. Device List View, edit, or remove a list of mobile devices registered to the TV.",
+              "metadata": {
+                "doc_id": "sample_16_doc_0",
+                "sample_index": 16,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 46,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Connecting to the TV via the SmartThings app. Turn on the TV. Start the SmartThings app on your mobile device. Tap Add Device on the dashboard of the SmartThings app. Connectable TVs are searched for. From the search results, select the model of your TV. Enter the PIN number displayed on the TV screen. Once the TV is registered with your Samsung account, you can use the SmartThings app to control the TV. If your TV is not found on your mobile device, turn both of them off and on, and then try again. If you have more than one TV, you can easily select the TV you want by setting different TV names at Settings General System Manager Device Name",
+              "metadata": {
+                "doc_id": "sample_13_doc_0",
+                "sample_index": 13,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 121,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Using the SmartThings App. Monitor and configure the smart devices you have connected to the SmartThings service. SmartThings The image on your TV may differ from the image above depending on the model and geographical area. From your TV, you can monitor and configure smart devices you connected to the SmartThings service via the SmartThings app installed on them. You can receive notifications about the statuses of your smart devices. To use this function, you must be logged in to your Samsung account. This function may not be supported depending on the model or geographical area. Location selection list Press the Select button to identify all connected devices or the devices specific to a location. Sign In Go to the Samsung Account screen to create a new account",
+              "metadata": {
+                "doc_id": "sample_16_doc_2",
+                "sample_index": 16,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "or the devices specific to a location. Sign In Go to the Samsung Account screen to create a new account or sign in to your account. Set Your Scene Devices All Devices Settings Turn notifications on or off for the connected smart devices. Set Your Scene Create a custom mode to easily control multiple devices with a single command. Device list View a list of the connected smart devices and their statuses. You can add a new device through the SmartThings app on your mobile phone. Please refer to the user guide of the SmartThings app for more details.",
+              "metadata": {
+                "doc_id": "sample_16_doc_2",
+                "sample_index": 16,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 99,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "Settings > General > External Device Manager > Device Connect Manager > Device List.",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.1111,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.0741,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 0.6667,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": "I get this error 'some files cannot be played'. How do I fix this?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "My File Won't Play. When files don't play, this may help resolve the problem. The problem Try this! Some files can't be played.",
+              "metadata": {
+                "doc_id": "sample_17_doc_0",
+                "sample_index": 17,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 23,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "I Want to Reset the TV. Initialize the settings to factory defaults. Reset Path Description Reset Settings Reset Smart Hub Reset Picture Reset Sound Languages supported by the app may be different from the user interface language. The ability to change the language depends on the service provider. Check with the service provider. Refer to the Help section on the application service provider's website. This problem may occur with high-bitrate files. Most files can be played back, but you might experience problems with high-bitrate files. Settings Support Self Diagnosis Reset Settings Support Self Diagnosis Reset Smart Hub Settings Picture Expert Settings Reset Picture Settings Sound Expert Settings Reset Sound Resets Picture Sound Broadcasting , and all other settings, except for the network settings, to the default settings. Resets",
+              "metadata": {
+                "doc_id": "sample_58_doc_0",
+                "sample_index": 58,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Playing media content. Playing multimedia content on a PC or mobile device Select a device with media content in Source . The media content list in the device appears. Select a media content item from the list. The content is played. For more information about buttons, refer to and functions available while playing multimedia The content may not be played depending on the encoding method or file format. Furthermore, several functions may be restricted. Content on devices connected to the TV via your network may not play smoothly due to network communication problems. If this occurs, use a USB device. For more information about connecting to mobile devices, refer to Your Mobile Playing multimedia content on a USB device Connect a USB device to the USB port. When",
+              "metadata": {
+                "doc_id": "sample_17_doc_2",
+                "sample_index": 17,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "multimedia content file. Rewind Fast Forward Rewinds or fast forwards the multimedia content. To increase the rewind or fast forward speed up to 3 times faster than normal, select the button repeatedly. To return to normal speed, select the option or press the button. 360 Mode Provides a 360-degree view for videos and photos. This function may not be supported depending on the file format. Repeat Plays the current multimedia content repeatedly or all multimedia content files in the same folder repeatedly. Shuffle Plays music files in random order. Picture Off Plays multimedia content with the screen off. Screen Fit Fits a photo to the screen. Rotate left Rotate right Rotates a photo left or right. Zoom Zooms in a photo by up to a factor of 4.",
+              "metadata": {
+                "doc_id": "sample_33_doc_1",
+                "sample_index": 33,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "refer to Your Mobile Playing multimedia content on a USB device Connect a USB device to the USB port. When a pop up message appears on the screen, select Browse to easily move to the list of multimedia content stored on the device. Select a content item to play from the list. The content is played.",
+              "metadata": {
+                "doc_id": "sample_17_doc_2",
+                "sample_index": 17,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 56,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "The passages do not provide sufficient information to answer this question.",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.2105,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.1579,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 0.25,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 0.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": "How do I set scheduled viewing time?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "Setting Up a Schedule Viewing. Configure the TV to show a specific channel or program at a specific time and date. The icon appears next to programs that have been configured for a schedule viewing. To set up a schedule viewing, you must first set the TV's clock ( Settings General System Manager Time Clock Setting up a schedule viewing The Guide Screen On the Guide screen, select a program you would like to view, and then press and hold the Select button. Select Schedule Viewing on the pop-up menu that appears. The Program Info Screen Press the Select button while watching the TV. The Program Info window appears. Select a broadcast scheduled program by using the left or right directional buttons, and then press the Select button.",
+              "metadata": {
+                "doc_id": "sample_10_doc_0",
+                "sample_index": 10,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Setting Up a Schedule Viewing. Configure the TV to show a specific channel or program at a specific time and date. The appears next to programs that have been configured for a scheduled viewing. To set up a scheduled viewing, you must first set the TV's clock ( Settings General System Manager Time Clock",
+              "metadata": {
+                "doc_id": "sample_18_doc_0",
+                "sample_index": 18,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 54,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Setting up a scheduled viewing for a channel. Using the schedule viewing options from the guide screen On the Guide screen, select a program you would like to view, press and hold the Select button, and then select Schedule Viewing in the pop-up menu that appears. Using the schedule viewing options in the program info window Press the Select button while watching TV. The Program Info window appears. Select a program that will be broadcast using the left or right directional buttons. Press the Select button, and then select Schedule Viewing schedule viewing of that program. Using schedule viewing to view programs at a specified time on a specified date (U.S.A and Canada) Live TV Schedule Manager Add Viewing (Other countries) Live TV Schedule Manager Recordings Schedules Add",
+              "metadata": {
+                "doc_id": "sample_18_doc_2",
+                "sample_index": 18,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "appears. Select a broadcast scheduled program by using the left or right directional buttons, and then press the Select button. You can schedule watching the program by selecting Schedule Viewing",
+              "metadata": {
+                "doc_id": "sample_10_doc_0",
+                "sample_index": 10,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 30,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "specified date (U.S.A and Canada) Live TV Schedule Manager Add Viewing (Other countries) Live TV Schedule Manager Recordings Schedules Add Viewing To schedule a viewing, set the values for Antenna Channel Repeat Date and Start Time of the broadcast program to view, and then select Save Check the current time in Settings General System Manager Time Clock This function may not be supported depending on the model or geographical area.",
+              "metadata": {
+                "doc_id": "sample_18_doc_2",
+                "sample_index": 18,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 70,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To set a scheduled viewing time, follow these steps: \n1. Check the current time in Settings > General > System Manager > Time > Clock.\n2. Go to the Guide screen, select a program you would like to view.\n3. Press and hold the Select button, and then select Schedule Viewing in the pop-up menu that appears.\nAlternatively, while watching TV, press the Select button to open the Program Info window.\n4. Select a broadcast scheduled program by using the left or right directional buttons, and then press the Select button.\n5. For U.S.A and Canada: Live TV Schedule Manager > Add Viewing. For other countries: Live TV Schedule Manager > Recordings > Schedules > Add.\n6. Set the values for Antenna, Channel, Repeat, Date, and Start Time of the broadcast program to view.\n7. Select Save.",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.35,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.15,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 0.4286,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": null
+        },
+        {
+          "query": "Can I scan TV for malicious code ?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "Scanning the TV and connected storage for malicious code. Settings General System Manager Smart Security Scan If malicious code is found, the results of the scan will appear on the screen. This result window displays all malicious code found. You can quarantine (isolate) the code. Quarantining prevents it from executing. Select all the malicious code to quarantine. Select Isolate The selected malicious code is relocated to the Isolated List The Isolated List displays all quarantined malicious codes.",
+              "metadata": {
+                "doc_id": "sample_19_doc_0",
+                "sample_index": 19,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 77,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Protecting the TV from Hacking and Malicious Code. Protect your TV from hacking attempts and malicious code. Settings General System Manager Smart Security Try Now You can use Smart Security to protect the TV from hacking and malicious code when it is connected to the Internet.",
+              "metadata": {
+                "doc_id": "sample_19_doc_1",
+                "sample_index": 19,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 46,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Finding the contact information for service. Settings Support About This TV Try Now You can view the address of the Samsung website, the call center phone number, your TV's model number, your TV's software version, Open Source License and other information you may need to get service support from a Samsung call agent or the Samsung website. You can also view information by scanning the QR code of your TV. You can also start this function by pressing and holding the button for 5 or more seconds. For standard remote control, press and hold the button for 5 or more seconds.",
+              "metadata": {
+                "doc_id": "sample_1_doc_2",
+                "sample_index": 1,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 101,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "function may not be supported depending on the model or geographical area. Source You can select an external device connected to the TV. For more information, refer to between external devices connected to the Search You can search the apps or games in Smart Hub services. To use this feature, the TV must be connected to the Internet. APPS You can enjoy a wide range of content including news, sports, weather, and games by installing the corresponding apps on your TV. To use this feature, the TV must be connected to the Internet. For more information, refer to the APPS Ambient Mode Ambient Mode , you can view beautiful screens, various visual information, and notifications. To enter Ambient Mode , press the button. To return to the TV",
+              "metadata": {
+                "doc_id": "sample_10_doc_2",
+                "sample_index": 10,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Using the SmartThings App. Monitor and configure the smart devices you have connected to the SmartThings service. SmartThings The image on your TV may differ from the image above depending on the model and geographical area. From your TV, you can monitor and configure smart devices you connected to the SmartThings service via the SmartThings app installed on them. You can receive notifications about the statuses of your smart devices. To use this function, you must be logged in to your Samsung account. This function may not be supported depending on the model or geographical area. Location selection list Press the Select button to identify all connected devices or the devices specific to a location. Sign In Go to the Samsung Account screen to create a new account",
+              "metadata": {
+                "doc_id": "sample_16_doc_2",
+                "sample_index": 16,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "fixed_word",
+                "word_count": 128,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To scan the TV for malicious code, follow these steps: \nSettings > General > System Manager > Smart Security Scan. \n\nThis will scan the TV and connected storage for malicious code. If malicious code is found, the results of the scan will appear on the screen.",
+          "relevance_score__pred": null,
+          "relevance_score__gt": 0.7692,
+          "relevance_score__deviation": null,
+          "utilization_score__pred": null,
+          "utilization_score__gt": 0.5385,
+          "utilization_score__deviation": null,
+          "completeness_score__pred": null,
+          "completeness_score__gt": 0.7,
+          "completeness_score__deviation": null,
+          "adherence_score__pred": null,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": null
+        }
+      ],
+      "summary": [
+        {
+          "metric": "relevance_score",
+          "mean_score": NaN,
+          "mean_ground_truth": 0.1951,
+          "std_score": NaN,
+          "std_ground_truth": 0.187,
+          "mean_abs_error": NaN
+        },
+        {
+          "metric": "utilization_score",
+          "mean_score": NaN,
+          "mean_ground_truth": 0.1465,
+          "std_score": NaN,
+          "std_ground_truth": 0.1258,
+          "mean_abs_error": NaN
+        },
+        {
+          "metric": "completeness_score",
+          "mean_score": NaN,
+          "mean_ground_truth": 0.7481,
+          "std_score": NaN,
+          "std_ground_truth": 0.2503,
+          "mean_abs_error": NaN
+        },
+        {
+          "metric": "adherence_score",
+          "mean_score": NaN,
+          "mean_ground_truth": 0.9,
+          "std_score": NaN,
+          "std_ground_truth": 0.3,
+          "mean_abs_error": NaN
+        }
+      ]
+    }
+  ]
+}

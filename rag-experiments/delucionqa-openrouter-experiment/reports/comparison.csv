@@ -1,9 +1,10 @@
 config_name,relevance_score__mean,relevance_score__mae,utilization_score__mean,utilization_score__mae,completeness_score__mean,completeness_score__mae,adherence_score__mean,adherence_score__mae
+delucionqa_or_v5_hybrid_rrf,0.165,0.1236,0.1582,0.1069,0.7387,0.2826,0.1053,0.8947
+delucionqa_or_v9_bge_sentence,0.2746,0.17,0.2538,0.1555,0.643,0.3026,0.2105,0.7895
 delucionqa_or_v1_baseline,0.2979,0.1954,0.2374,0.1781,0.633,0.3524,0.1579,0.8421
-delucionqa_or_v2_hybrid_wsum,0.178,0.1498,0.1507,0.125,0.6429,0.3488,0.1111,0.8889
 delucionqa_or_v3_embed_bge,0.353,0.2279,0.2953,0.1781,0.6375,0.312,0.25,0.75
-delucionqa_or_v4_chunk_sentence,0.4214,0.2532,0.2906,0.1721,0.5869,0.372,0.2105,0.7895
-delucionqa_or_v5_hybrid_rrf,0.1543,0.1245,0.1488,0.1052,0.7612,0.2692,0.1111,0.8889
-delucionqa_or_v6_rerank_only,0.3484,0.1554,0.2844,0.1597,0.6007,0.3483,0.2222,0.7778
-delucionqa_or_v7_hybrid_rerank,0.3708,0.193,0.2689,0.1353,0.6322,0.2889,0.2105,0.7895
+delucionqa_or_v2_hybrid_wsum,0.1879,0.1545,0.1482,0.1172,0.6217,0.3709,0.1,0.9
+delucionqa_or_v6_rerank_only,0.3494,0.1668,0.2861,0.165,0.5997,0.3544,0.2,0.8
+delucionqa_or_v7_hybrid_rerank,0.3639,0.1895,0.2622,0.1296,0.6291,0.2959,0.25,0.75
+delucionqa_or_v4_chunk_sentence,0.4028,0.2419,0.276,0.1647,0.5575,0.4034,0.25,0.75
 delucionqa_or_v8_hyde,0.3707,0.1976,0.2692,0.1518,0.5349,0.3867,0.25,0.75

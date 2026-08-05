@@ -1,0 +1,57 @@
+# emanual experiment — OpenRouter variant.
+#
+# emanual is the consumer-electronics manual subset of galileo-ai/ragbench
+# (Samsung TV/device manual QA): each row is a short "how do I..." question
+# answered over ~3 clean manual snippets. Documents have no Title/Passage
+# markers, so we use the `noop` parser.
+#
+# All LLM calls go through OpenRouter. Isolated dirs (config/report/temp/cache)
+# so this runs in its own notebook, in parallel with the Groq run and the other
+# OpenRouter experiments, without contending for rate limits or colliding on
+# files/cache.
+#
+# Credentials: set OPENROUTER_API_KEY (comma-separate multiple keys to rotate).
+
+config_dir: rag-experiments/emanual-openrouter-experiment/config
+
+report_dir: rag-experiments/emanual-openrouter-experiment/reports
+
+cache:
+  enabled: true
+  cache_dir: ./cache_openrouter
+
+temp_dir: rag-experiments/emanual-openrouter-experiment/temp
+
+# The emanual test split has 132 rows; start small, then raise end_index to 132.
+start_index: 0
+end_index: 20
+
+parallel: false
+max_workers: 1
+query_workers: 2
+
+evaluation:
+  type: trace
+  provider: openrouter
+  config:
+    model: meta-llama/llama-3.3-70b-instruct
+    temperature: 0.0
+    max_tokens: 2000
+
+data_loader:
+  type: huggingface
+  config:
+    dataset_name: galileo-ai/ragbench
+    subset: emanual
+    split: test
+    limit: 132
+
+data_parser: noop
+
+data_processing:
+  steps:
+    - type: deduplication
+      config:
+        strategy: content_hash
+
+report_strategy: detailed_query

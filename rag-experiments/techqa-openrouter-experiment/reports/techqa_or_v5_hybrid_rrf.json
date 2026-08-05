@@ -3957,18 +3957,18 @@
             }
           ],
           "answer": "To find the information regarding the Security Bulletin for IBM Integration Bus being affected by Node.js security vulnerabilities (CVE-2017-1000381 and CVE-2017-11499), you can refer to the following:\n\n1. **Document 16** and **Document 17** provide details about the vulnerabilities. \n   - **CVE-2017-1000381** is described as a vulnerability where c-ares could allow a remote attacker to obtain sensitive information, caused by an out-of-bounds read in the `ares_parse_naptr_reply()` function when parsing NAPTR responses.\n   - **CVE-2017-11499** is described as a vulnerability where Node.js is vulnerable to a denial of service, caused by a flaw related to constant HashTable seeds. A remote attacker could exploit this vulnerability to flood the hash and cause a denial of service.\n\n2. For **Remediation/Fixes**, refer to **Document 17**. It mentions that the fixes for these vulnerabilities are included in IBM SDK for Node.js v6.12.0.0 and subsequent releases for the affected versions.\n\n3. To download the fixed version of IBM SDK for Node.js, visit the [IBM developerWorks website](http://www.ibm.com/developerworks/web/nodesdk/).\n\n4. If you are an IBM customer requiring an update for an SDK shipped with an IBM product, contact [IBM support](http://www.ibm.com/support/) and/or refer to the appropriate product security bulletin.\n\n5. For more information on the vulnerabilities, including the CVSS scores and vectors, refer to the specific CVE links provided in **Document 16**:\n   - [CVE-2017-1000381](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-1000381)\n   - [CVE-2017-11499](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-11499)\n\n6. To stay updated on future security bulletins, subscribe to [My Notifications](http://www-01.ibm.com/software/support/einfo.html).\n\nRemember, the information provided is based on the details available in the passages and might not cover all aspects of the vulnerabilities or their fixes. Always refer to the latest security bulletins and IBM support resources for the most current information.",
-          "relevance_score__pred": NaN,
+          "relevance_score__pred": 0.1194,
           "relevance_score__gt": 0.028,
-          "relevance_score__deviation": NaN,
-          "utilization_score__pred": NaN,
+          "relevance_score__deviation": 0.0914,
+          "utilization_score__pred": 0.1194,
           "utilization_score__gt": 0.0,
-          "utilization_score__deviation": NaN,
-          "completeness_score__pred": NaN,
+          "utilization_score__deviation": 0.1194,
+          "completeness_score__pred": 1.0,
           "completeness_score__gt": 0.0,
-          "completeness_score__deviation": NaN,
-          "adherence_score__pred": NaN,
+          "completeness_score__deviation": 1.0,
+          "adherence_score__pred": 0.0,
           "adherence_score__gt": 0.0,
-          "adherence_score__deviation": NaN
+          "adherence_score__deviation": 0.0
         },
         {
           "query": "Help with Security Bulletin: Multiple vulnerabilities in IBM Java SDK affect IBM OS Images for Red Hat Linux Systems and AIX (CVE-2015-0410 and CVE-2014-6593) I need to understand details regarding \"Security Bulletin: Multiple vulnerabilities in IBM Java SDK affect IBM OS Images for Red Hat Linux Systems and AIX (CVE-2015-0410 and CVE-2014-6593)\" Where can I find this information? ",
@@ -6060,35 +6060,35 @@
       "summary": [
         {
           "metric": "relevance_score",
-          "mean_score": 0.1328,
+          "mean_score": 0.1321,
           "mean_ground_truth": 0.0409,
-          "std_score": 0.1591,
+          "std_score": 0.1551,
           "std_ground_truth": 0.045,
-          "mean_abs_error": 0.0991
+          "mean_abs_error": 0.0987
         },
         {
           "metric": "utilization_score",
-          "mean_score": 0.0699,
+          "mean_score": 0.0724,
           "mean_ground_truth": 0.0232,
-          "std_score": 0.1007,
+          "std_score": 0.0987,
           "std_ground_truth": 0.0237,
-          "mean_abs_error": 0.0572
+          "mean_abs_error": 0.0603
         },
         {
           "metric": "completeness_score",
-          "mean_score": 0.4225,
+          "mean_score": 0.4514,
           "mean_ground_truth": 0.7376,
-          "std_score": 0.3916,
+          "std_score": 0.4019,
           "std_ground_truth": 0.3456,
-          "mean_abs_error": 0.492
+          "mean_abs_error": 0.5174
         },
         {
           "metric": "adherence_score",
-          "mean_score": 0.2632,
+          "mean_score": 0.25,
           "mean_ground_truth": 0.55,
-          "std_score": 0.4403,
+          "std_score": 0.433,
           "std_ground_truth": 0.4975,
-          "mean_abs_error": 0.4211
+          "mean_abs_error": 0.4
         }
       ]
     }

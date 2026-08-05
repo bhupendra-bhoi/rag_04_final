@@ -5152,18 +5152,18 @@
             }
           ],
           "answer": "To address security vulnerabilities in Red Hat Linux for IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0, the following steps are recommended based on the provided documents:\n\n1. **Identify Vulnerabilities**: The systems are vulnerable to various CVEs (Common Vulnerabilities and Exposures) as listed across multiple documents, including but not limited to:\n   - CVE-2017-14746, CVE-2017-15085, CVE-2017-15086, CVE-2017-15087, CVE-2017-15275 (Document 1)\n   - CVE-2017-16546 (Document 2)\n   - CVE-2018-1057, CVE-2018-1050 (Document 3)\n   - CVE-2017-2619, CVE-2017-5509, CVE-2017-5510, CVE-2017-7275, CVE-2016-10228 (Document 4)\n   - CVE-2016-2126, CVE-2016-2125, CVE-2016-2123, CVE-2016-8866, CVE-2016-9556, CVE-2016-9559, CVE-2016-9773 (Document 5)\n   - CVE-2017-15217, CVE-2017-15218 (Document 6)\n   - CVE-2011-5320, CVE-2017-15670, CVE-2017-15671, CVE-2017-15804 (Document 7)\n   - CVE-2014-8716, and numerous others listed in Document 8\n   - CVE-2015-7547 (Document 9)\n   - CVE-2016-2842, CVE-2016-2118, CVE-2015-5370, and others (Document 10)\n   - CVE-2016-3075, CVE-2016-5118, CVE-2015-8900, and others (Document 12)\n   - CVE-2016-5010, CVE-2016-7906, and numerous others (Document 13)\n   - CVE-2016-8677, CVE-2016-8678, and many more (Document 14)\n   - CVE-2015-5180, CVE-2014-9984, and others (Document 15)\n   - CVE-2017-10995, CVE-2017-10928, and many others (Document 16)\n   - CVE-2017-12418, CVE-2017-12427, and numerous others (Document 17)\n\n2. **Remediation**: IBM strongly recommends contacting Red Hat to obtain and install fixes for Red Hat Enterprise Linux (RHEL) Server 6.2, as applicable. This is a consistent recommendation across all documents.\n\n3. **Additional Information**: For specific vulnerabilities related to Java, such as CVE-2017-3511 (Document 18) and CVE-2016-3485 (Document 20), refer to the IBM Java SDK Security Bulletins and the provided URLs for detailed information and fixes.\n\n4. **Fixes and Patches**: For some vulnerabilities, specific fixes or patches are mentioned, such as APAR IT16743 for IBM Integration Bus V10 and V9, and WebSphere Message Broker V8 (Document 20). These fixes can be found in fix packs or through IBM Fix Central.\n\n5. **References**: Utilize the provided URLs and references for more detailed information on vulnerabilities, CVSS scores, and remed",
-          "relevance_score__pred": NaN,
+          "relevance_score__pred": 1.0169,
           "relevance_score__gt": 0.1875,
-          "relevance_score__deviation": NaN,
-          "utilization_score__pred": NaN,
+          "relevance_score__deviation": 0.8294,
+          "utilization_score__pred": 0.6102,
           "utilization_score__gt": 0.0469,
-          "utilization_score__deviation": NaN,
-          "completeness_score__pred": NaN,
+          "utilization_score__deviation": 0.5633,
+          "completeness_score__pred": 0.6,
           "completeness_score__gt": 0.25,
-          "completeness_score__deviation": NaN,
-          "adherence_score__pred": NaN,
+          "completeness_score__deviation": 0.35,
+          "adherence_score__pred": 0.0,
           "adherence_score__gt": 0.0,
-          "adherence_score__deviation": NaN
+          "adherence_score__deviation": 0.0
         },
         {
           "query": "Help with Security Bulletin: IBM WebSphere MQ is affected by a privilege escalation vulnerability (CVE-2017-1612) I need to understand details regarding Security Bulletin: IBM WebSphere MQ is affected by a privilege escalation vulnerability (CVE-2017-1612).",
@@ -6063,35 +6063,35 @@
       "summary": [
         {
           "metric": "relevance_score",
-          "mean_score": 0.0897,
+          "mean_score": 0.1361,
           "mean_ground_truth": 0.0409,
-          "std_score": 0.0654,
+          "std_score": 0.2119,
           "std_ground_truth": 0.045,
-          "mean_abs_error": 0.0714
+          "mean_abs_error": 0.1093
         },
         {
           "metric": "utilization_score",
-          "mean_score": 0.0431,
+          "mean_score": 0.0714,
           "mean_ground_truth": 0.0232,
-          "std_score": 0.0599,
+          "std_score": 0.1367,
           "std_ground_truth": 0.0237,
-          "mean_abs_error": 0.0427
+          "mean_abs_error": 0.0687
         },
         {
           "metric": "completeness_score",
-          "mean_score": 0.3482,
+          "mean_score": 0.3607,
           "mean_ground_truth": 0.7376,
-          "std_score": 0.3817,
+          "std_score": 0.3761,
           "std_ground_truth": 0.3456,
-          "mean_abs_error": 0.5476
+          "mean_abs_error": 0.5377
         },
         {
           "metric": "adherence_score",
-          "mean_score": 0.3158,
+          "mean_score": 0.3,
           "mean_ground_truth": 0.55,
-          "std_score": 0.4648,
+          "std_score": 0.4583,
           "std_ground_truth": 0.4975,
-          "mean_abs_error": 0.4737
+          "mean_abs_error": 0.45
         }
       ]
     }

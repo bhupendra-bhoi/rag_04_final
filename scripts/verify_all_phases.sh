@@ -50,8 +50,7 @@ from rag.embedding import (
     OllamaEmbeddingConfig, OllamaEmbeddingStrategy,
     CohereEmbeddingConfig, CohereEmbeddingStrategy,
     VoyageEmbeddingConfig, VoyageEmbeddingStrategy,
-    HuggingFaceEmbeddingConfig, HuggingFaceEmbeddingStrategy,
-    MedCPTEmbeddingConfig
+    HuggingFaceEmbeddingConfig, HuggingFaceEmbeddingStrategy
 )
 keys = embedding_registry.registered_keys()
 print(f'✓ Embedding registry keys: {keys}')
@@ -126,13 +125,13 @@ echo "==========================================================================
 echo ""
 echo "Summary:"
 echo "  ✓ Phase 1: Core architecture (BaseStrategy, BaseRegistry, coerce_config)"
-echo "  ✓ Phase 2: Module refactoring (4 chunking + 7 embedding strategies)"
+echo "  ✓ Phase 2: Module refactoring (4 chunking + 6 embedding strategies)"
 echo "  ✓ Phase 3: Class decorator registration (self-contained strategies)"
 echo "  ✓ Configuration integration (all configs load correctly)"
 echo "  ✓ Pipeline integration (uses both registries)"
 echo "  ✓ End-to-end testing (chunking and embedding work)"
 echo ""
-echo "Total: 11 strategies across 2 modules"
+echo "Total: 10 strategies across 2 modules"
 echo "Status: Ready for production"
 echo "================================================================================"
 echo ""

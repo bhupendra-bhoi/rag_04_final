@@ -1,0 +1,11 @@
+{
+  "dataset": "galileo-ai/ragbench",
+  "config_name": "emanual_v8_hyde",
+  "start_index": 0,
+  "end_index": 20,
+  "total_queries": 20,
+  "created_at": "2026-07-26T04:59:04.260073",
+  "status": "completed",
+  "completed_at": "2026-07-26T04:59:39.433604",
+  "error_message": null
+}

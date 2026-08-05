@@ -5,7 +5,6 @@ from rag.config.config import (
     CohereEmbeddingConfig,
     VoyageEmbeddingConfig,
     HuggingFaceEmbeddingConfig,
-    MedCPTEmbeddingConfig,
     CohereRerankerConfig,
     VoyageRerankerConfig,
     JinaRerankerConfig,
@@ -15,7 +14,6 @@ from embedding.strategies.ollama.strategy import OllamaEmbeddingStrategy
 from embedding.strategies.cohere.strategy import CohereEmbeddingStrategy
 from embedding.strategies.voyage.strategy import VoyageEmbeddingStrategy
 from embedding.strategies.huggingface.strategy import HuggingFaceEmbeddingStrategy
-from embedding.strategies.medcpt.strategy import MedCPTEmbeddingStrategy
 from rag.modules.reranking.strategies.cohere.strategy import CohereRerankerStrategy
 from rag.modules.reranking.strategies.voyage.strategy import VoyageRerankerStrategy
 from rag.modules.reranking.strategies.jina.strategy import JinaRerankerStrategy
@@ -222,89 +220,6 @@ class TestHuggingFaceEmbeddingStrategy:
             strategy.embed("test")
             
             assert "Authorization" in mock_session.headers
-
-
-# =============================================================================
-# MedCPT Embedding Tests
-# =============================================================================
-
-class TestMedCPTEmbeddingStrategy:
-    
-    @patch('embedding.strategies.medcpt.strategy.get_sentence_transformer')
-    def test_initialization(self, mock_get_model):
-        mock_query_model = Mock()
-        mock_article_model = Mock()
-        mock_get_model.side_effect = [mock_query_model, mock_article_model]
-        
-        config = MedCPTEmbeddingConfig(
-            query_model_name="ncbi/MedCPT-Query-Encoder",
-            article_model_name="ncbi/MedCPT-Article-Encoder"
-        )
-        strategy = MedCPTEmbeddingStrategy(config)
-        
-        assert strategy.config == config
-        assert strategy.query_model == mock_query_model
-        assert strategy.article_model == mock_article_model
-    
-    @patch('embedding.strategies.medcpt.strategy.get_sentence_transformer')
-    def test_embed_query(self, mock_get_model):
-        mock_query_model = Mock()
-        mock_query_model.encode.return_value = [[0.1, 0.2, 0.3]]
-        mock_article_model = Mock()
-        mock_get_model.side_effect = [mock_query_model, mock_article_model]
-        
-        config = MedCPTEmbeddingConfig()
-        strategy = MedCPTEmbeddingStrategy(config)
-        result = strategy.embed("test query", is_query=True)
-        
-        mock_query_model.encode.assert_called_once_with(
-            ["test query"],
-            normalize_embeddings=True
-        )
-        assert result == [[0.1, 0.2, 0.3]]
-    
-    @patch('embedding.strategies.medcpt.strategy.get_sentence_transformer')
-    def test_embed_documents(self, mock_get_model):
-        mock_query_model = Mock()
-        mock_article_model = Mock()
-        mock_article_model.encode.return_value = [[0.1, 0.2], [0.3, 0.4]]
-        mock_get_model.side_effect = [mock_query_model, mock_article_model]
-        
-        config = MedCPTEmbeddingConfig()
-        strategy = MedCPTEmbeddingStrategy(config)
-        result = strategy.embed(["doc1", "doc2"], is_query=False)
-        
-        mock_article_model.encode.assert_called_once_with(
-            ["doc1", "doc2"],
-            normalize_embeddings=True
-        )
-        assert result == [[0.1, 0.2], [0.3, 0.4]]
-    
-    @patch('embedding.strategies.medcpt.strategy.get_sentence_transformer')
-    def test_embed_query_method(self, mock_get_model):
-        mock_query_model = Mock()
-        mock_query_model.encode.return_value = [[0.1, 0.2, 0.3]]
-        mock_article_model = Mock()
-        mock_get_model.side_effect = [mock_query_model, mock_article_model]
-        
-        config = MedCPTEmbeddingConfig()
-        strategy = MedCPTEmbeddingStrategy(config)
-        result = strategy.embed_query("test query")
-        
-        assert result == [[0.1, 0.2, 0.3]]
-    
-    @patch('embedding.strategies.medcpt.strategy.get_sentence_transformer')
-    def test_embed_documents_method(self, mock_get_model):
-        mock_query_model = Mock()
-        mock_article_model = Mock()
-        mock_article_model.encode.return_value = [[0.1, 0.2], [0.3, 0.4]]
-        mock_get_model.side_effect = [mock_query_model, mock_article_model]
-        
-        config = MedCPTEmbeddingConfig()
-        strategy = MedCPTEmbeddingStrategy(config)
-        result = strategy.embed_documents(["doc1", "doc2"])
-        
-        assert result == [[0.1, 0.2], [0.3, 0.4]]
 
 
 # =============================================================================

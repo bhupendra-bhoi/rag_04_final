@@ -1,0 +1,11 @@
+{
+  "dataset": "galileo-ai/ragbench",
+  "config_name": "techqa_or_v10_hyde_match",
+  "start_index": 0,
+  "end_index": 20,
+  "total_queries": 20,
+  "created_at": "2026-07-25T06:32:41.646149",
+  "status": "completed",
+  "completed_at": "2026-07-25T06:36:22.564294",
+  "error_message": null
+}

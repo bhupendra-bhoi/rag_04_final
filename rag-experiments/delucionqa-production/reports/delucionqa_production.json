@@ -1,0 +1,123 @@
+{
+  "title": "RAG Multi-Config Evaluation Report",
+  "strategy_name": "detailed_query",
+  "sections": [
+    {
+      "config_name": "delucionqa_production",
+      "config_summary": {
+        "name": "delucionqa_production",
+        "mode": "test",
+        "providers": {
+          "openrouter": {
+            "type": "openrouter",
+            "api_key_env": "OPENROUTER_API_KEY",
+            "params": {
+              "cooldown_seconds": 60
+            }
+          }
+        },
+        "chunking": {
+          "type": "fixed_word",
+          "config": {
+            "max_words": 160,
+            "overlap_words": 24
+          }
+        },
+        "embedding": {
+          "type": "sentence_transformer",
+          "config": {
+            "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+            "dimension": 384
+          }
+        },
+        "vector_store": {
+          "type": "faiss",
+          "config": {
+            "dimension": 384
+          }
+        },
+        "retrieval": {
+          "search": {
+            "searches": [
+              {
+                "type": "dense",
+                "config": {
+                  "top_k": 5
+                }
+              }
+            ]
+          },
+          "query_transform": null,
+          "fusion": null,
+          "rerank": null
+        },
+        "generation": {
+          "strategy": "default",
+          "provider": "openrouter",
+          "config": {
+            "model": "meta-llama/llama-3.3-70b-instruct",
+            "temperature": 0.0,
+            "max_tokens": 512,
+            "system_prompt": "You are an automotive owner's-manual support assistant. Answer questions\nabout vehicle features, controls, and procedures using ONLY the provided\nowner's-manual passages.\n\nCRITICAL RULES:\n1. Answer ONLY from the passages provided. Do not use outside knowledge.\n2. Give exact, step-by-step procedures. Preserve exact control names, button\n   names, warning/CAUTION text, and feature labels verbatim.\n3. Include any safety warnings (WARNING/CAUTION) that the passages attach to\n   the procedure.\n4. Be concise and procedural - give the steps, not background.\n5. If the passages do not contain the answer, respond with exactly:\n   \"The passages do not provide sufficient information to answer this question.\"\n6. Every claim must be directly supported by the passages provided.\n",
+            "user_prompt": "Passages:\n{context}\n\nQuestion: {query}\n\nAnswer (from passages only, give exact steps, control names, and any safety warnings):\n"
+          }
+        },
+        "evaluation": {
+          "type": "trace",
+          "provider": "openrouter",
+          "config": {
+            "model": "meta-llama/llama-3.3-70b-instruct",
+            "temperature": 0.0,
+            "max_tokens": 2000
+          }
+        },
+        "cache": {
+          "enabled": true,
+          "cache_dir": "./cache_production_delucionqa"
+        },
+        "start_index": null,
+        "end_index": null,
+        "logging_config": {
+          "enabled": true,
+          "level": "INFO",
+          "show_progress": true
+        }
+      },
+      "per_query": [],
+      "summary": [
+        {
+          "metric": "relevance_score",
+          "mean_score": NaN,
+          "mean_ground_truth": NaN,
+          "std_score": NaN,
+          "std_ground_truth": NaN,
+          "mean_abs_error": NaN
+        },
+        {
+          "metric": "utilization_score",
+          "mean_score": NaN,
+          "mean_ground_truth": NaN,
+          "std_score": NaN,
+          "std_ground_truth": NaN,
+          "mean_abs_error": NaN
+        },
+        {
+          "metric": "completeness_score",
+          "mean_score": NaN,
+          "mean_ground_truth": NaN,
+          "std_score": NaN,
+          "std_ground_truth": NaN,
+          "mean_abs_error": NaN
+        },
+        {
+          "metric": "adherence_score",
+          "mean_score": NaN,
+          "mean_ground_truth": NaN,
+          "std_score": NaN,
+          "std_ground_truth": NaN,
+          "mean_abs_error": NaN
+        }
+      ]
+    }
+  ]
+}

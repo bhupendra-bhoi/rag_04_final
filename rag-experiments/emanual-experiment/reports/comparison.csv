@@ -1,0 +1,10 @@
+config_name,relevance_score__mean,relevance_score__mae,utilization_score__mean,utilization_score__mae,completeness_score__mean,completeness_score__mae,adherence_score__mean,adherence_score__mae
+emanual_v8_hyde,,,,,,,,
+emanual_v3_embed_bge,0.3013,0.1578,0.1467,0.1043,0.4333,0.3532,0.6,0.4
+emanual_v6_rerank_only,0.2358,0.097,0.1443,0.0448,0.5765,0.2377,0.3,0.7
+emanual_v1_baseline,0.3785,0.2318,0.1678,0.1211,0.3797,0.4094,0.55,0.55
+emanual_v11_role_aware_bgem3,0.0704,0.1369,0.0281,0.1184,0.4203,0.3594,0.35,0.65
+emanual_v7_hybrid_rerank,0.3141,0.1616,0.1561,0.0855,0.4458,0.3671,0.4737,0.5263
+emanual_v2_hybrid_wsum,0.1824,0.1257,0.0723,0.0937,0.3582,0.3899,0.4,0.7
+emanual_v4_chunk_sentence,0.3326,0.2063,0.1429,0.1005,0.4195,0.4257,0.45,0.65
+emanual_v5_hybrid_rrf,0.2052,0.151,0.0677,0.0979,0.3232,0.4354,0.45,0.55

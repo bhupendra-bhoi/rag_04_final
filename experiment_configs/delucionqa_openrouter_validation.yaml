@@ -1,0 +1,71 @@
+# delucionqa validation run — larger sample size for v1_baseline vs v3_embed_bge.
+#
+# The first sweep (n=20) left v1_baseline, v3_embed_bge, v4_chunk_sentence, and
+# v9_bge_sentence statistically tied (cross-dataset mean rank 3.83-4.08) — too
+# close to call a universal customer-support config from n=20 alone. This reruns
+# just the top two candidates (v1, v3) at a larger sample to see if the gap
+# holds up.
+#
+# IMPORTANT — this is intentionally NOT a copy of the full 9-config sweep:
+#   - config_dir points at validation_config/, which holds ONLY v1_baseline.yaml
+#     and v3_embed_bge.yaml (exact copies of the originals). The other configs
+#     are not re-run, so they don't burn OpenRouter credits again.
+#   - report_dir/temp_dir/cache are the SAME as
+#     delucionqa_openrouter_experiment.yaml on purpose: the existing
+#     delucionqa_or_v1_baseline.jsonl / v3_embed_bge.jsonl already have indices
+#     0-19 completed, so the resume logic in ExperimentRunner._run_config only
+#     submits the NEW indices (20-99) — the first 20 rows are not re-queried or
+#     re-billed.
+#
+# After this run, comparison.csv will show v1/v3 at n=100 alongside the other
+# configs still at n=20 — expected and fine for this specific v1-vs-v3 question,
+# but don't read the other rows as comparable to these two anymore until they
+# are similarly re-run at n=100.
+#
+# Credentials: set OPENROUTER_API_KEY (comma-separate multiple keys to rotate).
+# Cost note: 2 configs x 80 new rows = 160 new (generation + judge) call pairs.
+# Lower end_index below if credits are tight.
+
+config_dir: rag-experiments/delucionqa-openrouter-experiment/validation_config
+
+report_dir: rag-experiments/delucionqa-openrouter-experiment/reports
+
+cache:
+  enabled: true
+  cache_dir: ./cache_openrouter_delucionqa
+
+temp_dir: rag-experiments/delucionqa-openrouter-experiment/temp
+
+# delucionqa test split has 184 rows; validating on the first 100 (was 20).
+start_index: 0
+end_index: 100
+
+parallel: false
+max_workers: 1
+query_workers: 2
+
+evaluation:
+  type: trace
+  provider: openrouter
+  config:
+    model: meta-llama/llama-3.3-70b-instruct
+    temperature: 0.0
+    max_tokens: 2000
+
+data_loader:
+  type: huggingface
+  config:
+    dataset_name: galileo-ai/ragbench
+    subset: delucionqa
+    split: test
+    limit: 184
+
+data_parser: noop
+
+data_processing:
+  steps:
+    - type: deduplication
+      config:
+        strategy: content_hash
+
+report_strategy: detailed_query

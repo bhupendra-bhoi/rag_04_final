@@ -22,8 +22,6 @@ from embedding.strategies.voyage.strategy import VoyageEmbeddingStrategy
 from embedding.strategies.huggingface.config import HuggingFaceEmbeddingConfig
 from embedding.strategies.huggingface.strategy import HuggingFaceEmbeddingStrategy
 
-from embedding.strategies.medcpt.config import MedCPTEmbeddingConfig
-
 # Import to trigger decorator registration, but don't expose the classes
 try:
     from embedding.strategies.sentence_transformer.strategy import (
@@ -31,14 +29,6 @@ try:
     )
 except ImportError:
     # sentence_transformers not available, strategy won't be registered
-    pass
-
-try:
-    from embedding.strategies.medcpt.strategy import (
-        MedCPTEmbeddingStrategy as _MedCPTEmbeddingStrategy,
-    )
-except ImportError:
-    # numpy not available, strategy won't be registered
     pass
 
 
@@ -49,9 +39,6 @@ def __getattr__(name):
             SentenceTransformerEmbeddingStrategy,
         )
         return SentenceTransformerEmbeddingStrategy
-    elif name == "MedCPTEmbeddingStrategy":
-        from embedding.strategies.medcpt.strategy import MedCPTEmbeddingStrategy
-        return MedCPTEmbeddingStrategy
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
@@ -74,5 +61,4 @@ __all__ = [
     "VoyageEmbeddingStrategy",
     "HuggingFaceEmbeddingConfig",
     "HuggingFaceEmbeddingStrategy",
-    "MedCPTEmbeddingConfig",
 ]

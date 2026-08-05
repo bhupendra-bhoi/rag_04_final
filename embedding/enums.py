@@ -11,4 +11,3 @@ class EmbeddingType(str, Enum):
     COHERE = "cohere"
     VOYAGE = "voyage"
     HUGGINGFACE = "huggingface"
-    MEDCPT = "medcpt"

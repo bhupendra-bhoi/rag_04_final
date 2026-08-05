@@ -1,0 +1,9 @@
+{
+  "cache_key": "731b74b9d539742177eef5b1aa8d766e3895985f252c7226c2b8b1e9254eb9cb",
+  "cache_type": "embedding",
+  "config_hash": "364df489560be3ef5e0b2510a8f21504ffdb542a3691491e0da3a8d2e6c0d3bf",
+  "parent_cache_key": "1aaa7c76069142e09d43e0bcc2e8fb8a3e9efb6f359d82217280fab5de381832",
+  "datasource_hash": null,
+  "created_at": "2026-07-25T06:32:41.561139+00:00",
+  "version": "1.0"
+}

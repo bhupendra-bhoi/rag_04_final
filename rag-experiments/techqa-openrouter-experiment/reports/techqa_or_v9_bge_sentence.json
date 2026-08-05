@@ -1,0 +1,1884 @@
+{
+  "title": "RAG Multi-Config Evaluation Report",
+  "strategy_name": "detailed_query",
+  "sections": [
+    {
+      "config_name": "techqa_or_v9_bge_sentence",
+      "config_summary": {
+        "name": "techqa_or_v9_bge_sentence",
+        "mode": "test",
+        "providers": {
+          "openrouter": {
+            "type": "openrouter",
+            "api_key_env": "OPENROUTER_API_KEY",
+            "params": {
+              "cooldown_seconds": 60
+            }
+          }
+        },
+        "chunking": {
+          "type": "sentence",
+          "config": {
+            "max_words": 150,
+            "overlap_sentences": 1
+          }
+        },
+        "embedding": {
+          "type": "sentence_transformer",
+          "config": {
+            "model_name": "BAAI/bge-base-en-v1.5",
+            "dimension": 768
+          }
+        },
+        "vector_store": {
+          "type": "faiss",
+          "config": {
+            "dimension": 768
+          }
+        },
+        "retrieval": {
+          "search": {
+            "searches": [
+              {
+                "type": "dense",
+                "config": {
+                  "top_k": 5
+                }
+              }
+            ]
+          },
+          "query_transform": null,
+          "fusion": null,
+          "rerank": null
+        },
+        "generation": {
+          "strategy": "default",
+          "provider": "openrouter",
+          "config": {
+            "model": "meta-llama/llama-3.3-70b-instruct",
+            "temperature": 0.0,
+            "max_tokens": 750,
+            "system_prompt": "You are an IBM technical-support question answering assistant.\nYour task is to answer questions using ONLY information from the retrieved\ntechnote passages.\n\nCRITICAL RULES:\n1. Answer ONLY from the passages provided. Do not use external knowledge.\n2. Include all relevant steps, error codes, product versions, APAR numbers,\n   and configuration details found in the passages.\n3. Preserve exact technical identifiers (version strings, file names,\n   parameter names, error messages) verbatim.\n4. Do NOT add phrases like \"based on general knowledge\" or hedge unnecessarily.\n5. If the passages do not contain enough information, respond with exactly:\n   \"The passages do not provide sufficient information to answer this question.\"\n6. Every claim must be directly supported by the passages provided.\n",
+            "user_prompt": "Passages:\n{context}\n\nQuestion: {query}\n\nAnswer (from passages only, include all relevant steps and technical details):\n"
+          }
+        },
+        "evaluation": {
+          "type": "trace",
+          "provider": "openrouter",
+          "config": {
+            "model": "meta-llama/llama-3.3-70b-instruct",
+            "temperature": 0.0,
+            "max_tokens": 2000
+          }
+        },
+        "cache": {
+          "enabled": true,
+          "cache_dir": "./cache_openrouter_techqa"
+        },
+        "start_index": null,
+        "end_index": null,
+        "logging_config": {
+          "enabled": true,
+          "level": "INFO",
+          "show_progress": true
+        }
+      },
+      "per_query": [
+        {
+          "query": "Using cobol copybooks Sometimes, there will be errors/fields missing in typetree, while importing cobol copybooks. Is there any format for copybooks(specifically to be used in wtx), that we need to follow? ",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "TECHNOTE (TROUBLESHOOTING)\n\nPROBLEM(ABSTRACT)\n When installing IBM WebSphere Transformation Extender (WTX) Design Studio 8.4.1.1 on the Windows platform over the top of an IBM WTX 8.4.1.0 installation, the COBOL Copybook importer may be missing after the upgrade. SYMPTOM\nThe COBOL Copybook importer option no longer appears in the list of available importers. CAUSE\nSome files are not correctly overwritten / modified during the upgrade. ENVIRONMENT\nIBM WebSphere Transformation Extender 8.4.1.1 Design Studio on Windows\n\nRESOLVING THE PROBLEM\nInstall WTX Design Studio 8.4.1.1 in an empty directory, and then perform any installation customization.",
+              "metadata": {
+                "doc_id": "sample_0_doc_0",
+                "sample_index": 0,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 91,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "*\n   ****************************************************************\n   * RECOMMENDATION:                                              *\n   ****************************************************************\n   The COBOL versions of copybooks DFHTCTTE and DFHJCADS are\n   currently coded with PL/1 style comments for the COPYRIGHT\n   header statements. Any COBOL program including these Cobol\n   copybooks will therefore compile with errors. PROBLEM CONCLUSION\n *  DFHTCTTE and DFHJCADS have had their COPYRIGHT header\n   changed from PL/I style to Cobol style comments.",
+              "metadata": {
+                "doc_id": "sample_0_doc_3",
+                "sample_index": 0,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 57,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "z/os  A FIX IS AVAILABLE\nObtain the fix for this APAR. SUBSCRIBE\nYou can track all active APARs for this component. APAR STATUS\n * CLOSED AS PROGRAM ERROR. ERROR DESCRIPTION\n *  You are running DFHWS2LS and the resulting cobol copybooks\n   contain level 88 fields with names that are longer than 30\n   characters. This will result in errors at compile time because\n   30 characters is the max length a cobol field can have. This\n   problem will occur even if you have specified\n   NAME-TRUNCATION=RIGHT in DFHWS2LS. Additional Keywords:\n   KIXREVSCB\n   \n   \n    \n   \n   \n\nLOCAL FIX\n\nPROBLEM SUMMARY\n *  ****************************************************************\n   * USERS AFFECTED: All CICS users. *\n   ****************************************************************\n   * PROBLEM DESCRIPTION: DFHWS2LS generates level88 cobol fields *\n   *                      with names over 30 characters in length *\n   *                      resulting in errors at compile time. *\n   ****************************************************************\n   * RECOMMENDATION:                                              *\n   ****************************************************************\n   DFHWS2LS is called to generate language structure in COBOL from\n   a WSDL file.",
+              "metadata": {
+                "doc_id": "sample_0_doc_4",
+                "sample_index": 0,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 145,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "LOCAL FIX\n\nPROBLEM SUMMARY\n *  COBOL copybooks fail to download when BIDI options are enabled\n   and the Property Group contains a COBOL SYSLIB with two or more\n   PDSEs. PROBLEM CONCLUSION\n *  BIDI option processing for copybooks has been updated in the\n   client\n   \n   \n    \n   \n   \n\nTEMPORARY FIX\n\nCOMMENTS\n\nAPAR INFORMATION\n * APAR NUMBER\n   PI93890\n   \n   \n * REPORTED COMPONENT NAME\n   EXP FOR Z/OS CL\n   \n   \n * REPORTED COMPONENT ID\n   5655EXP00\n   \n   \n * REPORTED RELEASE\n   311\n   \n   \n * STATUS\n   CLOSED PER\n   \n   \n * PE\n   NoPE\n   \n   \n * HIPER\n   NoHIPER\n   \n   \n * SPECIAL ATTENTION\n   NoSpecatt / Xsystem\n   \n   \n * SUBMITTED DATE\n   2018-02-16\n   \n   \n * CLOSED DATE\n   2018-03-26\n   \n   \n * LAST MODIFIED DATE\n   2018-03-26\n   \n   \n\n * APAR IS SYSROUTED FROM ONE OR MORE OF THE FOLLOWING:\n   \n   \n   \n * APAR IS SYSROUTED TO ONE OR MORE OF THE FOLLOWING:\n   \n   \n   \n\nFIX INFORMATION\n * FIXED COMPONENT NAME\n   EXP FOR Z/OS CL\n   \n   \n * FIXED COMPONENT ID\n   5655EXP00\n   \n   \n\nAPPLICABLE COMPONENT LEVELS",
+              "metadata": {
+                "doc_id": "sample_0_doc_1",
+                "sample_index": 0,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 137,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "*\n   ****************************************************************\n   * RECOMMENDATION:                                              *\n   ****************************************************************\n   DFHWS2LS is called to generate language structure in COBOL from\n   a WSDL file. There are names over 30 characters in length in\n   the WSDL file. These names are used in Level88 fields in the\n   language structure and are not truncated. It results in errors\n   at compile time as COBOL cannot handle names that are longer\n   than 30 characters. PROBLEM CONCLUSION\n *  DFHWS2LS has been changed to generate valid COBOL level 88 field\n   names. TEMPORARY FIX\n *  FIX AVAILABLE BY PTF ONLY\n   \n   \n    \n   \n   \n\nCOMMENTS\n *  ž**** PE11/09/13 FIX IN ERROR. SEE APAR PM47550 [http://www-01.ibm.com/support/docview.wss?uid=swg1PM47550]  FOR DESCRIPTION\n   ž**** PE12/07/03 FIX IN ERROR.",
+              "metadata": {
+                "doc_id": "sample_0_doc_4",
+                "sample_index": 0,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 105,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "The passages do not provide a specific format for COBOL copybooks to be used in WTX. However, they do mention some issues related to COBOL copybooks. \n\nIn Document 2, it is mentioned that the COBOL versions of copybooks DFHTCTTE and DFHJCADS have PL/1 style comments for the COPYRIGHT header statements, which can cause compilation errors. It is recommended that these copybooks have their COPYRIGHT header changed from PL/I style to COBOL style comments.\n\nIn Document 3, it is mentioned that DFHWS2LS generates level 88 COBOL fields with names that are longer than 30 characters, resulting in errors at compile time. This problem occurs even when NAME-TRUNCATION=RIGHT is specified in DFHWS2LS.\n\nIn Document 4, it is mentioned that COBOL copybooks fail to download when BIDI options are enabled and the Property Group contains a COBOL SYSLIB with two or more PDSEs. This issue is related to APAR PI93890.\n\nIn Document 5, it is mentioned that DFHWS2LS generates language structure in COBOL from a WSDL file, and names over 30 characters in length in the WSDL file are used in Level 88 fields, resulting in errors at compile time.\n\nTo resolve the issue of errors or missing fields in the typetree while importing COBOL copybooks, it is recommended to check the following:\n\n1. Ensure that the COBOL copybooks do not have PL/1 style comments for the COPYRIGHT header statements.\n2. Verify that the names of the Level 88 fields are not longer than 30 characters.\n3. Check if BIDI options are enabled and if the Property Group contains a COBOL SYSLIB with two or more PDSEs.\n4. Ensure that the WSDL file used to generate the COBOL copybooks does not contain names longer than 30 characters.\n\nHowever, the passages do not provide a specific format for COBOL copybooks to be used in WTX. It is recommended to refer to the WTX documentation or contact IBM support for further assistance.",
+          "relevance_score__pred": 0.68,
+          "relevance_score__gt": 0.0117,
+          "relevance_score__deviation": 0.6683,
+          "utilization_score__pred": 0.4,
+          "utilization_score__gt": 0.0117,
+          "utilization_score__deviation": 0.3883,
+          "completeness_score__pred": 0.5882,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": -0.4118,
+          "adherence_score__pred": 0.0,
+          "adherence_score__gt": 0.0,
+          "adherence_score__deviation": 0.0
+        },
+        {
+          "query": "Is WebSphere Transformation Extender (WTX) supported for IBM Integration Bus V10? When will WebSphere Transformation Extender (WTX) be supported for IBM Integration Bus V10?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "WebSphere Transformation Extender; WebSphere TX; WTX; ITX; application programming DOWNLOADABLE FILES\n\nABSTRACT\n This document describes how to download IBM® WebSphere® Transformation Extender for Application Programming V8.4.1.4. DOWNLOAD DESCRIPTION\nWebSphere Transformation Extender for Application Programming provides the core transformation engine, callable by its programming interface. C, Java, Enterprise JavaBeans (EJB), Cobol, and .Net application programming interfaces (APIs) are available to engage the transformation engine to process a prebuilt transformation.",
+              "metadata": {
+                "doc_id": "sample_1_doc_2",
+                "sample_index": 1,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 68,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "DTXINST; Integration Server; WESB; Install; prerequiste TECHNOTE (TROUBLESHOOTING)\n\nPROBLEM(ABSTRACT)\n When attempting to install WebSphere® Transformation Extender for Integration Server version 8.2.0.x, to a server on which WebSphere Enterprise Service Bus has already been successfully installed, the Integration Server install fails with a \"Setup has detected that you are trying to install a product that requires an IBM WebSphere Integration Server as a prerequisite.\" error message \n\nCAUSE\nThe WebSphere Transformation Extender for Integration Servers install process cannot locate a keyword in the .nifregistry file\n\nENVIRONMENT\nDuring the installation of WebSphere Transformation Extender for Integration Servers v8.2.0.x\n\nDIAGNOSING THE PROBLEM\nAn error message, \"Setup has detected that you are trying to install a product that requires an IBM WebSphere Integration Server as a prerequisite.\" will be displayed.",
+              "metadata": {
+                "doc_id": "sample_1_doc_0",
+                "sample_index": 1,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 125,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "TECHNOTE (TROUBLESHOOTING)\n\nPROBLEM(ABSTRACT)\n When installing IBM WebSphere Transformation Extender (WTX) Design Studio 8.4.1.1 on the Windows platform over the top of an IBM WTX 8.4.1.0 installation, the COBOL Copybook importer may be missing after the upgrade. SYMPTOM\nThe COBOL Copybook importer option no longer appears in the list of available importers. CAUSE\nSome files are not correctly overwritten / modified during the upgrade. ENVIRONMENT\nIBM WebSphere Transformation Extender 8.4.1.1 Design Studio on Windows\n\nRESOLVING THE PROBLEM\nInstall WTX Design Studio 8.4.1.1 in an empty directory, and then perform any installation customization.",
+              "metadata": {
+                "doc_id": "sample_0_doc_0",
+                "sample_index": 0,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 91,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "C, Java, Enterprise JavaBeans (EJB), Cobol, and .Net application programming interfaces (APIs) are available to engage the transformation engine to process a prebuilt transformation. PREREQUISITES\nSee the system requirements for the supported hardware and software:\n\nURL LANGUAGE SIZE(Bytes) IBM Transformation Extender system requirements [http://www.ibm.com/support/docview.wss?uid=swg27045341] English 10 \nINSTALLATION INSTRUCTIONS\nAfter you download the code package, follow the instructions in the release notes to install the product:\n\nURL LANGUAGE SIZE(Bytes) IBM Transformation Extender release notes [http://www.ibm.com/support/docview.wss?&uid=swg27008337#841] English 10 \nDOWNLOAD PACKAGE\nEntitled customers can download the code package from Fix Central:\n\nDownload RELEASE DATE LANGUAGE SIZE(Bytes) Download Options Fix Central 11 Mar 2016 English 172000 HTTP [http://www.ibm.com/support/fixcentral/swg/selectFixes?parent=ibm~Other%2Bsoftware&product=ibm/WebSphere/WebSphere+Transformation+Extender&release=8.4.1.4&platform=All&function=all&useReleaseAsTarget=true] \nTECHNICAL SUPPORT\n Get online support through the following links: \n\nFix Central support: http://www.ibm.com/systems/support/fixes/en/fixcentral/help/index.html [http://www.ibm.com/systems/support/fixes/en/fixcentral/help/index.html]\n\nTransformation Extender support: http://www.ibm.com/software/integration/wdatastagetx/support [http://www.ibm.com/software/integration/wdatastagetx/support]",
+              "metadata": {
+                "doc_id": "sample_1_doc_2",
+                "sample_index": 1,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 123,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "WTX; TX TECHNOTE (FAQ)\n\nQUESTION\n What directories does the WTX Map Primitive use in IBM® WebSphere® Transformation Extender for WebSphere Enterprise Service Bus? ANSWER\nFor maps that are \n\n * Specified by Use map from project setting \n * Set in the service message object (SMO) mapServerLocation property \n * Set in the SMO and overridden at runtime \n\n\nThe home directory is: \n\n< WESBserver >/temp/WTX/< flowName >/< mediationName > \n\nwhere < WESBserver> is the server name under the profiles directory in the WebSphere Enterprise Service Bus or WebSphere Process Server installation location. The directory of the WebSphere Transformation Extender map's default audit log, trace log, and workspace is \n\n< WESBserver >/logs/WTX/< flowName >/< mediationName >",
+              "metadata": {
+                "doc_id": "sample_1_doc_1",
+                "sample_index": 1,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 112,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "The passages do not provide sufficient information to answer this question.",
+          "relevance_score__pred": 0.0,
+          "relevance_score__gt": 0.027,
+          "relevance_score__deviation": -0.027,
+          "utilization_score__pred": 0.0,
+          "utilization_score__gt": 0.027,
+          "utilization_score__deviation": -0.027,
+          "completeness_score__pred": 0.0,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": -1.0,
+          "adherence_score__pred": 1.0,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": 0.0
+        },
+        {
+          "query": "Want to find out if Microsoft Edge is supported with ICC? Want to find out Microsoft Edge is supported with ICC? ",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "Feedback / Suggestions / Questions \n\nYou are welcome to provide any feedback in the community. Please post to the dWAnswers Community with the watson-explorer tag at the following URLs: \n\n * https://developer.ibm.com/answers/topics/watson-explorer/ [https://developer.ibm.com/answers/topics/watson-explorer/]\n\n\nSupported platforms \n\n * Windows  * Windows 10 Education \n    * Windows 10 Enterprise \n    * Windows 10 Pro\n   \n   \n * MacOS  * Mac OS X 10.10.3 or later\n   \n   \n\nSupported browsers \n\n * Google Chrome Version 60 or later \n * Mozilla FireFox Version 52 (ESR) or later \n * Microsoft Edge on Windows \n * Microsoft Internet Explorer 11 on Windows\n\n\nNote: 'Supported platforms/browsers' here means those are confirmed to work with Watson Explorer Community Edition [https://www.ibm.com/us-en/marketplace/content-analytics]. Watson Explorer Community Edition [https://www.ibm.com/us-en/marketplace/content-analytics] is provided under Evaluation/Trial license, thus no support will be provided via Passport Advantage/IBM Support channel. Known Issues and Limitations\n\n\n * Installing the application\n *  If you use an older toolbox-based version of Docker, uninstall it before you install the application.",
+              "metadata": {
+                "doc_id": "sample_2_doc_3",
+                "sample_index": 2,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 148,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "* Planning Analytics for Microsoft Excel has supported Excel 2016 since its release. * Using desktop-installed (downloaded) Office 365 (not the cloud version of Office 365), which has been installed via the traditional installation method or if you have installed via click to run. ======================================== \n\nFor the avoidance of doubt, Office 365 is not supported when running directly in the Cloud (instead of running on the desktop/laptop directly). ======================================== \n\n \nQ1 - What are the different methods to install Microsoft Office 365?",
+              "metadata": {
+                "doc_id": "sample_23_doc_1",
+                "sample_index": 23,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 81,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "TECHNOTE (FAQ)\n\nQUESTION\n Does IBM Cognos Analysis for Microsoft Excel, Planning Analytics for Microsoft Excel, or TM1 Perspectives support Microsoft Office 365? CAUSE\nYou can check the supported environments for all versions of Cognos Analysis for Microsoft Excel, Planning Analytics for Microsoft Excel, or Perspectives on the IBM website:\nhttps://www.ibm.com/software/reports/compatibility/clarity/index.html [https://www.ibm.com/software/reports/compatibility/clarity/index.html]\n\nHowever, MS Office 365 is not a 'traditional' single product. Instead, it is a subscription plan which allows users to download/run the very latest version of Office. In other words, customers who own Office 365 licenses will probably be upgrading their Excel versions (over time) as new MS Excel versions are released. => This makes it impossible to give a simple 'yes/no' answer to the question to whether Cognos Analysis for Microsoft Excel or Planning Analytics for Microsoft Excel supports MS Office 365.",
+              "metadata": {
+                "doc_id": "sample_23_doc_1",
+                "sample_index": 23,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 134,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "=> This makes it impossible to give a simple 'yes/no' answer to the question to whether Cognos Analysis for Microsoft Excel or Planning Analytics for Microsoft Excel supports MS Office 365. ANSWER\nMicrosoft Office 365 is supported so long as all of the following are true: \n\n * The version of Office installed (for example Office 2016) as part of Office 365, is supported by that version of Cognos Analysis for Microsoft Excel or Planning Analytics for Microsoft Excel. For example:  * Cognos Analysis for Microsoft Excel 10.2.2 FP6 is the first release in that line that supports Excel 2016. All earlier versions of CAFE 10.2.2 (FP5 and earlier) support a maximum of Office 2013. * Planning Analytics for Microsoft Excel has supported Excel 2016 since its release.",
+              "metadata": {
+                "doc_id": "sample_23_doc_1",
+                "sample_index": 23,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 127,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "1. The last call before the problem relates to the Microsoft gdiplus.dll graphics library. 2. The correct values passes correctly to the Standard Widget Toolkit (SWT) before the error occurs. RESOLVING THE PROBLEM\nUpdate the video driver to the newest version \n\nLink: Intel Download Center [http://downloadcenter.intel.com/]\n\n\nRELATED INFORMATION\n#JVM terminated. Exit code=8096 [https://www.ibm.com/support/docview.wss?uid=swg21303648]\nInternet Explorer v9 or higher is required if the produ [http://www-01.ibm.com/support/docview.wss?uid=swg21502701]",
+              "metadata": {
+                "doc_id": "sample_22_doc_1",
+                "sample_index": 22,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 64,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "According to Document 1, the supported browsers for Watson Explorer Community Edition are:\n\n* Google Chrome Version 60 or later\n* Mozilla FireFox Version 52 (ESR) or later\n* Microsoft Edge on Windows\n* Microsoft Internet Explorer 11 on Windows\n\nTherefore, Microsoft Edge is supported with Watson Explorer Community Edition. However, there is no information in the passages about ICC, so it is not possible to determine if Microsoft Edge is supported with ICC. \n\nThe passages do not provide sufficient information to answer this question regarding ICC.",
+          "relevance_score__pred": 1.0,
+          "relevance_score__gt": 0.0027,
+          "relevance_score__deviation": 0.9973,
+          "utilization_score__pred": 0.0455,
+          "utilization_score__gt": 0.0013,
+          "utilization_score__deviation": 0.0442,
+          "completeness_score__pred": 0.0455,
+          "completeness_score__gt": 0.5,
+          "completeness_score__deviation": -0.4545,
+          "adherence_score__pred": 0.0,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": -1.0
+        },
+        {
+          "query": "What IBM Business Process Manager version is affected by the Apache Commons FileUpload vulnerability CVE-2016-1000031? What IBM Business Process Manager version is affected by the Apache Commons FileUpload vulnerability CVE-2016-1000031? ",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "SECURITY BULLETIN\n\nSUMMARY\n Vulnerability in Apache Commons FileUpload affects IBM WebSphere Service Registry and Repository (CVE-2016-1000031) \n\nVULNERABILITY DETAILS\nCVEID: CVE-2016-1000031 [http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-1000031]\nDESCRIPTION: Apache Commons FileUpload, as used in certain products, could allow a remote attacker to execute arbitrary code on the system, caused by deserialization of untrusted data in DiskFileItem class of the FileUpload library. A remote attacker could exploit this vulnerability to execute arbitrary code under the context of the current process. CVSS Base Score: 9.8\nCVSS Temporal Score: See https://exchange.xforce.ibmcloud.com/vulnerabilities/117957 [https://exchange.xforce.ibmcloud.com/vulnerabilities/117957] for the current score\nCVSS Environmental Score*: Undefined\nCVSS Vector: (CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H) \n\nAFFECTED PRODUCTS AND VERSIONS\nWebSphere Service Registry and Repository V8.5\nWebSphere Service Registry and Repository V8.0\n\nFor unsupported versions IBM recommends upgrading to a fixed, supported version of the product\n\nREMEDIATION/FIXES\nTo remediate CVE-2016-1000031 you need to apply fixes for both IBM WebSphere Application Server and IBM WebSphere Service Registry and Repository.",
+              "metadata": {
+                "doc_id": "sample_3_doc_0",
+                "sample_index": 3,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 146,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "PRODUCTS AFFECTED\n   IBM Business Process Manager (BPM) Advanced\n   IBM BPM Standard\n   IBM BPM Express\n   \n   \n    \n   \n   \n\nLOCAL FIX\n\nPROBLEM SUMMARY\n *  CVEID: CVE-2015-7400\n   DESCRIPTION: IBM Business Process Manager is vulnerable to a\n   denial of service, caused by an XML External Entity Injection\n   (XXE) error when processing XML data. A remote authenticated\n   attacker could exploit this vulnerability to consume all\n   available CPU resources and cause a denial of service. CVSS Base Score: 4.3\n   CVSS Temporal Score:\n   See https://exchange.xforce.ibmcloud.com/vulnerabilities/107105 \n   for the current score\n   CVSS Environmental Score*: Undefined\n   CVSS Vector: (CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L)\n   \n   CVEID: CVE-2015-7407\n   DESCRIPTION: IBM Mashups is vulnerable to Server Side Request\n   Forgery. A remote attacker might use specially crafted HTTP\n   requests to IBM Mashups in order to make the Mashups servers\n   call other reachable HTTP services in its network.",
+              "metadata": {
+                "doc_id": "sample_104_doc_1",
+                "sample_index": 104,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 125,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "SECURITY BULLETIN\n\nSUMMARY\n A vulnerability in Apache Commons FileUpload was addressed by IBM InfoSphere Information Server. VULNERABILITY DETAILS\n\nCVEID: CVE-2016-1000031 [http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-1000031]\nDESCRIPTION: Apache Commons FileUpload, as used in IBM InfoSphere Information Server, could allow a remote attacker to execute arbitrary code on the system, caused by deserialization of untrusted data in DiskFileItem class of the FileUpload library. A remote attacker could exploit this vulnerability to execute arbitrary code under the context of the current process.",
+              "metadata": {
+                "doc_id": "sample_152_doc_1",
+                "sample_index": 152,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 75,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "For WebSphere Application Server updates refer to this bulletin regarding CVE-2016-1181 and CVE-2016-1182\nSecurity Bulletin: Vulnerability in Apache Commons affects IBM WebSphere Application Server (CVE-2016-1181 and CVE-2016-1182) [http://www.ibm.com/support/docview.wss?uid=swg21985995]\n\nFor CVE-2016-3092, please refer to this to this bulletin:\nSecurity Bulletin: Apache Commons FileUpload Vulnerability affects WebSphere Application Server (CVE-2016-3092) [http://www.ibm.com/support/docview.wss?uid=swg21987864]\n\nFor WebSphere Service Registry and Repository, all three vulnerabilities have been fixed under APARs IV87422 and IV87429\n\nFixes containing IV87422 and IV87429 have been published and are available from Fix Central. For WSRR V8.5 \n\n * Apply V8.5.6.0_IV79085_IV87422_IV87429_IV89477 [http://www.ibm.com/support/fixcentral/swg/quickorder?parent=ibm%7EWebSphere&product=ibm/WebSphere/WebSphere+Service+Registry+and+Repository&function=fixId&fixids=8.5.6.0-WS-WSRR-MultiOS-IFIV79085_IV87422_IV87429_IV89477]\n   \n\nFor WSRR V8.0  * Apply [http://www.ibm.com/support/fixcentral/swg/quickorder?parent=ibm%7EWebSphere&product=ibm/WebSphere/WebSphere+Service+Registry+and+Repository&function=fixId&fixids=8.0.0.3-WS-WSRR-MultiOS-IFIV65487_IV79085]V8.0.0.3_IV65487_IV79085_IV87422_IV87429_IV89477 [http://www.ibm.com/support/fixcentral/swg/quickorder?parent=ibm%7EWebSphere&product=ibm/WebSphere/WebSphere+Service+Registry+and+Repository&function=fixId&fixids=8.0.0.3-WS-WSRR-MultiOS-IFIV65487_IV79085_IV87422_IV87429_IV89477]\n   \n\nIBM recommends that you review your entire environment to identify vulnerable releases of the open-source Apache Commons Collections and take appropriate mitigation and remediation actions. GET NOTIFIED ABOUT FUTURE SECURITY BULLETINS\n Subscribe to My Notifications [ http://www-01.ibm.com/software/support/einfo.html] to be notified of important product support alerts like this.",
+              "metadata": {
+                "doc_id": "sample_59_doc_3",
+                "sample_index": 59,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 141,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "For more information, see\n   \"Security Bulletin: Security vulnerabilities have been\n   identified in IBM WebSphere Application Server shipped with IBM\n   Business Process Manager and WebSphere Lombardi Edition\n   (CVE-2016-0483, CVE-2016-0475, CVE-2016-0466, CVE-2015-7575,\n   CVE-2016-0448)\"\n   (http://www.ibm.com/support/docview.wss?uid=swg21977021). PRODUCTS AFFECTED\n   IBM BPM Advanced\n   IBM BPM Standard\n   IBM BPM Express\n   WebSphere Lombardi Editon\n   \n   \n    \n   \n   \n\nLOCAL FIX\n\nPROBLEM SUMMARY\n *  No additional information is available. PROBLEM CONCLUSION\n *  A fix is available for the latest fix pack of all supported\n   releases of IBM BPM and WebSphere Lombardi Edition. On Fix Central (http://www.ibm.com/support/fixcentral), search\n   for JR55110:\n   \n       1. Select IBM Business Process Manager with your edition or\n   IBM WebSphere Lombardi Edition from the product selector, the\n   installed version to the fix pack level, and your platform, and\n   then click Continue. 2. Select APAR or SPR, enter JR55110, and click Continue. When you download fix packages, ensure that you also download\n   the readme file for each fix.",
+              "metadata": {
+                "doc_id": "sample_123_doc_4",
+                "sample_index": 123,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 145,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "The passages do not provide sufficient information to answer this question. \n\nAlthough Document 1 mentions that the vulnerability CVE-2016-1000031 affects WebSphere Service Registry and Repository, and Document 2 mentions IBM Business Process Manager (BPM) Advanced, IBM BPM Standard, and IBM BPM Express as affected products, it does so in the context of different CVEs (CVE-2015-7400 and CVE-2015-7407). \n\nDocument 3 and Document 4 discuss the vulnerability CVE-2016-1000031 in the context of IBM InfoSphere Information Server and WebSphere Application Server, respectively, but do not provide information about IBM Business Process Manager.\n\nDocument 5 mentions IBM Business Process Manager, but it discusses different CVEs (CVE-2016-0483, CVE-2016-0475, CVE-2016-0466, CVE-2015-7575, CVE-2016-0448) and does not provide information about the Apache Commons FileUpload vulnerability CVE-2016-1000031.\n\nTherefore, the passages do not provide sufficient information to determine which IBM Business Process Manager version is affected by the Apache Commons FileUpload vulnerability CVE-2016-1000031.",
+          "relevance_score__pred": 0.95,
+          "relevance_score__gt": 0.0,
+          "relevance_score__deviation": 0.95,
+          "utilization_score__pred": 0.8,
+          "utilization_score__gt": 0.0,
+          "utilization_score__deviation": 0.8,
+          "completeness_score__pred": 0.8421,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": -0.1579,
+          "adherence_score__pred": 0.0,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": -1.0
+        },
+        {
+          "query": "Error while installing SpSS modeler trial version I have downloaded the SPSS modeller trial version (18.1) (64 bit) and trying to install the same. I get the following error 1152: Error extracting modelerClient64.msi to the temporary location\n",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "TECHNOTE (TROUBLESHOOTING)\n\nPROBLEM(ABSTRACT)\n \nAfter installing Modeler 14.1 64-bit client and Statistics 32-bit client on a 64-bit operating system, Modeler cannot find the Statistics install. Nor will any of the Statistics function within Modeler. The user will receive the error \"Please run the Statistics License Utility\"\n\n\nRESOLVING THE PROBLEM\n \n\nHaving a 64-bit install of Modeler and a 32-bit installation of Statistics is not a supported configuration by IBM SPSS. In order to use the SPSS Statistics nodes from within Modeler, you will need to install the 64-bit version of Statistics. This is because the 32-bit API's of SPSS Statistics cannot be loaded by the 64-bit installation of SPSS Modeler. This limitation is expected to be documented in future releases of IBM SPSS Modeler. RELATED INFORMATION\n Need more help? Our Modeler forum is Live! [https://developer.ibm.com/answers/topics/modeler/?smartspace=predictive-analytics]\n\n\n \n\nHISTORICAL NUMBER\n 93142",
+              "metadata": {
+                "doc_id": "sample_4_doc_0",
+                "sample_index": 4,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 136,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "TECHNOTE (FAQ)\n\nQUESTION\n What causes an 1152 error during extraction of Modeler self extracting executable? CAUSE\nWhen an IBM SPSS compressed image is launched, files compressed within it are extracted to the temporary location assigned to the signed in user i.e. /Documents and settings/... or /users. The possibility of these files downloaded improperly exists. You can use a tool such\nas MD5 to verify the file content or simply attempt downloading a second time and test. Other possible causes of this error:\n- Available space within the temporary location noted by the installer. - Ability to write in the temporary location noted by the installer. ANSWER\nTransfer the files again, resolved the issue. RELATED INFORMATION\n Need more help? Our Modeler forum is Live! [https://developer.ibm.com/answers/topics/modeler/?smartspace=predictive-analytics]",
+              "metadata": {
+                "doc_id": "sample_4_doc_2",
+                "sample_index": 4,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 124,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "SPSS; Modeler; License Manager; Install TECHNOTE (TROUBLESHOOTING)\n\nPROBLEM(ABSTRACT)\n I would like to install the IBM SPSS Concurrent Licensing Tools 9.6. How do I complete that process? ENVIRONMENT\nWindows\n\nRESOLVING THE PROBLEM\nPlease visit this link: \n\nhttps://youtu.be/t4p1LB5c-y4 [https://youtu.be/t4p1LB5c-y4] \n\n \n\nto view a short video which will walk you through the steps to install IBM SPSS Concurrent Licensing Tools. RELATED INFORMATION\n Need more help? Our Statistics forum is Live! [https://developer.ibm.com/answers/topics/statistics.html?smartspace=predictive-analytics]\nNeed more help? Our Licensing forum is Live! [https://developer.ibm.com/answers/topics/spsslicensing.html]\n\n\n \n\n\nCross reference information Segment Product Component Platform Version Edition Business Analytics SPSS Statistics Business Analytics SPSS Modeler",
+              "metadata": {
+                "doc_id": "sample_108_doc_4",
+                "sample_index": 108,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 93,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "TECHNOTE (FAQ)\n\nQUESTION\n Where is the Microsoft Installer (*.msi) file required for unattended/silent/push installations the IBM SPSS Statistics application? ANSWER\nThe Microsoft Installer (*.msi) file for IBM SPSS Statistics applications is not available as a separate download. Accessing the.msi file for IBM SPSS Statistics is dependent upon the installation media you have received. Using the Software Download: \n1. Download and save the installer executable (e.g. 'SPSS_Statistics_24_win64.exe') to a known, accessible location on the computer hard drive. 2. Next, you will need to use the /b switch from your command prompt to extract the .msi file. In the example below the SPSS_Statistics_24_win64.exe was downloaded to the C: drive. Provide the file location for the extraction. This example uses the directory \"MSItest\" on the C: drive: \n\nC:\\>SPSS_Statistics_24_win64.exe /b\"C:\\MSItest\" \n\n\n3. Notice that running this command will launch the InstallShield Wizard. Let this run until the .msi has been extracted.",
+              "metadata": {
+                "doc_id": "sample_4_doc_3",
+                "sample_index": 4,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 146,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Let this run until the .msi has been extracted. You will see \"Extracting: IBM SPSS Statistics 24.msi\" message from the installer. You do not need to proceed with the full installation. Using Installation Media (CD/DVD)\n1. Insert the disk. 2. IF prompted to install the software, select 'Cancel'. 3. Browse to the media location. 4. Open the 'SPSSStatistics' folder. The 32-bit MSI file will be located in the 'win32'. folder. The 64-bit MSI file will be located in the 'win64' folder. Using a compressed (.zip) file\n1. Extract (decompress) the contents of the ZIP file into a designated folder. 2. The MSI folder will located in the designated folder. For documentation on IBM SPSS-specific commands for use with MSI files, see 'Administrator's Guide' appropriate to your license type (e.g. 'Site', 'Concurrent' Users Guide'). RELATED INFORMATION\n Need more help? Our Statistics forum is Live!",
+              "metadata": {
+                "doc_id": "sample_4_doc_3",
+                "sample_index": 4,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 143,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "The error 1152 you are experiencing during the installation of SPSS Modeler trial version 18.1 (64-bit) is likely due to an issue with extracting the files to the temporary location. According to Document 2, this error can occur when the files are downloaded improperly or when there is not enough available space in the temporary location, or when the installer is unable to write to the temporary location.\n\nTo resolve this issue, you can try the following steps:\n\n1. Verify the file content using a tool such as MD5 to ensure that the files were downloaded correctly.\n2. Attempt to download the files again and try the installation.\n3. Check the available space in the temporary location and ensure that the installer has the ability to write to this location.\n\nAdditionally, you can try to extract the.msi file manually using the /b switch from the command prompt, as described in Document 4. However, this is more relevant to IBM SPSS Statistics installations.\n\nIt is also worth noting that the version of Modeler you are trying to install is 18.1, which is not mentioned in the provided passages. The passages do mention Modeler 14.1, but the issue and resolution described may still be applicable to your version. \n\nIf the issue persists, you may want to visit the Modeler forum for more help, as mentioned in the passages: https://developer.ibm.com/answers/topics/modeler/?smartspace=predictive-analytics.",
+          "relevance_score__pred": 0.193,
+          "relevance_score__gt": 0.0833,
+          "relevance_score__deviation": 0.1097,
+          "utilization_score__pred": 0.1228,
+          "utilization_score__gt": 0.0463,
+          "utilization_score__deviation": 0.0765,
+          "completeness_score__pred": 0.6364,
+          "completeness_score__gt": 0.5556,
+          "completeness_score__deviation": 0.0808,
+          "adherence_score__pred": 0.0,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": -1.0
+        },
+        {
+          "query": "Where can I find more details about WMB Fix Pack 8.0.0.5? Where can find more information about WebSphere Message Broker (WMB) Fix Pack 8.0.0.5?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "PROBLEM CONCLUSION\n *  6.1.0.11 for WebSphere Message Broker V6.1 on Multiplatforms\n   is now available. For details refer to 'WebSphere Message Broker V6.1 - Fix Pack\n   6.1.0.11'\n   http://www-01.ibm.com/support/docview.wss?uid=swg24033879 [http://www-01.ibm.com/support/docview.wss?uid=swg24033879]\n   \n   \n    \n   \n   \n\nTEMPORARY FIX\n\nCOMMENTS\n\nAPAR INFORMATION\n * APAR NUMBER\n   IC87011\n   \n   \n * REPORTED COMPONENT NAME\n   WMB WINDOWS V6\n   \n   \n * REPORTED COMPONENT ID\n   5724J0500\n   \n   \n * REPORTED RELEASE\n   610\n   \n   \n * STATUS\n   CLOSED PER\n   \n   \n * PE\n   NoPE\n   \n   \n * HIPER\n   NoHIPER\n   \n   \n * SPECIAL ATTENTION\n   NoSpecatt\n   \n   \n * SUBMITTED DATE\n   2012-10-05\n   \n   \n * CLOSED DATE\n   2012-12-18\n   \n   \n * LAST MODIFIED DATE\n   2014-01-24\n   \n   \n\n * APAR IS SYSROUTED FROM ONE OR MORE OF THE FOLLOWING:\n   \n   \n   \n * APAR IS SYSROUTED TO ONE OR MORE OF THE FOLLOWING:\n   \n   \n   \n\nFIX INFORMATION\n * FIXED COMPONENT NAME\n   WMB WINDOWS V6\n   \n   \n * FIXED COMPONENT ID\n   5724J0500\n   \n   \n\nAPPLICABLE COMPONENT LEVELS\n * R610 PSY\n   UP",
+              "metadata": {
+                "doc_id": "sample_5_doc_4",
+                "sample_index": 5,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 123,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "PROBLEM CONCLUSION\n *  6.1.0.12 for WebSphere Message Broker V6.1 on Multiplatforms\n   is now available. For details refer to 'WebSphere Message Broker V6.1 - Fix Pack\n   6.1.0.12'\n   http://www-01.ibm.com/support/docview.wss?uid=swg24036648 [http://www-01.ibm.com/support/docview.wss?uid=swg24036648]\n   \n   \n    \n   \n   \n\nTEMPORARY FIX\n\nCOMMENTS\n\nAPAR INFORMATION\n * APAR NUMBER\n   IC96183\n   \n   \n * REPORTED COMPONENT NAME\n   WMB WINDOWS V6\n   \n   \n * REPORTED COMPONENT ID\n   5724J0500\n   \n   \n * REPORTED RELEASE\n   610\n   \n   \n * STATUS\n   CLOSED PER\n   \n   \n * PE\n   NoPE\n   \n   \n * HIPER\n   NoHIPER\n   \n   \n * SPECIAL ATTENTION\n   NoSpecatt\n   \n   \n * SUBMITTED DATE\n   2013-09-24\n   \n   \n * CLOSED DATE\n   2014-01-24\n   \n   \n * LAST MODIFIED DATE\n   2014-01-24\n   \n   \n\n * APAR IS SYSROUTED FROM ONE OR MORE OF THE FOLLOWING:\n   \n   \n   \n * APAR IS SYSROUTED TO ONE OR MORE OF THE FOLLOWING:\n   \n   \n   \n\nFIX INFORMATION\n * FIXED COMPONENT NAME\n   WMB WINDOWS V6\n   \n   \n * FIXED COMPONENT ID\n   5724J0500\n   \n   \n\nAPPLICABLE COMPONENT LEVELS\n * R610 PSY\n   UP",
+              "metadata": {
+                "doc_id": "sample_5_doc_2",
+                "sample_index": 5,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 123,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "FIXES ARE AVAILABLE\n8.5.0.1: WebSphere Application Server V8.5 Fix Pack 1 [http://www-01.ibm.com/support/docview.wss?uid=swg24033606]\n8.5.0.2: WebSphere Application Server V8.5 Fix Pack 2 [http://www-01.ibm.com/support/docview.wss?uid=swg24034672]\n\n\nSUBSCRIBE\nYou can track all active APARs for this component. APAR STATUS\n * CLOSED AS PROGRAM ERROR. ERROR DESCRIPTION\n *  Update the IBM WebSphere MQ JCA Resource Adapter shipped with\n   IBM WebSphere Application Server Version 8.5 to WebSphere MQ\n   fix pack 7.1.0.1\n   \n   \n    \n   \n   \n\nLOCAL FIX\n\nPROBLEM SUMMARY\n *  ****************************************************************\n   * USERS AFFECTED:  All users of IBM WebSphere Application      *\n   *                  Server using the provided IBM WebSphere MQ  *\n   *                  JCA Resource Adapter. *\n   ****************************************************************\n   * PROBLEM DESCRIPTION: New maintenance is available for the    *\n   *                      IBM WebSphere MQ JCA Resource Adapter. *\n   ****************************************************************\n   * RECOMMENDATION:                                              *\n   ****************************************************************\n   New maintenance is available for the IBM WebSphere MQ JCA\n   Resource Adapter shipped with the product.",
+              "metadata": {
+                "doc_id": "sample_119_doc_4",
+                "sample_index": 119,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 133,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "WebSphere Message Broker V7.0.0.0 - V7.0.0.8 \n\n WebSphere Message Broker V8.0.0.0 - V8.0.0.9\n\nREMEDIATION/FIXES\n \n\nProduct VRMF APAR Remediation/Fix IBM Integration Bus V9.0.0.0 - V9.0.0.9 IT22679 The APAR is available in fix pack 9.0.0.10\nhttp://www-01.ibm.com/support/docview.wss?uid=swg24044363 [http://www-01.ibm.com/support/docview.wss?uid=swg24044363] IBM Integration Bus V10.0.0.0 - V10.0.0.10 IT22679 The APAR is available in fix pack 10.0.0.11\nhttp://www-01.ibm.com/support/docview.wss?uid=swg24044326 [http://www-01.ibm.com/support/docview.wss?uid=swg24044326] WebSphere Message Broker V7.0.0.0 - V7.0.0.8 IT22679 For APAR IT22679, please contact IBM support WebSphere Message Broker V8.0.0.0 - V8.0.0.9 IT22679 For APAR IT22679, please contact IBM support \nWebsphere Message Broker V7 and V8 is no longer in full support; IBM recommends upgrading to a fixed, supported version/release/platform of the product. If you are an extended support customer and require a fix, this is available only for the latest fixpack (8.0.0.9) and (7.0.0.8). To obtain the fix contact IBM support.",
+              "metadata": {
+                "doc_id": "sample_70_doc_0",
+                "sample_index": 70,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 131,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "FIXES ARE AVAILABLE\n8.0.0.4: WebSphere Application Server V8.0 Fix Pack 4 [http://www-01.ibm.com/support/docview.wss?uid=swg24033190]\n8.5.0.1: WebSphere Application Server V8.5 Fix Pack 1 [http://www-01.ibm.com/support/docview.wss?uid=swg24033606]\n8.0.0.5: WebSphere Application Server V8.0 Fix Pack 5 [http://www-01.ibm.com/support/docview.wss?uid=swg24033754]\n8.5.0.2: WebSphere Application Server V8.5 Fix Pack 2 [http://www-01.ibm.com/support/docview.wss?uid=swg24034672]\n8.0.0.6: WebSphere Application Server V8.0 Fix Pack 6 [http://www-01.ibm.com/support/docview.wss?uid=swg24034673]\n8.0.0.7: WebSphere Application Server V8.0 Fix Pack 7 [http://www-01.ibm.com/support/docview.wss?uid=swg24035457]\n8.0.0.8: WebSphere Application Server V8.0 Fix Pack 8 [http://www-01.ibm.com/support/docview.wss?uid=swg24036729]\n8.0.0.9: WebSphere Application Server V8.0 Fix Pack 9 [http://www-01.ibm.com/support/docview.wss?uid=swg24037574]\n8.0.0.10: WebSphere Application Server V8.0 Fix Pack 10 [http://www-01.ibm.com/support/docview.wss?uid=swg24039242]\n8.0.0.11: WebSphere Application Server V8.0 Fix Pack 11 [http://www-01.ibm.com/support/docview.wss?uid=swg24040425]\n8.0.0.12: WebSphere Application Server V8.0 Fix Pack 12 [http://www-01.ibm.com/support/docview.wss?uid=swg24041590]\n8.0.0.13: WebSphere Application Server V8.0 Fix Pack 13 [http://www-01.ibm.com/support/docview.wss?uid=swg24042746]\n8.0.0.14: WebSphere Application Server V8.0 Fix Pack 14 [http://www-01.ibm.com/support/docview.wss?uid=swg24044096]\n8.0.0.15: WebSphere Application Server V8.0 Fix Pack 15 [http://www-01.ibm.com/support/docview.wss?uid=swg24044734]\n\n\nSUBSCRIBE\nYou can track all active APARs for this component. APAR STATUS\n * CLOSED AS PROGRAM ERROR.",
+              "metadata": {
+                "doc_id": "sample_123_doc_0",
+                "sample_index": 123,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 146,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "The passages do not provide sufficient information to answer this question.",
+          "relevance_score__pred": 0.5714,
+          "relevance_score__gt": 0.0,
+          "relevance_score__deviation": 0.5714,
+          "utilization_score__pred": 0.0,
+          "utilization_score__gt": 0.0,
+          "utilization_score__deviation": 0.0,
+          "completeness_score__pred": 0.0,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": -1.0,
+          "adherence_score__pred": 1.0,
+          "adherence_score__gt": 0.0,
+          "adherence_score__deviation": 1.0
+        },
+        {
+          "query": "How to resolve the StaleConnectionException in WebSphere Application Server? I see this exception in WebSphere Application Server J2c and RRA traces:\n\nWSRdbManagedC > preTestConnection Entry WSRdbManagedConnectionImpl@51a507f2 query: SELECT 1 FROM DUAL WSRdbManagedC 3 Exception java.sql.SQLException: ORA-02396: exceeded maximum idle time, please connect again DSRA0010E: SQL State = 61000, Error Code = 2,396 at oracle.jdbc.driver.T4CTTIoer.processError(T4CTTIoer.java:440) at \n...\nEntry java.sql.SQLException: ORA-01012: not logged on ..... OracleDataSto < findMappingClass return Exit class com.ibm.websphere.ce.cm.StaleConnectionException",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "ENVIRONMENT\nThe exception com.ibm.websphere.ce.cm.StaleConnectionException is specific to WebSphere Application Server environments. But a similar issue can be experienced with Weblogic, see: Rule Execution Server on WebLogic unable to load ruleset after period of inactivity [http://www-01.ibm.com/support/docview.wss?uid=swg21615801]\n\n\n\nRESOLVING THE PROBLEM\nConfigure the WebSphere Application Server data source connection pool [http://publib.boulder.ibm.com/infocenter/wasinfo/v7r0/index.jsp?topic=/com.ibm.websphere.nd.multiplatform.doc/info/ae/ae/udat_conpoolset.html] so as to eliminate occurrences of StaleConnectionException : \n\n * Set the Minimum connections to 0 to avoid situations where a connection is kept in the pool to meet the minimum requirement, even though it may have been idle for longer than Unused timeout \n * Set the values for Unused timeout and Reap timeout so that the sum does not exceed any network level idle connection timeout\n\n\nThe document Troubleshooting stale connection problems [http://www-01.ibm.com/support/docview.wss?uid=swg21247168#SCETroubleshooting] provides further information.",
+              "metadata": {
+                "doc_id": "sample_61_doc_3",
+                "sample_index": 61,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 124,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Stale Connection Exception; StaleConnectionException; Websphere JCC driver -4499 db2/z zOS; 0x2413; 0x2408 TECHNOTE (TROUBLESHOOTING)\n\nPROBLEM(ABSTRACT)\n \nWebsphere Application aborts after calling z/OS stored procedure because of stale connection exceptions. SYMPTOM\nStaleConnectionException may be seen after upgrade JCC driver. Websphere log file: \n\n SystemOut.log:[10/6/10 17:29:01:089 MST] 0000005e ConnectionEve A \nJ2CA0056I: The Connection Manager received a fatal connection error \nfrom the Resource Adapter for resource jdbc/db2xa/ear/PUX1Q/DB_MIND. The exception which was received is com.ibm.websphere.ce.cm. StaleConnectionException: [jcc][t4][2028][11149][3.58.136] Actual code \npoint, 0x2413 does not match expected code point, 0x2408. ERRORCODE=- \n4499, SQLSTATE=null:com.ibm.db2.jcc.am.qo: [jcc][t4][2028][11149] \n[3.58.136] Actual code point, 0x2413 does not match expected code \npoint, 0x2408. ERRORCODE=-4499, SQLSTATE=null \n\n\nRESOLVING THE PROBLEM\nFix for this issue incorporated in JCC driver version 3.59.81 that was shipped with DB2 v9.5fp6a or later and DB2 v9.7fp2 or later (defect 134363):\nhttps://www-304.ibm.com/support/docview.wss?uid=swg1IC66739 [https://www-304.ibm.com/support/docview.wss?uid=swg1IC66739]\n\n\nAs a workaround, \"COMMIT ON RETURN YES\" can be added to the definition of stored procedure on the host.",
+              "metadata": {
+                "doc_id": "sample_130_doc_0",
+                "sample_index": 130,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 149,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "The network connection of a data source may become invalid for a number of reasons, one typical example is that a firewall between the Application Server and the Database has a policy to discard network connections that remain idle for some time. ENVIRONMENT\nThe exception com.ibm.websphere.ce.cm.StaleConnectionException is specific to WebSphere Application Server environments.",
+              "metadata": {
+                "doc_id": "sample_61_doc_3",
+                "sample_index": 61,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 53,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "stale connection; unable to access database TECHNOTE (TROUBLESHOOTING)\n\nPROBLEM\nStale connections can occur after Portal server has been idle for a period of time and attempts to access the database. [1/19/12 22:16:42:351 EST] 00000036 SchedulerDaem E SCHD0104E: The\nScheduler poll daemon WPSTaskScheduler (wps/Scheduler) failed to load\ntasks from the database due to an exception: com.ibm.websphere. scheduler.SchedulerNotAvailableException: com.ibm.websphere.ce.cm. StaleConnectionException: IO Error: A remote host did not respond\nwithin the timeout period. SYMPTOM\nAfter a period of inactivity, the Portal server becomes unresponsive. CAUSE\nThe Portal connection to the database is closed externally by a firewall or by the remote database due to inactivity. Because Portal is still holding onto this connection, we still think the connection is available, and so receive the stale connection exception. DIAGNOSING THE PROBLEM\nReviewing the Portal's systemOut.log we see the stale connection exception when attempting to access the database.",
+              "metadata": {
+                "doc_id": "sample_148_doc_4",
+                "sample_index": 148,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 143,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "DIAGNOSING THE PROBLEM\nReviewing the Portal's systemOut.log we see the stale connection exception when attempting to access the database. RESOLVING THE PROBLEM\nThe solution is to reduce the Minimum Connections to 0 on the data source. This will cause WAS to remove all connections after a period of inactivity. In the WAS admin console, go to Resources -> JDBC -> Data sources\n\nFor each of the 6 db domains, select the Connection pools link and\nedit the Minimum connection folder. Restart the servers after the changes are made.",
+              "metadata": {
+                "doc_id": "sample_148_doc_4",
+                "sample_index": 148,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 88,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To resolve the StaleConnectionException in WebSphere Application Server, you can follow these steps:\n\n1. Configure the WebSphere Application Server data source connection pool to eliminate occurrences of StaleConnectionException. \n   * Set the Minimum connections to 0 to avoid situations where a connection is kept in the pool to meet the minimum requirement, even though it may have been idle for longer than Unused timeout.\n   * Set the values for Unused timeout and Reap timeout so that the sum does not exceed any network level idle connection timeout.\n\n2. If you are using the JCC driver, ensure you are using version 3.59.81 or later, which was shipped with DB2 v9.5fp6a or later and DB2 v9.7fp2 or later. This version incorporates a fix for the StaleConnectionException issue (defect 134363).\n\n3. As a workaround for the JCC driver issue, you can add \"COMMIT ON RETURN YES\" to the definition of the stored procedure on the host.\n\n4. Reduce the Minimum Connections to 0 on the data source. This will cause WAS to remove all connections after a period of inactivity. \n   * In the WAS admin console, go to Resources -> JDBC -> Data sources.\n   * For each of the db domains, select the Connection pools link and edit the Minimum connection folder.\n   * Restart the servers after the changes are made.\n\nNote: Reviewing the Portal's systemOut.log may help diagnose the problem, as the stale connection exception will be visible when attempting to access the database. \n\nAdditionally, the error codes and SQL states provided in the question, such as ORA-02396 and 61000, Error Code = 2,396, may indicate that the issue is related to exceeded maximum idle time or not being logged on, which can be addressed by adjusting the connection pool settings as described above.",
+          "relevance_score__pred": 1.0,
+          "relevance_score__gt": 0.0,
+          "relevance_score__deviation": 1.0,
+          "utilization_score__pred": 0.3333,
+          "utilization_score__gt": 0.0,
+          "utilization_score__deviation": 0.3333,
+          "completeness_score__pred": 0.3333,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": -0.6667,
+          "adherence_score__pred": 0.0,
+          "adherence_score__gt": 0.0,
+          "adherence_score__deviation": 0.0
+        },
+        {
+          "query": "How do I resolve a WSVR0605W hung thread issue in the WebSphere MQ Resource Adapter? The following WebSphere MQ Resource Adapter hung thread can prevent an application server from starting...\n\nWSVR0605W: Thread \"WMQJCAResourceAdapter : 6\" (0000001b) has been active for 698530 milliseconds and may be hung. There is 1 thread(s) in total in the server that may be hung. at java.lang.Object.wait(Native Method) at java.lang.Object.wait(Object.java:167) at com.ibm.ejs.container.MessageEndpointFactoryImpl.createEndpoint(MessageEndpointFactoryImpl.java:498) at com.ibm.mq.connector.inbound.WorkImpl.run(WorkImpl.java:149)",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "WSVR0605W; WorkManager; es-workmanager; hanging threads; thread pool; v61rnotes; v612rnotes; v62rnotes; v70rnotes TECHNOTE (TROUBLESHOOTING)\n\nPROBLEM(ABSTRACT)\n WebSphere Process Server (WPS) is unable to process event-sequenced messages due to es-workmanager hung threads. WSVR0605W warnings are thrown in the log files and traces. SYMPTOM\nMessage processing, that is related to event-sequenced operations, stops. After handling several messages, further messages wait in the Service Component Architecture (SCA) bus queues and event-sequenced es-workmanager hung-thread WSVR0605W warnings are seen in the log files and traces. The entire process of event-sequenced messages in the system is effectively blocked. The following code is an example of an es-workmanager hung-thread warning:\n\n[01/01/11 12:00:37:844 CEST] 0000000d ThreadMonitor W WSVR0605W: Thread \"WorkManager.es-workmanager : 9\" (0000012e) has been active for 602495 milliseconds and may be hung. There is/are 5 thread(s) in total in the server that may be hung.",
+              "metadata": {
+                "doc_id": "sample_7_doc_3",
+                "sample_index": 7,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 136,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "There is/are 1\n   thread(s) in total in the server that may be hung. WSVR0605W: Thread \"WebContainer : 7\" (0000005c) has been active\n   for 619985 milliseconds and may be hung. There is/are 2\n   thread(s) in total in the server that may be hung. LOCAL FIX\n *  NA\n   \n   \n    \n   \n   \n\nPROBLEM SUMMARY\n *  Root cause is an IllegalArgumentException from theme code in the\n   UrlGenerationTag:\n   com.ibm.wps.engine.tags.UrlGenerationTag doStartTag EJPEJ0002E:\n   An error occurred while executing CreateUrlCommand. Caused by: java.lang.IllegalArgumentException: ObjectID is of\n   wrong ResourceType! This causes a locking issue so that subsequent threads that are\n   performing data modification (e.g. page layout changes) are\n   hung. This is indicated by WAS warning in log file:\n   WSVR0605W: Thread \"WebContainer : 7\" (0000005c) has been active\n   for 619985 milliseconds and may be hung. There is/are 2\n   thread(s) in total in the server that may be hung. PROBLEM CONCLUSION\n *  This APAR corrects the exception handling in model\n   synchronization code.",
+              "metadata": {
+                "doc_id": "sample_7_doc_0",
+                "sample_index": 7,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 148,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Websphere MS Series; WS MQ Async Receive Adapter; WS MQ Series Client Suite; Memory Leak; Java Out of Memory; OOM TECHNOTE (TROUBLESHOOTING)\n\nPROBLEM(ABSTRACT)\n A customer has installed the MQ Series *.jar files and implemened the WS MQ Series Asycn Receive Adapter and the WS MQ Series Client services to read and write messages from queues. SYMPTOM\nAfter running the application for a few days it would hang and the Heap memory space was full. Garbage Collection runs were not able to free up any memory and GC logs were showing the pattern of a memory leak. CAUSE\nIn the heap dump files 84% of the memory space was occupied by the following class:\ncom/ibm/mq/jmqi/remote/impl/RemoteConnectionPool\n\nENVIRONMENT\nProduction and QA. DIAGNOSING THE PROBLEM\nTo diagnose the situation enable verbose GS logging in the JVM.",
+              "metadata": {
+                "doc_id": "sample_137_doc_4",
+                "sample_index": 137,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 132,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "APAR STATUS\n * CLOSED AS PROGRAM ERROR. ERROR DESCRIPTION\n *  A deadlock may occur when stopping an application\n   that contains a resource adapter module, which causes two\n   threads to hang and the application to fail to stop. . The SystemOut.log will show the following hung thread detection\n   messages:\n   . WSVR0605W: Thread \"HAManager.thread.pool : 1\" (00000017) has\n   been active for 628025 milliseconds and may be hung. There\n   is/are 1 thread(s) in total in the server that may be hung. at\n   com.ibm.ejs.j2c.ConnectionFactoryBuilderImpl.getObjectInstance(C\n   onnectionFactoryBuilderImpl.java:436)\n   at\n   javax.naming.spi.NamingManager.getObjectInstanceByFactoryInRefer\n   ence(NamingManager.java:501)\n   at\n   javax.naming.spi.NamingManager.getObjectInstance(NamingManager.j\n   ava:365)\n   at\n   com.ibm.ws.naming.util.Helpers.processSerializedObjectForLookupE\n   xt(Helpers.java:927)\n   ... WSVR0605W: Thread \"Default : 4\" (0000003e) has been active for\n   627799 milliseconds and may be hung. There is/are 2 thread(s)\n   in total in the server that may be hung. at\n   com.ibm.ejs.j2c.RALifeCycleManagerImpl.shutdown(RALifeCycleManag\n   erImpl.java:1483)\n   at\n   com.ibm.ejs.j2c.RALifeCycleManagerImpl.stop(RALifeCycleManagerIm\n   pl.java:782)\n   at\n   com.ibm.ws.runtime.component.ApplicationMgrImpl.stop(Application\n   MgrImpl.java:1151)\n   ... A Javacore will show that a deadlock has occurred:\n   .",
+              "metadata": {
+                "doc_id": "sample_7_doc_1",
+                "sample_index": 7,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 140,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "There is/are 1 thread(s) in total\n   in the server that may be hung. at java.lang.Object.wait(Native Method)\n   at java.lang.Object.wait(Object.java:199)\n   at\n   com.ibm.ws.sib.jfapchannel.impl.ExchangeReceiveListener.waitToCo\n   mplete(ExchangeReceiveListener.java:235)\n   \n   In addition this fixes a rare condition which could result in\n   compressed data being lost. This would only occur if a series\n   of bytes to be compressed could not actually be compressed\n   (every byte was unique). This would then cause a potential loss\n   of data due to how WLM handled the uncompressed bytes. LOCAL FIX\n\nPROBLEM SUMMARY\n *  ****************************************************************\n   * USERS AFFECTED:  IBM WebSphere Process Server users or users *\n   *                  of IBM WebSphere Application Server with    *\n   *                  service integration bus (SIBus)             *\n   *                  configurations.",
+              "metadata": {
+                "doc_id": "sample_7_doc_2",
+                "sample_index": 7,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 107,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "The passages do not provide sufficient information to answer this question.",
+          "relevance_score__pred": 0.3429,
+          "relevance_score__gt": 0.0146,
+          "relevance_score__deviation": 0.3283,
+          "utilization_score__pred": 0.0,
+          "utilization_score__gt": 0.0146,
+          "utilization_score__deviation": -0.0146,
+          "completeness_score__pred": 0.0,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": -1.0,
+          "adherence_score__pred": 1.0,
+          "adherence_score__gt": 0.0,
+          "adherence_score__deviation": 1.0
+        },
+        {
+          "query": "I need to transfer my SPSS 24 licence to a new computer I need to transfer my SPSS 24 license to a new machine. I have only used my activation code on one computer so far, and that computer was found to be defective which has led me to get a new computer. I was able to download SPSS 24 Gradpack onto the new computer, but every time I put in the activation code, the program gives me an error message saying that I am not allowed to generate any new licenses.",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "You have IBM SPSS Statistics 23.0 clients deployed and the license period is coming to an end. Your licenses for Statistics 23.0 will expire long before you complete the upgrade of all clients to Statistics 24.0. The solution is to go ahead and deploy your Statistics 24.0 licenses. Statistics 23.0 (version \"N\") will use a Statistics 24.0 (version \"N+1\") license. This is true for Authorized User licensing. This is true for Concurrent User licensing - though as a solution, it really is more suited to this method. CAVEATS: \n\n1) If you are deploying multiple license strings (e.g. A 'base' license plus one or more add-on licenses) the 'base' and 'add-on' license versions must match. For example: You have IBM SPSS Statistics 23.0 client installed.",
+              "metadata": {
+                "doc_id": "sample_14_doc_1",
+                "sample_index": 14,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 124,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "TECHNOTE (TROUBLESHOOTING)\n\nPROBLEM(ABSTRACT)\n I am trying to start SPSS for Windows and I receive the following errors:\n\nThe current license does not permit this job to continue. followed by... Error # 7003\nThe license for SPSS for Windows has expired. This command not executed. Specific symptom number: 213\n\nWhat is the problem? RESOLVING THE PROBLEM\nIF the product presenting the error 7003/symptom 213 is licensed via the Sentinel RMS License Manager, THEN refer to KnowledgeBase resolution 91720. IF the product presenting error 7003/symptom 213 is licensed with a Single-User or Site license authorization code, THEN go to (A).",
+              "metadata": {
+                "doc_id": "sample_14_doc_2",
+                "sample_index": 14,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 98,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "TECHNOTE (FAQ)\n\nQUESTION\n I have installed my SPSS product. How do I license/activate the product? ANSWER\nThe method for licensing can be found in the installation guide/instructions corresponding to the operating system of the host computer where the product is installed. Statistics\n\nStatistics 24\nSee the 'Licensing your product' section of the 'Authorized User License Installation Instructions' here [http://www.ibm.com/support/docview.wss?uid=swg27047033]. Statistics 23\nSee the 'Licensing your product' section of the 'Authorized User License Installation Instructions' here [http://www.ibm.com/support/docview.wss?uid=swg27043946]. Statistics 22\nSee the 'Licensing your product' section of the 'Authorized User License Installation Instructions' here [http://www.ibm.com/support/docview.wss?uid=swg27038407]. Statistics 21\nSee the 'License Your Product' section of the 'Single User License Installation Instructions' here [http://www.ibm.com/support/docview.wss?uid=swg27024972]. Statistics 20\nSee the 'License Your Product' section of the 'Single User License Installation Instructions' here [http://www.ibm.com/support/docview.wss?uid=swg27021213]. Amos\n\nAmos 24\nSee the 'Licensing your product' section of the 'Authorized User License Installation Instructions' here [http://www.ibm.com/support/docview.wss?uid=swg27047471].",
+              "metadata": {
+                "doc_id": "sample_156_doc_1",
+                "sample_index": 156,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 145,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "TECHNOTE (FAQ)\n\nQUESTION\n I am an IT administrator for an organization. My IBM SPSS Statistics 23.0 client licenses are expiring. I have purchased IBM SPSS Statistics 24.0 client software and licenses, but I am afraid my version 23.0 licenses will expire before I complete my client migrations to Statistics 24.0. How can I keep my end users up and running throughout the migration? CAUSE\nLicense for version N expires before all clients can be upgraded to client software version N+1\n\nANSWER\nStarting in IBM SPSS Statistics 22.0 we have added what we colloquially call \"N+1 Licensing\" for this exact problem. Simply put, your Statistics version \"N\" will use client licenses for Statistics version \"N+1\". Imagine the above scenario. You have IBM SPSS Statistics 23.0 clients deployed and the license period is coming to an end.",
+              "metadata": {
+                "doc_id": "sample_14_doc_1",
+                "sample_index": 14,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 135,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "TECHNOTE (TROUBLESHOOTING)\n\nPROBLEM(ABSTRACT)\n When attempting to license an SPSS product, I am getting the following error message. Authorization in progress ... (xxxxxxxxxxxxxxxxxxxx)\nAuthorization failed.: The authorization code entered is not for this product/version. If you have multiple Authorization Codes, please check you have entered the correct one. ***End Of Transaction.***\nOne or more codes failed. Click \"Next\" to license authorization via e-mail. What can I do to correct this problem? CAUSE\nThe authorization code product and/or version does not match that of your installed product. RESOLVING THE PROBLEM\nPlease check that your authorization code matches the version and software product you are trying to license. The product and version of the authorization code must match that of the installed product.",
+              "metadata": {
+                "doc_id": "sample_14_doc_3",
+                "sample_index": 14,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 120,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "The passages do not provide sufficient information to answer this question.",
+          "relevance_score__pred": 0.2326,
+          "relevance_score__gt": 0.0543,
+          "relevance_score__deviation": 0.1783,
+          "utilization_score__pred": 0.0,
+          "utilization_score__gt": 0.0543,
+          "utilization_score__deviation": -0.0543,
+          "completeness_score__pred": 0.0,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": -1.0,
+          "adherence_score__pred": 1.0,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": 0.0
+        },
+        {
+          "query": "How can I export a private key from DataPower Gateway Appliance? \n\nHow can I export a private key from DataPower Gateway appliance?\n\n",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "TECHNOTE (FAQ)\n\nQUESTION\n How do I export and import private keys between the same or different Hardware Security Module (HSM) enabled IBM WebSphere DataPower SOA Appliance? ANSWER\nHSM-enabled DataPower appliances support the export of private keys using the crypto-export command. For key export to work, various conditions must be met: \n\n * HSMs must be initialized and in the same key sharing domain on exporting and importing machines \n * The private key in question must be marked exportable at keygen time (see keygen's exportable option) \n * HSMs on exporting and importing machines must share internal key-wrapping keys (see hsm-clone-kwk command). A key-wrapping key is a key that encrypts another key. Each HSM has a special key inside of it, the key-wrapping key, that is used to encrypt exported private keys (and to decrypt imported private keys).",
+              "metadata": {
+                "doc_id": "sample_9_doc_2",
+                "sample_index": 9,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 135,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "For more information on certificates, refer to the product documentation specific to your firmware and appliance type. Navigate to the Administrator's Guide, under \"Managing the Appliance\" - \"Working with keys and certificates\" from the WebSphere DataPower Product Documentation Portal [http://www-01.ibm.com/support/docview.wss?uid=swg21377654].",
+              "metadata": {
+                "doc_id": "sample_110_doc_1",
+                "sample_index": 110,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 40,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Go to Contacting IBM WebSphere DataPower Appliances Support [http://www-01.ibm.com/support/docview.wss?uid=swg21236322]. Cross reference information Segment Product Component Platform Version Edition Business Integration WebSphere DataPower Integration Appliance XI50 Firmware 4.0.2, 4.0.1, 3.8.2, 3.8.1, 3.8 Edition Independent Business Integration WebSphere DataPower XML Security Gateway XS40 Firmware 4.0.2, 4.0.1, 3.8.2, 3.8.1, 3.8 Edition Independent Business Integration WebSphere DataPower Integration Blade XI50B Firmware 4.0.2, 4.0.1, 3.8.2, 3.8.1 Edition Independent",
+              "metadata": {
+                "doc_id": "sample_149_doc_3",
+                "sample_index": 149,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 63,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "error message key:\n   error message text: \"An error ocurred while adding the gateway\n   appliance ''${0}'' to the loadbalancer group used for internal\n   traffic. The error was: ${1}: ${2}\"\n   \n   \n    \n   \n   \n\nLOCAL FIX\n *  This issue can be resolved by manually removing the load\n   balancer configuration from the Gateway node (DataPower\n   appliance). To manually remove the load balancer, run the\n   following CLI or GUI commands:  (where your\n   DataPower appliance is configured to use the network interface\n   \"eth0\", and the load balancer group is \"123\")  By\n   using the CLI:  * ssh <datapower hostname> *\n   enter your login credentials * co * int eth0 * no\n   standby 123 * exit * write mem  By using the\n   DataPower user interface:  Open the Network and\n   Interface folders in the navigation tree. * Click \"Ethernet\n   Interface\". * Click the relevant interface row in the\n   table. * Select the \"Standby Control\" tab.",
+              "metadata": {
+                "doc_id": "sample_9_doc_4",
+                "sample_index": 9,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 143,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "SSL HTTPS TECHNOTE (TROUBLESHOOTING)\n\nPROBLEM(ABSTRACT)\n What is the procedure for replacing an expiring certificate that is in use on the DataPower appliance with a newly obtained certificate? CAUSE\nOnce you have obtained a new certificate from your certificate authority and are ready to replace the expiring one currently in use by your DataPower configuration with this new certificate, there is no single prescribed manner in which to perform the replacement operation. The following information presents some options for formulating an approach that best fits your environment. RESOLVING THE PROBLEM\nFirst, know your certificate material. It's not uncommon for newer certificates to be chained, so it is not a one for one replacement; the existing certificate on the DataPower appliance may need to be replaced by more than one certificate. Therefore, it is important to ensure you have the full certificate chain, as appropriate (i.e, the personal, intermediate and root certificates).",
+              "metadata": {
+                "doc_id": "sample_110_doc_1",
+                "sample_index": 110,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 150,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To export a private key from a DataPower Gateway Appliance, the appliance must be HSM-enabled. The export of private keys is supported using the `crypto-export` command. For key export to work, the following conditions must be met:\n\n* HSMs must be initialized and in the same key sharing domain on exporting and importing machines.\n* The private key in question must be marked exportable at keygen time (see `keygen`'s `exportable` option).\n* HSMs on exporting and importing machines must share internal key-wrapping keys (see `hsm-clone-kwk` command). A key-wrapping key is a key that encrypts another key. Each HSM has a special key inside of it, the key-wrapping key, that is used to encrypt exported private keys (and to decrypt imported private keys).\n\nNote that the specific steps for exporting the private key are not detailed in the provided passages, but the conditions and requirements for a successful export are outlined. For more detailed information on working with keys and certificates, refer to the product documentation specific to your firmware and appliance type, available from the WebSphere DataPower Product Documentation Portal.",
+          "relevance_score__pred": 0.3333,
+          "relevance_score__gt": 0.0627,
+          "relevance_score__deviation": 0.2706,
+          "utilization_score__pred": 0.2857,
+          "utilization_score__gt": 0.0627,
+          "utilization_score__deviation": 0.223,
+          "completeness_score__pred": 0.8571,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": -0.1429,
+          "adherence_score__pred": 0.0,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": -1.0
+        },
+        {
+          "query": "When should I use conversation sharing in DataPower MQ queue managers? MQ version 7.0 introduced a new feature, conversation sharing. Are there any special values on DataPower when configuring conversation sharing?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "TECHNOTE (TROUBLESHOOTING)\n\nPROBLEM(ABSTRACT)\n When to enable Sharing Conversations in DataPower MQ Queue Manager (mq-qm) object along with SHARECNV attribute of the MQ SVRCONN channel? RESOLVING THE PROBLEM\nIBM WebSphere MQ server version 7.0 and later releases provide sharing conversations (SHARECNV) attribute on SVRCONN channel that specifies the maximum number of conversations that can share each TCP/IP channel instance. This feature can be configured in DataPower as it uses client connection with queue manager SVRCONN channel. The default setting of sharing conversations (SHARECNV) value is zero in DataPower mq-qm object. The same default value for MQ SVRCONN channel is 10. The sharing conversations value is \nnegotiated between MQ server and DataPower and the lower value takes effect. However, in current versions of the DataPower firmware, the sharing conversations setting of 1 is treated as 0 when negotiating with MQ server.",
+              "metadata": {
+                "doc_id": "sample_10_doc_1",
+                "sample_index": 10,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 139,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "However, in current versions of the DataPower firmware, the sharing conversations setting of 1 is treated as 0 when negotiating with MQ server. There are three use cases to configure Sharing Conversations in DataPower mq-qm object: \n\nCase #1 : The negotiated sharing conversations value is 0 - The channel runs in a mode similar to WebSphere MQ V6 and does not uses features such as\n\n· Administrator stop-quiesce\n· Heartbeating \n· Read ahead \n· Client asynchronous consume\n\nSet a value of 0 or 1 on the Sharing Conversations attribute of the mq-qm object in DataPower to disable sharing conversations regardless of the IBM WebSphere MQ SVRCONN setting. Case #2: The negotiated sharing conversations value is 1 - The channel supports IBM WebSphere MQ V7 and later release features as outlined in case #1, but each TCP/IP channel instance has a single conversation.",
+              "metadata": {
+                "doc_id": "sample_10_doc_1",
+                "sample_index": 10,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 142,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "[/support/docview.wss?uid=swg21647231&aid=1] [/support/docview.wss?uid=swg21647231&aid=1] \n\nCase #3: The negotiated sharing conversations value is 2 or more - The channel supports IBM WebSphere MQ 7 and later release features and each TCP/IP channel instance supports 2 or more conversations. Set a value of 2 or more on the Sharing Conversations attribute of the mq-qm object in DataPower and on the MQ SVRCONN channel. On average, processing of messages from client applications is 15 percent slower when using SHARECNV(10) as compared to SHARECNV(0). Please refer to Performance Implications of Sharing [http://www.ibm.com/support/knowledgecenter/SSFKSJ_7.0.1/com.ibm.mq.csqzaf.doc/mi12240_.htm]\nConversations on Client-connection Channels. [http://www.ibm.com/support/knowledgecenter/SSFKSJ_7.0.1/com.ibm.mq.csqzaf.doc/mi12240_.htm]. Since DataPower uses a connection pool in processing MQ messages, there are no additional benefits of using sharing conversations with the mq-qm object.",
+              "metadata": {
+                "doc_id": "sample_10_doc_1",
+                "sample_index": 10,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 114,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Since DataPower uses a connection pool in processing MQ messages, there are no additional benefits of using sharing conversations with the mq-qm object. However, in situations when mixed message sizes are used by the same mq-qm object, using case #2 will benefit mq-qm object as it will use new buffer management feature of IBM WebSphere MQ Version 7 when making MQGET API call. When using a negotiated shared conversations value of 0 as in case #1, mq-qm object uses maximum message size as the buffer pool for the MQGET API call. However, when mixed message sizes are processed by the same MQ Front Side Handler (FSH), it requests buffer pool based on maximum message size configured in the mq-qm object.",
+              "metadata": {
+                "doc_id": "sample_10_doc_1",
+                "sample_index": 10,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 120,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "For DataPower firmware releases 7.0.0.x, 7.1.0.x, 7.2.0.x and earlier, one should follow case #1 and use a negotiated sharing conversations value of 0. If you configure these firmware versions with case #2 or case #3, DataPower device may reload or hang due to connection instability and generate many MQ errors with Reason Code - 2009 and 2059. Cases #2 and #3 can be used in firmware releases 7.5.0.x, 7.5.1.x and later. We suggest to use a value of 10 or less in Sharing Conversations attribute of the mq-qm object and verify the configuration empirically to make sure that IBM WebSphere MQ server can sustain load from DataPower with the negotiated Sharing Conversations of 10. Note: In order to use sharing conversations, make sure you have applied APAR IV24821 [http://www.ibm.com/support/docview.wss?uid=swg1IV24821] (\"Client C application process hangs after cancelling thread\") to the IBM WebSphere MQ server.",
+              "metadata": {
+                "doc_id": "sample_10_doc_1",
+                "sample_index": 10,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 143,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To determine when to use conversation sharing in DataPower MQ queue managers, consider the following:\n\n1. **IBM WebSphere MQ server version**: Ensure you are using version 7.0 or later, as conversation sharing (SHARECNV attribute) is available in these releases.\n\n2. **DataPower firmware version**: For firmware releases 7.0.0.x, 7.1.0.x, 7.2.0.x, and earlier, use a negotiated sharing conversations value of 0 (Case #1). For firmware releases 7.5.0.x, 7.5.1.x, and later, you can use Case #2 or Case #3.\n\n3. **Configuring Sharing Conversations**:\n   - **Case #1 (Negotiated sharing conversations value of 0)**: Set a value of 0 or 1 on the Sharing Conversations attribute of the mq-qm object in DataPower. This disables sharing conversations, regardless of the IBM WebSphere MQ SVRCONN setting.\n   - **Case #2 (Negotiated sharing conversations value of 1)**: Although this setting is treated as 0 in current DataPower firmware versions when negotiating with the MQ server, it supports IBM WebSphere MQ V7 and later release features with each TCP/IP channel instance having a single conversation.\n   - **Case #3 (Negotiated sharing conversations value of 2 or more)**: Set a value of 2 or more on the Sharing Conversations attribute of the mq-qm object in DataPower and on the MQ SVRCONN channel. This supports IBM WebSphere MQ 7 and later release features with each TCP/IP channel instance supporting 2 or more conversations.\n\n4. **Performance Considerations**: Note that processing of messages from client applications is approximately 15% slower when using SHARECNV(10) compared to SHARECNV(0).\n\n5. **APAR Requirement**: To use sharing conversations, ensure you have applied APAR IV24821 to the IBM WebSphere MQ server.\n\n6. **Special Values on DataPower**: Be aware that in current versions of the DataPower firmware, a sharing conversations setting of 1 is treated as 0 when negotiating with the MQ server.\n\n7. **Mixed Message Sizes**: If mixed message sizes are used by the same mq-qm object, using Case #2 may benefit the mq-qm object by utilizing the new buffer management feature of IBM WebSphere MQ Version 7 when making MQGET API calls.\n\nBy following these guidelines and considering the specific requirements and constraints of your environment, you can effectively configure conversation sharing in DataPower MQ queue managers.",
+          "relevance_score__pred": 0.96,
+          "relevance_score__gt": 0.0187,
+          "relevance_score__deviation": 0.9413,
+          "utilization_score__pred": 0.48,
+          "utilization_score__gt": 0.0187,
+          "utilization_score__deviation": 0.4613,
+          "completeness_score__pred": 0.5,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": -0.5,
+          "adherence_score__pred": 0.0,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": -1.0
+        },
+        {
+          "query": "Help with Security Bulletin: IBM WebSphere MQ Administration command could cause denial of service (CVE-2016-8971) I need to understand details regarding Security Bulletin: IBM WebSphere MQ Administration command could cause denial of service (CVE-2016-8971). Where can I find this information?\n",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "SECURITY BULLETIN\n\nSUMMARY\n IBM WebSphere Application Server is shipped with BM Integrated Information Core. Information about a security vulnerability affecting IBM WebSphere Application Server has been published in a security bulletin. VULNERABILITY DETAILS\nConsult the security bulletin, Security Bulletin: Privilege Escalation Vulnerability in WebSphere Application Server (CVE-2017-1151) [http://www.ibm.com/support/docview.wss?uid=swg21999293], [http://www.ibm.com/support/docview.wss?uid=swg21991469] for vulnerability details and information about fixes. AFFECTED PRODUCTS AND VERSIONS\n \n\nPrincipal Product and Version(s) Affected Supporting Product IBM Integrated Information Core V1.5, V1.5.0.1, and V1.5.0.2 IBM WebSphere Application Server REMEDIATION/FIXES\nDownload the correct version of the fix from the following link: Security Bulletin: Privilege Escalation Vulnerability in WebSphere Application Server (CVE-2017-1151) [http://www.ibm.com/support/docview.wss?uid=swg21999293]. Installation instructions for the fix are included in the readme document that is in the fix package. GET NOTIFIED ABOUT FUTURE SECURITY BULLETINS\n Subscribe to My Notifications [ http://www-01.ibm.com/software/support/einfo.html] to be notified of important product support alerts like this.",
+              "metadata": {
+                "doc_id": "sample_17_doc_4",
+                "sample_index": 17,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 141,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "SECURITY BULLETIN\n\nSUMMARY\n IBM WebSphere Application Server v7.0 is shipped as a component of IBM Integrated Information Core. Information about a security vulnerability affecting IBM WebSphere Application Server has been published in a security bulletin. VULNERABILITY DETAILS\nCVEID: CVE-2016-3092 [http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-3092]\nDESCRIPTION: Apache Tomcat is vulnerable to a denial of service, caused by an error in the Apache Commons FileUpload component. By sending file upload requests, an attacker could exploit this vulnerability to cause the server to become unresponsive. CVSS Base Score: 5.3\nCVSS Temporal Score: See https://exchange.xforce.ibmcloud.com/vulnerabilities/114336 [https://exchange.xforce.ibmcloud.com/vulnerabilities/114336] for the current score\nCVSS Environmental Score*: Undefined\nCVSS Vector: (CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L) \n\nAFFECTED PRODUCTS AND VERSIONS\n \n\nPrincipal Product and Version(s) Affected Supporting Product and Version IBM Integrated Information Core V1.5, V1.5.0.1 and V1.5.0.2 IBM WebSphere Application Server v7.0 REMEDIATION/FIXES\nConsult the security bulletin: Apache Commons FileUpload Vulnerability affects WebSphere Application Server (CVE-2016-3092) [http://www.ibm.com/support/docview.wss?uid=swg21987864] for vulnerability details and information about fixes.",
+              "metadata": {
+                "doc_id": "sample_152_doc_0",
+                "sample_index": 152,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 147,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "SECURITY BULLETIN\n\nSUMMARY\n IBM WebSphere Application Server is shipped as a component of IBM WebSphere Commerce. Information about a potential security vulnerability affecting the WebSphere Application Server was published in a security bulletin. VULNERABILITY DETAILS\nConsult the security bulletin Information disclosure in WebSphere Application Server (CVE-2017-1681) [http://www-01.ibm.com/support/docview.wss?uid=swg22010419] for vulnerability details and information about fixes.",
+              "metadata": {
+                "doc_id": "sample_41_doc_3",
+                "sample_index": 41,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 54,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "SECURITY BULLETIN\n\nSUMMARY\n IBM WebSphere Application Server, IBM HTTP Server, IBM DB2, IBM SPSS Modeler, IBM Cognos Business Intelligence Server, IBM SPSS Collaboration and Deployment Services and IBM WebSphere MQ are shipped as components of IBM Predictive Maintenance and Quality. Information about a security vulnerability affecting IBM WebSphere Application Server, IBM HTTP Server, IBM DB2, IBM SPSS Modeler, IBM Cognos Business Intelligence Server, IBM SPSS Collaboration and Deployment Services and IBM WebSphere MQ has been published their respective security bulletins. VULNERABILITY DETAILS\nPlease consult the Security Bulletin: Vulnerability in RC4 stream cipher affects WebSphere Application Server (CVE-2015-2808) [http://www-01.ibm.com/support/docview.wss?uid=swg21701503] for vulnerability details and information about fixes. Please consult the Security Bulletin: Vulnerability in RC4 stream cipher affects IBM HTTP Server (CVE-2015-2808) [http://www-01.ibm.com/support/docview.wss?uid=swg21701072] for vulnerability details and information about fixes. Please consult the Security Bulletin: Vulnerability in RC4 stream cipher affects IBM DB2 (CVE-2015-2808) [https://www-304.ibm.com/support/docview.wss?uid=swg21717865] for vulnerability details and information about fixes.",
+              "metadata": {
+                "doc_id": "sample_141_doc_1",
+                "sample_index": 141,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 150,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "SECURITY BULLETIN\n\nSUMMARY\n IBM WebSphere Application Server is shipped as a component of IBM WebSphere Portal. Information about security vulnerabilities affecting IBM WebSphere Application Server has been published in security bulletins. VULNERABILITY DETAILS\nPlease consult the security bulletins for IBM WebSphere Application Server published at \n\n * Security Bulletin: Security Vulnerability in IBM WebSphere Application Server (CVE-2015-1920) [http://www-01.ibm.com/support/docview.wss?uid=swg21883573] \n * Security Bulletin: Vulnerability in RC4 stream cipher affects WebSphere Application Server (CVE-2015-2808) [http://www-01.ibm.com/support/docview.wss?uid=swg21701503] \n * Security Bulletin: Multiple vulnerabilities in IBM® Java SDK affect WebSphere Application Server April 2015 CPU [http://www-01.ibm.com/support/docview.wss?uid=swg21902260] \n * Security Bulletin: Vulnerability in RC4 stream cipher affects IBM HTTP Server and Caching Proxy (CVE-2015-2808) [http://www-01.ibm.com/support/docview.wss?uid=swg21701072] \n * Security Bulletin: Vulnerability with RSA Export Keys may affect IBM HTTP Server and WebSphere EDGE Caching Proxy (CVE-2015-0138) [http://www-01.ibm.com/support/docview.wss?uid=swg21698959] \n * Security Bulletin: Vulnerability in Dojo Toolkit affect WebSphere Application Server (CVE-2014-8917) [http://www-01.ibm.com/support/docview.wss?uid=swg21697284]\n\n\nfor vulnerability details.",
+              "metadata": {
+                "doc_id": "sample_21_doc_0",
+                "sample_index": 21,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 141,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "The passages do not provide sufficient information to answer this question.",
+          "relevance_score__pred": 0.0,
+          "relevance_score__gt": 0.0701,
+          "relevance_score__deviation": -0.0701,
+          "utilization_score__pred": 0.0,
+          "utilization_score__gt": 0.059,
+          "utilization_score__deviation": -0.059,
+          "completeness_score__pred": 0.0,
+          "completeness_score__gt": 0.8421,
+          "completeness_score__deviation": -0.8421,
+          "adherence_score__pred": 1.0,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": 0.0
+        },
+        {
+          "query": "Help with Security Bulletin: IIB is affected by Node.js security vulnerability ( CVE-2017-1000381 and CVE-2017-11499 ) I need to understand details regarding Security Bulletin: IBM Integration Bus is affected by Node.js security vulnerability ( CVE-2017-1000381 and CVE-2017-11499 ). Where can I find this information? ",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "VULNERABILITY DETAILS\nPlease consult the Security Bulletin: Vulnerability in IBM Java Runtime affect WebSphere Message Broker and IBM Integration Bus (CVE-2015-7575) [http://www-01.ibm.com/support/docview.wss?uid=swg21976779] for vulnerability details and information about fixes. Please consult the Security Bulletin: Vulnerability in IBM Java Runtime affect IBM ILOG CPLEX Optimization Studio and IBM ILOG CPLEX Enterprise Server (CVE-2015-7575) [http://www-01.ibm.com/support/docview.wss?uid=swg21975929] for vulnerability details and information about fixes. Please consult the Security Bulletin: Please consult the Security Bulletin: Vulnerability in IBM Java SDK affects IBM® DB2® LUW (CVE-2015-7575) [http://www-01.ibm.com/support/docview.wss?uid=swg21976363] for vulnerability details and information about fixes. Please consult the Security Bulletin: Vulnerability in IBM Java Runtime affect IBM SPSS Analytic Server (CVE-2015-7575) [http://www-01.ibm.com/support/docview.wss?uid=swg21977135] for vulnerability details and information about fixes. Please consult the Security Bulletin: Vulnerability in IBM Java Runtime affect IBM SPSS Statistics (CVE-2015-7575) [http://www-01.ibm.com/support/docview.wss?uid=swg21976835] for vulnerability details and information about fixes.",
+              "metadata": {
+                "doc_id": "sample_55_doc_3",
+                "sample_index": 55,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 135,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "* Security Bulletin: Vulnerability in IBM Java SDK affect IBM Tivoli Monitoring (CVE-2015-7575)\n\n * Security Bulletin: Vulnerability in RC4 stream cipher affects IBM Tivoli Monitoring (CVE-2015-2808) [http://www-01.ibm.com/support/docview.wss?uid=swg21883223]\n\n * Security Bulletin: Vulnerability in IBM Java Runtime affects IBM Tivoli Monitoring (CVE-2015-0138) [http://www-01.ibm.com/support/docview.wss?uid=swg21701519]\n\n * Security Bulletin: A security vulnerabilities has been identified in Websphere Application Server shipped with Jazz for Service Management (CVE-2016-0306) [http://www-01.ibm.com/support/docview.wss?uid=swg21981087]\n\n * Security Bulletin: IBM Tivoli Monitoring Privileges Escalation through Authorization Bypass (CVE-2015-7411) [http://www-01.ibm.com/support/docview.wss?uid=swg21973559] \n *  Security Bulletin: A vulnerability in the GSKit component of IBM Tivoli Monitoring (CVE-2016-0201) [http://www-01.ibm.com/support/docview.wss?uid=swg21976125] \n\n * Security Bulletin: IBM Tivoli Monitoring Remote Code Execution (CVE-2015-5003) [http://www-01.ibm.com/support/docview.wss?uid=swg21970361]\n   \n * Security Bulletin: Multiple vulnerabilities in IBM Java Runtime affect IBM Tivoli Monitoring clients (CVE-2015-2590 plus additional CVEs) [http://www.ibm.com/support/docview.wss?uid=swg21964027]\n   \n * Security Bulletin IBM Tivoli Monitoring embedded WebSphere Application Server (CVE-2015-7450, CVE-2015-2017, CVE-2015-4938, CVE-2015-1932, CVE-2015-1927)\n\n * Security Bulletin: Multiple security vulnerabilities has been identified in WebSphere Application Server shipped with Jazz for Service Management (CVE-2015-7450) (CVE-2015-2017) [http://www-01.ibm.com/support/docview.wss?uid=swg21971097] \n * Security Bulletin: Multiple security vulnerabilities has been identified in IBM HTTP Server shipped with Jazz for Service Management / Websphere Application Server (CVE-2015-1283,CVE-2015-3183) [http://www-01.ibm.com/support/docview.wss?uid=swg21968301]\n   \n   \n * Security Bulletin: IBM Tivoli Monitoring (CVE-2015-1829, CVE-2015-3183, CVE-2015-1283, CVE-2015-4947, CVE-2015-2808) [http://www.ibm.com/support/docview.wss?uid=swg21970056] \n   \n   \n * Security Bulletin: IBM Tivoli Monitoring embedded WebSphere Application Server (CVE-2015-1920) [http://www-01.ibm.com/support/docview.wss?uid=swg21963474]\n   \n   \n *  [http://www-01.ibm.com/support/docview.wss?uid=swg21963473]Security Bulletin: Vulnerability in Diffie-Hellman ciphers affects IBM Tivoli Monitoring (CVE-2015-4000) [http://www.ibm.com/support/docview.wss?uid=swg21962739]\n   \n   \n * Security Bulletin: Vulnerability in Diffie-Hellman ciphers affects the Enterprise Common Collector component of the IBM Tivoli zEnterprise Monitoring Agent (CVE-2015-4000) [http://www-01.ibm.com/support/docview.wss?uid=swg21960019]\n   \n   \n * Security Bulletin: Multiple vulnerabilities in IBM Java SDK affect IBM Tivoli Monitoring (CVE-2014-6593, CVE-2015-0410) [http://www-01.ibm.com/support/docview.wss?uid=swg21963473]\n   \n   \n * Security Bulletin: Multiple vulnerabilities in IBM Java Runtime affect the Enterprise Common Collector component of the IBM Tivoli zEnterprise Monitoring Agent (CVE-2015-0488, CVE-2015-0478, CVE-2015-1916) [http://www-01.ibm.com/support/docview.wss?uid=swg21902886]\n   \n   \n * Security Bulletin: Vulnerability in IBM Java Runtime affects IBM Tivoli Monitoring (CVE-2015-0138) [http://www.ibm.com/support/docview.wss?uid=swg21701519]\n   \n   \n * Security Bulletin: Multiple vulnerabilities in IBM Java Runtime affecting IBM Tivoli Monitoring clients [http://www.ibm.com/support/docview.wss?uid=swg21695592]\n   \n   \n * Security Bulletin: Vulnerability in TLS affects IBM Tivoli Monitoring (CVE-2014-8730) [http://www.ibm.com/support/docview.wss?uid=swg21694339]\n   \n   \n * Security Bulletin: Vulnerability in RC4 stream cipher affects the Enterprise Common Collector component of the IBM Tivoli zEnterprise Monitoring Agent (CVE-2015-2808) [http://www.ibm.com/support/docview.wss?uid=swg21713608]\n\nAFFECTED PRODUCTS AND VERSIONS\n \n\nPrincipal Product and Versions Affected Supporting Product and Version IBM Cloud Orchestrator Enterprise 2.5, 2.5.0.1, 2.5.0.1 Interim Fix1, 2.4, 2.4.0.1, 2.4.0.2 and 2.4.0.3 IBM Tivoli Monitoring 6.3.0.2 IBM SmartCloud Orchestrator Enterprise 2.3 and 2.3.0.1 IBM Tivoli Monitoring 6.3.0.1 GET NOTIFIED ABOUT FUTURE SECURITY BULLETINS\n Subscribe to My Notifications [ http://www-01.ibm.com/software/support/einfo.html] to be notified of important product support alerts like this.",
+              "metadata": {
+                "doc_id": "sample_21_doc_4",
+                "sample_index": 21,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 411,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "WMB IIB SECURITY BULLETIN\n\nSUMMARY\n WebSphere Message Broker and IBM Integration Bus; web user interface error page returns detailed error information. VULNERABILITY DETAILS\n\nCVE-ID: CVE-2014-4819\nCVSS Base Score: 4\nCVSS Temporal Score: See https://exchange.xforce.ibmcloud.com/vulnerabilities/95456 [https://exchange.xforce.ibmcloud.com/vulnerabilities/95456] for the current score\nCVSS Environmental Score*: Undefined\nCVSS Vector: (AV:N/AC:L/Au:S/C:P/I:N/A:N)\n\nAFFECTED PRODUCTS AND VERSIONS\n WebSphere Message Broker V8.0 \n\n IBM Integration Bus V9.0 \n\nREMEDIATION/FIXES\nApply APAR IT03097\n\nFor IBM Integration Bus V9.0, the APAR is targeted to be available in fix pack 9.0.0.3\nFor WebSphere Message Broker V8.0, the APAR is targeted to be available in fix pack 8.0.0.6\n\nPrior to fix pack availability the APAR can be obtained on request from IBM Support. WORKAROUNDS AND MITIGATIONS\nNone known\n\nGET NOTIFIED ABOUT FUTURE SECURITY BULLETINS\n Subscribe to My Notifications [ http://www-01.ibm.com/software/support/einfo.html] to be notified of important product support alerts like this.",
+              "metadata": {
+                "doc_id": "sample_19_doc_4",
+                "sample_index": 19,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 136,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "SECURITY BULLETIN\n\nSUMMARY\n IBM Cognos Business Intelligence, IBM DB2, IBM SPSS Modeler, IBM SPSS Collaboration and Deployment Services, IBM WebSphere Application Server, WebSphere Message Broker and IBM Integration Bus are shipped as components of IBM Predictive Maintenance and Quality. Information about a security vulnerability affecting IBM Cognos Business Intelligence, IBM DB2, IBM SPSS Modeler, IBM SPSS Collaboration and Deployment Services, IBM WebSphere Application Server, WebSphere Message Broker and IBM Integration Bus has been published in their respective security bulletins. VULNERABILITY DETAILS\nPlease consult the Security Bulletin: Vulnerability in Diffie-Hellman ciphers affects IBM Cognos Business Intelligence [http://www-01.ibm.com/support/docview.wss?uid=swg21959671] for vulnerability details and information about fixes. Please consult the Security Bulletin: Vulnerability in Diffie-Hellman ciphers affects IBM DB2 [http://www-01.ibm.com/support/docview.wss?uid=swg21967893] for vulnerability details and information about fixes. Please consult the Security Bulletin: Multiple vulnerabilities in IBM Java SDK affect IBM SPSS Modeler [https://www-304.ibm.com/support/docview.wss?uid=swg21960194] for vulnerability details and information about fixes.",
+              "metadata": {
+                "doc_id": "sample_41_doc_0",
+                "sample_index": 41,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 146,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "IIB; WMB SECURITY BULLETIN\n\nSUMMARY\n There are multiple vulnerabilities in IBM® SDK Java™ Technology Edition, Version 7.1.4.10 and IBM® Runtime Environment Java™ Versions 7.0.10.10 and 7.1.4.10 used by IBM Integration Bus and WebSphere Message Broker. These issues were disclosed as part of the IBM Java SDK updates in Jul 2017. VULNERABILITY DETAILS\n\nIf you run your own Java code using the IBM Java Runtime delivered with this product, you should evaluate your code to determine whether the complete list of vulnerabilities are applicable to your code. For a complete list of vulnerabilities please refer to the link for “IBM Java SDK Security Bulletin\" located in the “References” section for more information. CVEID:CVE-2017-10115 [http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-10115]\nDESCRIPTION:An unspecified vulnerability in Oracle Java SE related to the Java SE, Java SE Embedded, JRockit JCE component could allow an unauthenticated attacker to obtain sensitive information resulting in a high confidentiality impact using unknown attack vectors.",
+              "metadata": {
+                "doc_id": "sample_67_doc_2",
+                "sample_index": 67,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 150,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "The passages do not provide sufficient information to answer this question. \n\nThe passages provided do not mention the specific Security Bulletin for IBM Integration Bus (IIB) being affected by Node.js security vulnerability (CVE-2017-1000381 and CVE-2017-11499). They discuss various other security vulnerabilities and bulletins, but not the specific one mentioned in the question. Therefore, the information needed to answer the question is not available in the provided passages.",
+          "relevance_score__pred": 0.5789,
+          "relevance_score__gt": 0.028,
+          "relevance_score__deviation": 0.5509,
+          "utilization_score__pred": 0.0,
+          "utilization_score__gt": 0.0,
+          "utilization_score__deviation": 0.0,
+          "completeness_score__pred": 0.0,
+          "completeness_score__gt": 0.0,
+          "completeness_score__deviation": 0.0,
+          "adherence_score__pred": 1.0,
+          "adherence_score__gt": 0.0,
+          "adherence_score__deviation": 1.0
+        },
+        {
+          "query": "Help with Security Bulletin: Multiple vulnerabilities in IBM Java SDK affect IBM OS Images for Red Hat Linux Systems and AIX (CVE-2015-0410 and CVE-2014-6593) I need to understand details regarding \"Security Bulletin: Multiple vulnerabilities in IBM Java SDK affect IBM OS Images for Red Hat Linux Systems and AIX (CVE-2015-0410 and CVE-2014-6593)\" Where can I find this information? ",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "SECURITY BULLETIN\n\nSUMMARY\n There are multiple vulnerabilities in IBM® SDK Java™ Technology Edition Version 6 and 7 that are used by IBM OS Images for Red Hat Linux Systems and AIX. These issues were disclosed as part of the IBM Java SDK updates in January 2015. VULNERABILITY DETAILS\nCVEID: CVE-2015-0410 [http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-0410]\nDESCRIPTION: An unspecified vulnerability related to the Security component could allow a remote attacker to cause a denial of service. CVSS Base Score: 5\nCVSS Temporal Score: See https://exchange.xforce.ibmcloud.com/vulnerabilities/100151 [https://exchange.xforce.ibmcloud.com/vulnerabilities/100151] for the current score\nCVSS Environmental Score*: Undefined\nCVSS Vector: (AV:N/AC:L/Au:N/C:N/I:N/A:P) \n\nCVEID: CVE-2014-6593 [http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-6593]\nDESCRIPTION: An unspecified vulnerability related to the JSSE component has partial confidentiality impact, partial integrity impact, and no availability impact.",
+              "metadata": {
+                "doc_id": "sample_13_doc_0",
+                "sample_index": 13,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 115,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "* Security Bulletin: Multiple vulnerabilities in IBM Java SDK affect IBM Tivoli System Automation for Multiplatforms (CVE-2016-0466, CVE-2015-7575) [http://www-01.ibm.com/support/docview.wss?uid=swg21977127]\n\n * Security Bulletin: Multiple vulnerabilities in IBM Java SDK affect IBM Tivoli System Automation for Multiplatforms (CVE-2015-4872, CVE-2015-4911, CVE-2015-4893, CVE-2015-4803, CVE-2015-4734, CVE-2015-5006) [http://www.ibm.com/support/docview.wss?uid=swg21971479&myns=swgtiv&mynp=OCSSRM2X&mync=E&cm_sp=swgtiv-_-OCSSRM2X-_-E] \n   \n   \n * Security Bulletin: A security vulnerability has been identified in WebSphere Application Server shipped with IBM Tivoli System Automation for Multiplatforms (CVE-2015-2017) [http://www.ibm.com/support/docview.wss?uid=swg21970548] \n   \n   [http://www-01.ibm.com/support/docview.wss?uid=swg21967199] \n * Security Bulletin: A security vulnerability has been identified in WebSphere Application Server shipped with IBM Tivoli System Automation for Multiplatforms (CVE-2015-1283) [http://www-01.ibm.com/support/docview.wss?uid=swg21967199]\n   \n   \n * Security Bulletin: A security vulnerability has been identified in WebSphere Application Server shipped with IBM Tivoli System Automation for Multiplatforms (CVE-2015-3183) [http://www-01.ibm.com/support/docview.wss?uid=swg21967197]\n   \n   \n * Security Bulletin: Multiple vulnerabilities in IBM Java SDK including Logjam affect IBM Tivoli System Automation for Multiplatforms (CVE-2015-4000, CVE-2015-2613, CVE-2015-2601, CVE-2015-2625, CVE-2015-1931, CVE-2015-4749) [http://www.ibm.com/support/docview.wss?uid=swg21963330]\n   \n   \n * Security Bulletin: Vulnerability in Diffie-Hellman ciphers affects IBM Tivoli System Automation for Multiplatforms (CVE-2015-4000) [www.ibm.com/support/docview.wss?uid=swg21960862]\n   \n   \n * Security Bulletin: Multiple vulnerabilities in IBM Java SDK affect IBM Tivoli System Automation for Multiplatforms (CVE-2015-0488, CVE-2015-0478, CVE-2015-2808, CVE-2015-1916, CVE-2015-1914, CVE-2015-0204) [http://www.ibm.com/support/docview.wss?uid=swg21957951]\n   \n   \n * Security Bulletin: Vulnerability in WebSphere Application Server affects IBM Tivoli System Automation for Multiplatforms (CVE-2015-1920) [http://www.ibm.com/support/docview.wss?uid=swg21957952]\n   \n   \n * Security Bulletin: Vulnerability in IBM Tivoli System Automation for Multiplatforms (CVE-2014-0453) [http://www-01.ibm.com/support/docview.wss?uid=swg21680562]\n   \n   \n * Security Bulletin: Vulnerability in RC4 stream cipher affects IBM Tivoli System Automation for Multiplatforms (CVE-2015-2808) [http://www.ibm.com/support/docview.wss?uid=swg21882749].",
+              "metadata": {
+                "doc_id": "sample_21_doc_3",
+                "sample_index": 21,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 223,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "* Security Bulletin: Multiple vulnerabilities in IBM Java SDK affect IBM Tivoli System Automation for Multiplatforms (CVE-2014-3566, CVE-2014-6468, CVE-2014-6457)\n   \n   \n * Security Bulletin: Multiple vulnerabilities in IBM Java SDK affect IBM Tivoli System Automation for Multiplatforms (CVE-2014-6593, CVE-2015-0410, CVE-2015-0138) [http://www.ibm.com/support/docview.wss?uid=swg21698239]\n\nAFFECTED PRODUCTS AND VERSIONS\n \n\nPrincipal Product and Version Affected Supporting Product and Version IBM Cloud Orchestrator 2.5, 2.5.0.1, 2.5.0.1 Interim Fix1, 2.4, 2.4.0.1, 2.4.0.2 and 2.4.0.3 IBM Cloud Orchestrator Enterprise 2.5.0.1, 2.5.0.1 Interim Fix1, 2.4, 2.4.0.1, 2.4.0.2 and 2.4.0.3\n\nIBM Tivoli System Automation for Multiplatforms 4.1 IBM SmartCloud Orchestrator 2.3, 2.3.0.1 IBM SmartCloud Orchestrator Enterprise 2.3 and 2.3.0.1\n\nIBM Tivoli System Automation for Multiplatforms 3.2.2 GET NOTIFIED ABOUT FUTURE SECURITY BULLETINS\n Subscribe to My Notifications [ http://www-01.ibm.com/software/support/einfo.html] to be notified of important product support alerts like this.",
+              "metadata": {
+                "doc_id": "sample_21_doc_3",
+                "sample_index": 21,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 126,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Please consult the Security Bulletin: Multiple vulnerabilities in IBM Java SDK affect IBM SPSS Modeler [https://www-304.ibm.com/support/docview.wss?uid=swg21960194] for vulnerability details and information about fixes. Please consult the Security Bulletin: Multiple vulnerabilities in IBM Java SDK affect IBM SPSS Collaboration and Deployment Services [http://www-01.ibm.com/support/docview.wss?uid=swg21960528] for vulnerability details and information about fixes\n\nPlease consult the Security Bulletin: Vulnerability with Diffie-Hellman ciphers may affect IBM WebSphere Application Server [http://www-01.ibm.com/support/docview.wss?uid=swg21957980] details and information about fixes\n\nPlease consult the Security Bulletin: Multiple vulnerabilities in IBM Java Runtime including Logjam affect WebSphere Message Broker and IBM Integration Bus.",
+              "metadata": {
+                "doc_id": "sample_41_doc_0",
+                "sample_index": 41,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 91,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "SECURITY BULLETIN\n\nSUMMARY\n There are multiple vulnerabilities in IBM® SDK Java™ Technology Edition that is shipped with IBM WebSphere Application Server which is shipped with IBM WebSphere Portal. These issues were disclosed as part of the IBM Java SDK updates in April 2018. VULNERABILITY DETAILS\nMultiple vulnerabilities in IBM® Java SDK affect IBM WebSphere Portal. Note: If you run your own Java code using the IBM Java Runtime delivered with this product, you should evaluate your code to determine whether the complete list of vulnerabilities are applicable to your code. For a complete list of vulnerabilities please refer to the link for \"IBM Java SDK Security Bulletin\" located in the “References” section for more information. CVEID:CVE-2018-2783 [http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-2783]\nDESCRIPTION:An unspecified vulnerability related to the Java SE Security component could allow an unauthenticated attacker to cause high confidentiality impact, high integrity impact, and no availability impact.",
+              "metadata": {
+                "doc_id": "sample_59_doc_2",
+                "sample_index": 59,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 144,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To find information regarding the \"Security Bulletin: Multiple vulnerabilities in IBM Java SDK affect IBM OS Images for Red Hat Linux Systems and AIX (CVE-2015-0410 and CVE-2014-6593)\", you can refer to Document 1, which provides a summary of the vulnerabilities. \n\nThe details of the vulnerabilities are as follows:\n- CVEID: CVE-2015-0410\n  DESCRIPTION: An unspecified vulnerability related to the Security component could allow a remote attacker to cause a denial of service.\n  CVSS Base Score: 5\n  CVSS Temporal Score: See https://exchange.xforce.ibmcloud.com/vulnerabilities/100151 for the current score\n  CVSS Environmental Score*: Undefined\n  CVSS Vector: (AV:N/AC:L/Au:N/C:N/I:N/A:P)\n\n- CVEID: CVE-2014-6593\n  DESCRIPTION: An unspecified vulnerability related to the JSSE component has partial confidentiality impact, partial integrity impact, and no availability impact.\n\nFor additional information, you can also refer to Document 3, which mentions the same CVE IDs (CVE-2014-6593 and CVE-2015-0410) in the context of IBM Tivoli System Automation for Multiplatforms. \n\nHowever, for the specific case of IBM OS Images for Red Hat Linux Systems and AIX, the primary source of information is Document 1. It does not provide a direct link to a security bulletin specifically titled \"Security Bulletin: Multiple vulnerabilities in IBM Java SDK affect IBM OS Images for Red Hat Linux Systems and AIX (CVE-2015-0410 and CVE-2014-6593)\". \n\nInstead, it provides the necessary details about the vulnerabilities themselves. If you are looking for a security bulletin with that exact title, it is not directly referenced in the provided passages. You may need to consult the IBM support website or other resources for more specific or updated information regarding IBM OS Images for Red Hat Linux Systems and AIX.",
+          "relevance_score__pred": 0.4286,
+          "relevance_score__gt": 0.085,
+          "relevance_score__deviation": 0.3436,
+          "utilization_score__pred": 0.3571,
+          "utilization_score__gt": 0.065,
+          "utilization_score__deviation": 0.2921,
+          "completeness_score__pred": 0.8333,
+          "completeness_score__gt": 0.7647,
+          "completeness_score__deviation": 0.0686,
+          "adherence_score__pred": 0.0,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": -1.0
+        },
+        {
+          "query": "Error #2070 I purchased the SPSS grad pack and put one of the licenses on one computer and another on this one. This computer crashed and I was forced to reformat the hard drive. Subsequently, I lost SPSS in the process.  I am now reinstalling with the single user copy option.\n\nThe error it gave me now when I attempted to authorize the program with the original authorization number I received was:\n\nAuthorization in progress ... (removed) Authorization failed.: You are not allowed to generate any more new licenses. End Of Transaction. All permitted authorizations for the provided authorization code(s) have been utilized. No additional authorizations are permitted on this code. If you think this is an error, please contact IBM Corp. Customer Service at spssls@us.ibm.com ( http://www-01.ibm.com/software/analytics/spss ) with your product and purchase details. Click \"Finish\" to exit.",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "TECHNOTE (TROUBLESHOOTING)\n\nPROBLEM(ABSTRACT)\n When attempting to license an SPSS product, I am getting the following error message. Authorization in progress ... (xxxxxxxxxxxxxxxxxxxx)\nAuthorization failed.: The authorization code entered is not for this product/version. If you have multiple Authorization Codes, please check you have entered the correct one. ***End Of Transaction.***\nOne or more codes failed. Click \"Next\" to license authorization via e-mail. What can I do to correct this problem? CAUSE\nThe authorization code product and/or version does not match that of your installed product. RESOLVING THE PROBLEM\nPlease check that your authorization code matches the version and software product you are trying to license. The product and version of the authorization code must match that of the installed product.",
+              "metadata": {
+                "doc_id": "sample_14_doc_3",
+                "sample_index": 14,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 120,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "(D)\n1) Delete (or rename) the file named 'lservrc' found in program installation directory of the IBM SPSS product. 2) License the IBM SPSS product using the License Authorization Wizard and your product authorization code. (E)\n1) Please contact IBM SPSS Customer Service via email at spsscs@us.ibm.com or via phone at 800-521-1337. 2) Provide IBM SPSS Customer Service with the license authorization code used to license your IBM SPSS product. 3) Request confirmation that the license authorization code is for the correct product. 4) Request confirmation that the license authorization code includes the 'base' module (if applicable). 5) Request confirmation that the license authorization code is not expired\n\nRELATED INFORMATION\n Need more help? Our AMOS forum is Live! [https://developer.ibm.com/answers/search.html?f=&type=question&redirect=search%2Fsearch&sort=relevance&q=%2B[amos]]\n\n\n \n\nHISTORICAL NUMBER\n 52068",
+              "metadata": {
+                "doc_id": "sample_14_doc_2",
+                "sample_index": 14,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 122,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "The product and version of the authorization code must match that of the installed product. For assistance with your authorization codes, please visit the Predictive Analytics Community Get Help page https://developer.ibm.com/predictiveanalytics/get-help/ [https://developer.ibm.com/predictiveanalytics/get-help/], for direct links to the License Key Center and information about your Support options. RELATED INFORMATION\n Need more help? Our Statistics forum is Live! [https://developer.ibm.com/answers/topics/statistics.html?smartspace=predictive-analytics]\n\n\n\n\nCross reference information Segment Product Component Platform Version Edition Business Analytics SPSS Visualization Designer Platform Independent 1.0.3, 1.0.2, 1.0 \nHISTORICAL NUMBER\n 93088",
+              "metadata": {
+                "doc_id": "sample_14_doc_3",
+                "sample_index": 14,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 79,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "The Lock Code encrypted into the entered license does not match that of the hardware you are attempting to license. If you are unable to determine which server for which this license was generated, please contact IBM SPSS Customer Support [http://www.ibm.com/planetwide/region.html]. 2. You are attempting to license your installation via a Terminal Services/Citrix session with a single or site authorization/license. If you intend to run the software via Terminal Services/Citrix, you will need to obtain a Network license. Please contact your local IBM Sales office [http://www.ibm.com/planetwide/region.html]. If you intend to run the application on a server-class machine without Terminal Services/Citrix or you are licensing a server based product, e.g. SPSS Server, please go to that machine directly and run the License Authorization Wizard to request/submit a license. 3.",
+              "metadata": {
+                "doc_id": "sample_156_doc_2",
+                "sample_index": 156,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 128,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "TECHNOTE (FAQ)\n\nQUESTION\n I have installed my SPSS product. How do I license/activate the product? ANSWER\nThe method for licensing can be found in the installation guide/instructions corresponding to the operating system of the host computer where the product is installed. Statistics\n\nStatistics 24\nSee the 'Licensing your product' section of the 'Authorized User License Installation Instructions' here [http://www.ibm.com/support/docview.wss?uid=swg27047033]. Statistics 23\nSee the 'Licensing your product' section of the 'Authorized User License Installation Instructions' here [http://www.ibm.com/support/docview.wss?uid=swg27043946]. Statistics 22\nSee the 'Licensing your product' section of the 'Authorized User License Installation Instructions' here [http://www.ibm.com/support/docview.wss?uid=swg27038407]. Statistics 21\nSee the 'License Your Product' section of the 'Single User License Installation Instructions' here [http://www.ibm.com/support/docview.wss?uid=swg27024972]. Statistics 20\nSee the 'License Your Product' section of the 'Single User License Installation Instructions' here [http://www.ibm.com/support/docview.wss?uid=swg27021213]. Amos\n\nAmos 24\nSee the 'Licensing your product' section of the 'Authorized User License Installation Instructions' here [http://www.ibm.com/support/docview.wss?uid=swg27047471].",
+              "metadata": {
+                "doc_id": "sample_156_doc_1",
+                "sample_index": 156,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 145,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "The error message \"Authorization in progress... (removed) Authorization failed.: You are not allowed to generate any more new licenses. End Of Transaction. All permitted authorizations for the provided authorization code(s) have been utilized. No additional authorizations are permitted on this code.\" indicates that the authorization code has been used up. \n\nTo resolve this issue, you should contact IBM Corp. Customer Service at spssls@us.ibm.com (http://www-01.ibm.com/software/analytics/spss) with your product and purchase details. \n\nAdditionally, you can also try the steps mentioned in Document 2: \n1) Delete (or rename) the file named 'lservrc' found in the program installation directory of the IBM SPSS product. \n2) License the IBM SPSS product using the License Authorization Wizard and your product authorization code. \n\nOr, you can follow the steps in Document 2 (E):\n1) Please contact IBM SPSS Customer Service via email at spsscs@us.ibm.com or via phone at 800-521-1337. \n2) Provide IBM SPSS Customer Service with the license authorization code used to license your IBM SPSS product. \n3) Request confirmation that the license authorization code is for the correct product. \n4) Request confirmation that the license authorization code includes the 'base' module (if applicable). \n5) Request confirmation that the license authorization code is not expired. \n\nIt is also recommended to check that the product and version of the authorization code match that of the installed product, as mentioned in Document 1 and Document 3. \n\nFor assistance with your authorization codes, you can visit the Predictive Analytics Community Get Help page https://developer.ibm.com/predictiveanalytics/get-help/. \n\nThe method for licensing can be found in the installation guide/instructions corresponding to the operating system of the host computer where the product is installed, as mentioned in Document 5. \n\nHistorical numbers associated with similar issues are 52068 and 93088.",
+          "relevance_score__pred": 0.7073,
+          "relevance_score__gt": 0.0738,
+          "relevance_score__deviation": 0.6335,
+          "utilization_score__pred": 0.3902,
+          "utilization_score__gt": 0.0336,
+          "utilization_score__deviation": 0.3566,
+          "completeness_score__pred": 0.5517,
+          "completeness_score__gt": 0.4545,
+          "completeness_score__deviation": 0.0972,
+          "adherence_score__pred": 0.0,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": -1.0
+        },
+        {
+          "query": "Where I can get ITNM 4.2.0.1 GA version download details with Part number?. How to download and install IBM Tivoli Network Manager IP Edition Version 4.2 Fix Pack 1 (GA) using the Passport Advantage Web site?. ",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "PAODownloadDocument; download Network Manager IP Edition; download ITNM; download Network Manager v3.9; download Network Manager 3.9; Network Manager DOWNLOADABLE FILES\n\nABSTRACT\n This document describes how to download IBM Tivoli Network Manager IP Edition version 3.9 from the IBM Passport Advantage Online Web site. DOWNLOAD DESCRIPTION\n\n\n[http://www.ibm.com/i/c.gif] IBM Tivoli Network Manager IP Edition discovers networks, including layer 2 and 3 network devices, interfaces and connectivity. Network Manager also integrates topology and alert data with IBM Tivoli Netcool/OMNIbus so that operators can visualize and understand the layout of complex networks, and diagnose and solve network problems in real time. After logging into IBM's Passport Advantage Online [http://www.ibm.com/software/howtobuy/passportadvantage/pao_customers.htm] Web site, click Software download & media access, then click Download finder, then select Find by product description and type in Tivoli Network Manager. Expand the Tivoli Software eAssembly, and select the images you wish to download from that list.",
+              "metadata": {
+                "doc_id": "sample_15_doc_1",
+                "sample_index": 15,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 145,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "DOWNLOADABLE FILES\n\nABSTRACT\n This document describes how to download and install IBM Tivoli Network Manager IP Edition Version 4.2 Fix Pack 1 using the Passport Advantage Web site. DOWNLOAD DESCRIPTION\n\n\nIBM® Tivoli® Network Manager IP Edition discovers networks, including layer 1 optical networks, and layer 2 and 3 IP networks. Network Manager also discovers mobile networks (including LTE). In addition, Network Manager integrates network topology information with alert data from IBM Tivoli Netcool/OMNIbus so that operators can visualize and understand the layout of complex networks, and diagnose and solve network problems in real time. After logging into IBM's Passport Advantage Online Web site at https://www.ibm.com/software/howtobuy/passportadvantage/pao_customers.htm [http://www.ibm.com/software/howtobuy/passportadvantage/pao_customers.htm], click Software download & media access, then click Download finder, then select Find by product description and type in Tivoli Network Manager. Expand the Tivoli Software eAssembly, and select the images you wish to download from that list.",
+              "metadata": {
+                "doc_id": "sample_15_doc_2",
+                "sample_index": 15,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 144,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Expand the Tivoli Software eAssembly, and select the images you wish to download from that list. All Tivoli Network Manager IP Edition download images are described below. More information\nThe IBM Tivoli Network Manager IP Edition V4.2 library of publications are available from IBM Knowledge Center at https://www.ibm.com/support/knowledgecenter/SSSHRK_4.2.0/itnm/ip/wip/common/welcome.html [https://www.ibm.com/support/knowledgecenter/SSSHRK_4.2.0/itnm/ip/wip/common/welcome.html]\n\nDownloading and installing the product\n\n 1. Download all of the parts that you need, both required and optional. The parts are listed in the sections below. 2. Unpack each of the parts into a single temporary directory on your system. 3. Follow the instructions in the Installing [https://www.ibm.com/support/knowledgecenter/SSSHRK_4.2.0/install/task/ins_installing.html] section of the IBM Knowledge Center to install the product.",
+              "metadata": {
+                "doc_id": "sample_15_doc_2",
+                "sample_index": 15,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 107,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Download IV71123_IV76121 gskit Interfim Fix or higher level of fix pack from Fix Central\n\n\n\nAffectedProduct VRMF APAR Remediation/First Fix Tivoli Network Manager IP Edition 3.8.0.7 IV71123 [http://www-01.ibm.com/support/docview.wss?uid=swg24039199]\n\nhttps://www.ibm.com/support/entry/myportal/product/tivoli/tivoli_network_manager_ip_edition?productContext=1740397766 [https://www.ibm.com/support/entry/myportal/product/tivoli/tivoli_network_manager_ip_edition?productContext=1740397766] Tivoli Network Manager IP Edition 3.9.0.4 IV71123 [http://www-01.ibm.com/support/docview.wss?uid=swg24036687] [http://www-01.ibm.com/support/docview.wss?uid=swg24039199]\nhttps://www.ibm.com/support/entry/myportal/product/tivoli/tivoli_network_manager_ip_edition?productContext=1740397766 [https://www.ibm.com/support/entry/myportal/product/tivoli/tivoli_network_manager_ip_edition?productContext=1740397766] Tivoli Network Manager IP Edition 4.1.1.1 IV71123 [http://www-01.ibm.com/support/docview.wss?uid=swg24039346] [http://www-01.ibm.com/support/docview.wss?uid=swg24039199]\nhttps://www.ibm.com/support/entry/myportal/product/tivoli/tivoli_network_manager_ip_edition?productContext=1740397766 [https://www.ibm.com/support/entry/myportal/product/tivoli/tivoli_network_manager_ip_edition?productContext=1740397766] Tivoli Network Manager IP Edition 4.1 IV71123 [http://www-01.ibm.com/support/docview.wss?uid=swg24036690] [http://www-01.ibm.com/support/docview.wss?uid=swg24039199]\nhttps://www.ibm.com/support/entry/myportal/product/tivoli/tivoli_network_manager_ip_edition?productContext=1740397766 [https://www.ibm.com/support/entry/myportal/product/tivoli/tivoli_network_manager_ip_edition?productContext=1740397766] \nIBM WebSphere Application Server fixes: \n\nVulnerability with RSA Export Keys may affect IBM WebSphere Application Server (CVE-2015-0138) [http://www-01.ibm.com/support/docview.wss?uid=swg21698613] Affected Product and Version(s) Product and Version shipped as a component Tivoli Network Manager IP Edition 3.8 Bundled the TIP version 1.1.1.x, IBM WebSphere version 6.1.0.x and the JRE from IBM SDK Java 2 Technology Edition Version 5. Tivoli Network Manager IP Edition 3.9 Bundled the TIP version 2.1.0.x, IBM WebSphere version 7.0.0.x and the JRE from IBM SDK Java 2 Technology Edition Version 6.",
+              "metadata": {
+                "doc_id": "sample_89_doc_3",
+                "sample_index": 89,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 145,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Expand the Tivoli Software eAssembly, and select the images you wish to download from that list. All Tivoli Network Manager IP Edition download images are described below. Downloading and assembling the product\n\n 1. Download all of the parts that you need, both required and optional. The parts are listed by operating system in the tabs below. 2. Unpack each of the parts into a single temporary directory on your system. If you want Network Manager to install IBM Tivoli Netcool/OMNIbus, do not rename the Tivoli Netcool/OMNIbus package. 3. Follow the instructions in the Quick Start Guide to install the product. To see the part numbers for your platform, click the appropriate link below.",
+              "metadata": {
+                "doc_id": "sample_15_doc_1",
+                "sample_index": 15,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 113,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To download and install IBM Tivoli Network Manager IP Edition Version 4.2 Fix Pack 1 (GA) using the Passport Advantage Web site, follow these steps:\n\n1. Log in to the IBM Passport Advantage Online Web site at https://www.ibm.com/software/howtobuy/passportadvantage/pao_customers.htm.\n2. Click on \"Software download & media access\".\n3. Click on \"Download finder\".\n4. Select \"Find by product description\" and type in \"Tivoli Network Manager\".\n5. Expand the \"Tivoli Software eAssembly\" and select the images you wish to download from that list.\n\nFor detailed download and installation instructions, refer to Document 3, which provides the following steps:\n\n1. Download all of the parts that you need, both required and optional.\n2. Unpack each of the parts into a single temporary directory on your system.\n3. Follow the instructions in the \"Installing\" section of the IBM Knowledge Center to install the product.\n\nNote: The part numbers for your platform can be found by clicking on the appropriate link in Document 5.\n\nAdditionally, for ITNM 4.2.0.1 GA version download details with Part number, refer to Document 2, which describes how to download and install IBM Tivoli Network Manager IP Edition Version 4.2 Fix Pack 1 using the Passport Advantage Web site. \n\nAlso, refer to Document 3, which provides more information on the IBM Tivoli Network Manager IP Edition V4.2 library of publications available from IBM Knowledge Center at https://www.ibm.com/support/knowledgecenter/SSSHRK_4.2.0/itnm/ip/wip/common/welcome.html. \n\nHowever, the exact part number for ITNM 4.2.0.1 GA is not mentioned in the provided passages.",
+          "relevance_score__pred": 0.7931,
+          "relevance_score__gt": 0.061,
+          "relevance_score__deviation": 0.7321,
+          "utilization_score__pred": 0.3103,
+          "utilization_score__gt": 0.0235,
+          "utilization_score__deviation": 0.2868,
+          "completeness_score__pred": 0.3478,
+          "completeness_score__gt": 0.3846,
+          "completeness_score__deviation": -0.0368,
+          "adherence_score__pred": 0.0,
+          "adherence_score__gt": 0.0,
+          "adherence_score__deviation": 0.0
+        },
+        {
+          "query": "Help with Action required for IIB H.E.V9 and WMB H.E. V8 for security vulnerabilities in Red Hat Linux \n\nI need to understand details regarding Action required for IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 for security vulnerabilities in Red Hat Linux.\n\nWhere can I find this information?",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "IIB WMB FLASH (ALERT)\n\nABSTRACT\n IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 require customer action for security vulnerabilities in Red Hat Linux \n\nCONTENT\nIBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 ship with versions of Red Hat Enterprise Linux (RHEL) Server that are vulnerable to\nCVE-2017-14746 CVE-2017-15085 CVE-2017-15086 CVE-2017-15087 CVE-2017-15275\n\nIBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 ship with Red Hat Enterprise Linux (RHEL) Server 6.2\n\nRemediation: \n\nIBM strongly recommends that you contact Red Hat to obtain and install fixes for Red Hat Enterprise Linux (RHEL) Server 6.2, as applicable. Cross reference information Segment Product Component Platform Version Edition Business Integration WebSphere Message Broker Hypervisor Edition Linux 8.0",
+              "metadata": {
+                "doc_id": "sample_86_doc_0",
+                "sample_index": 86,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 125,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "FLASH (ALERT)\n\nABSTRACT\n IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 require customer action for security vulnerabilities in Red Hat Linux . CONTENT\nIBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 ship with a version of Red Hat Enterprise Linux (RHEL) Server vulnerable to CVE-2017-15217,CVE-2017-15218\nRemediation: \n\nIBM strongly recommends that you contact Red Hat to obtain and install fixes for Red Hat Enterprise Linux (RHEL) Server 6.2, as needed. Cross reference information Segment Product Component Platform Version Edition Business Integration WebSphere Message Broker Hypervisor Edition Linux 8.0 \nPRODUCT ALIAS/SYNONYM\n WMB HVE IIB HVE",
+              "metadata": {
+                "doc_id": "sample_45_doc_3",
+                "sample_index": 45,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 103,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "IIB WMB FLASH (ALERT)\n\nABSTRACT\n IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 require customer action for security vulnerabilities in Red Hat Linux \n\nCONTENT\nIBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 ship with Red Hat Enterprise Linux (RHEL) Server 6.2 which is vulnerable to: \nCVE-2018-1057 , CVE-2018-1050 \n\nRemediation: \n\nIBM strongly recommends that you contact Red Hat to obtain and install fixes for Red Hat Enterprise Linux (RHEL) Server 6.2, as applicable. Cross reference information Segment Product Component Platform Version Edition Business Integration WebSphere Message Broker Hypervisor Edition Linux 8.0",
+              "metadata": {
+                "doc_id": "sample_86_doc_4",
+                "sample_index": 86,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 100,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "IIB WMB FLASH (ALERT)\n\nABSTRACT\n IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 require customer action for security vulnerabilities in Red Hat Linux \n\nCONTENT\nIBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 ship with Red Hat Enterprise Linux (RHEL) Server 6.2 which is vulnerable to\nCVE-2017-16546 \n\nRemediation: \n\nIBM strongly recommends that you contact Red Hat to obtain and install fixes for Red Hat Enterprise Linux (RHEL) Server 6.2, as applicable. Cross reference information Segment Product Component Platform Version Edition Business Integration WebSphere Message Broker Hypervisor Edition Linux 8.0",
+              "metadata": {
+                "doc_id": "sample_16_doc_3",
+                "sample_index": 16,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 98,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "FLASH (ALERT)\n\nABSTRACT\n IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 require customer action for security vulnerabilities in Red Hat Linux. CONTENT\nIBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 ship with versions of Red Hat Enterprise Linux (RHEL) Server that are vulnerable to CVE-2017-2619, CVE-2017-5509, CVE-2017-5510, CVE-2017-7275, CVE-2016-10228. IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 ship with Red Hat Enterprise Linux (RHEL) Server 6.2. Remediation: \n\nIBM strongly recommends that you contact Red Hat to obtain and install fixes for Red Hat Enterprise Linux (RHEL) Server 6.2, as applicable. Cross reference information Segment Product Component Platform Version Edition Business Integration WebSphere Message Broker Hypervisor Edition Linux 8.0 \nPRODUCT ALIAS/SYNONYM\n WMB HVE IIB HVE",
+              "metadata": {
+                "doc_id": "sample_45_doc_1",
+                "sample_index": 45,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 129,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "To address the security vulnerabilities in Red Hat Linux for IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0, the following information is relevant:\n\n1. **Vulnerable Versions**: Both IBM Integration Bus Hypervisor Edition V9.0 and WebSphere Message Broker Hypervisor Edition V8.0 ship with Red Hat Enterprise Linux (RHEL) Server 6.2, which is vulnerable to several security issues, including but not limited to:\n   - CVE-2017-14746, CVE-2017-15085, CVE-2017-15086, CVE-2017-15087, CVE-2017-15275 (as per Document 1)\n   - CVE-2017-15217, CVE-2017-15218 (as per Document 2)\n   - CVE-2018-1057, CVE-2018-1050 (as per Document 3)\n   - CVE-2017-16546 (as per Document 4)\n   - CVE-2017-2619, CVE-2017-5509, CVE-2017-5510, CVE-2017-7275, CVE-2016-10228 (as per Document 5)\n\n2. **Remediation**: IBM strongly recommends contacting Red Hat to obtain and install fixes for Red Hat Enterprise Linux (RHEL) Server 6.2, as applicable. This is a consistent recommendation across all provided documents.\n\n3. **Cross Reference Information**: The affected products are categorized under Business Integration, with the specific products being WebSphere Message Broker Hypervisor Edition (Linux, Version 8.0) and IBM Integration Bus Hypervisor Edition.\n\n4. **Product Alias/Synonym**: For reference, the products are also known by the aliases/synonyms WMB HVE and IIB HVE.\n\nTo find the necessary fixes, you should contact Red Hat support with the details of the vulnerabilities and the version of RHEL Server you are using (6.2), and they will guide you through obtaining and installing the required patches or updates. Ensure you have the exact version numbers and vulnerability details (CVE numbers) when reaching out for support.",
+          "relevance_score__pred": 1.0,
+          "relevance_score__gt": 0.1875,
+          "relevance_score__deviation": 0.8125,
+          "utilization_score__pred": 0.7857,
+          "utilization_score__gt": 0.0469,
+          "utilization_score__deviation": 0.7388,
+          "completeness_score__pred": 0.7857,
+          "completeness_score__gt": 0.25,
+          "completeness_score__deviation": 0.5357,
+          "adherence_score__pred": 0.0,
+          "adherence_score__gt": 0.0,
+          "adherence_score__deviation": 0.0
+        },
+        {
+          "query": "Help with Security Bulletin: IBM WebSphere MQ is affected by a privilege escalation vulnerability (CVE-2017-1612) I need to understand details regarding Security Bulletin: IBM WebSphere MQ is affected by a privilege escalation vulnerability (CVE-2017-1612).",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "SECURITY BULLETIN\n\nSUMMARY\n IBM WebSphere Application Server is shipped with BM Integrated Information Core. Information about a security vulnerability affecting IBM WebSphere Application Server has been published in a security bulletin. VULNERABILITY DETAILS\nConsult the security bulletin, Security Bulletin: Privilege Escalation Vulnerability in WebSphere Application Server (CVE-2017-1151) [http://www.ibm.com/support/docview.wss?uid=swg21999293], [http://www.ibm.com/support/docview.wss?uid=swg21991469] for vulnerability details and information about fixes. AFFECTED PRODUCTS AND VERSIONS\n \n\nPrincipal Product and Version(s) Affected Supporting Product IBM Integrated Information Core V1.5, V1.5.0.1, and V1.5.0.2 IBM WebSphere Application Server REMEDIATION/FIXES\nDownload the correct version of the fix from the following link: Security Bulletin: Privilege Escalation Vulnerability in WebSphere Application Server (CVE-2017-1151) [http://www.ibm.com/support/docview.wss?uid=swg21999293]. Installation instructions for the fix are included in the readme document that is in the fix package. GET NOTIFIED ABOUT FUTURE SECURITY BULLETINS\n Subscribe to My Notifications [ http://www-01.ibm.com/software/support/einfo.html] to be notified of important product support alerts like this.",
+              "metadata": {
+                "doc_id": "sample_17_doc_4",
+                "sample_index": 17,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 141,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Potential Privilege Escalation in WebSphere Application Server Admin Console (CVE-2017-1731) [http://www-01.ibm.com/support/docview.wss?uid=swg22012345]\nSee Section \"For V8.5.0.0 through 8.5.5.12:\" Please also note the end of support announcement [http://www-01.ibm.com/common/ssi/ShowDoc.wss?docURL=/common/ssi/rep_ca/8/897/ENUS917-138/index.html&lang=en&request_locale=en] from 12 September 2017 for selected Netcool product versions. You can find detailed information on whether the product version you have installed in your environment is affected by this end of service announcement by following the Netcool End of Support Knowledge Collection [https://www-01.ibm.com/support/entdocview.wss?uid=swg22009231] . If your product version is affected, IBM recommend to upgrade your product version to the latest supported version of your product. Please contact your IBM account manager for any question you might have or for any assistance you may require for upgrading an end of service announced offering. WORKAROUNDS AND MITIGATIONS\nNone\n\nGET NOTIFIED ABOUT FUTURE SECURITY BULLETINS\n Subscribe to My Notifications [ http://www-01.ibm.com/software/support/einfo.html] to be notified of important product support alerts like this.",
+              "metadata": {
+                "doc_id": "sample_125_doc_3",
+                "sample_index": 125,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 144,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "SECURITY BULLETIN\n\nSUMMARY\n IBM WebSphere Application Server is shipped as a component of IBM PureApplication System. Information about a security vulnerability affecting IBM WebSphere Application Server has been published in a security bulletin. VULNERABILITY DETAILS\nConsult the security bulletin Privilege Escalation Vulnerability in WebSphere Application Server (CVE-2017-1151) [http://www-01.ibm.com/support/docview.wss?uid=swg21999293]. The WebSphere fixes can be installed using the IBM PureApplication System’s Installation Manager Repository feature. AFFECTED PRODUCTS AND VERSIONS\n \n\nPrincipal Product and Version(s) Affected Supporting Product and Version PureApplication System versions 2.1, and 2.2 IBM WebSphere Application Server 8.0.0.0 \nIBM WebSphere Application Server 8.5.0.0 \nIBM WebSphere Application Server 8.5.5.0\nIBM WebSphere Application Server 9.0.0.0 GET NOTIFIED ABOUT FUTURE SECURITY BULLETINS\n Subscribe to My Notifications [ http://www-01.ibm.com/software/support/einfo.html] to be notified of important product support alerts like this.",
+              "metadata": {
+                "doc_id": "sample_17_doc_2",
+                "sample_index": 17,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 124,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Potential Privilege Escalation in WebSphere Application Server Admin Console (CVE-2017-1731) [http://www-01.ibm.com/support/docview.wss?uid=swg22012345]\nSee Section \"For V7.0.0.0 through 7.0.0.43:\" IBM Tivoli Network Manager IP Edition 4.1.1 FixPack 1 - Fixpack 2 Bundled the TIP version 2.2.0.x, which bundles IBM WebSphere version 7.0.0.x. Potential Privilege Escalation in WebSphere Application Server Admin Console (CVE-2017-1731) [http://www-01.ibm.com/support/docview.wss?uid=swg22012345]\nSee Section \"For V7.0.0.0 through 7.0.0.43:\" IBM Tivoli Network Manager IP Edition 4.2.0 - Fix Pack 1 - Fixpack 3. IBM Tivoli Network Manager 4.2 requires the installation of IBM WebSphere Application Server Version 8.5.5.5 or later version separately. Users are recommended to apply IBM WebSphere version 8.5.5.5 Security Interim Fixes.. Potential Privilege Escalation in WebSphere Application Server Admin Console (CVE-2017-1731) [http://www-01.ibm.com/support/docview.wss?uid=swg22012345]\nSee Section \"For V8.5.0.0 through 8.5.5.12:\" Please also note the end of support announcement [http://www-01.ibm.com/common/ssi/ShowDoc.wss?docURL=/common/ssi/rep_ca/8/897/ENUS917-138/index.html&lang=en&request_locale=en] from 12 September 2017 for selected Netcool product versions.",
+              "metadata": {
+                "doc_id": "sample_125_doc_3",
+                "sample_index": 125,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 137,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "SECURITY BULLETIN\n\nSUMMARY\n IBM WebSphere Application Server, IBM HTTP Server, IBM DB2, IBM SPSS Modeler, IBM Cognos Business Intelligence Server, IBM SPSS Collaboration and Deployment Services and IBM WebSphere MQ are shipped as components of IBM Predictive Maintenance and Quality. Information about a security vulnerability affecting IBM WebSphere Application Server, IBM HTTP Server, IBM DB2, IBM SPSS Modeler, IBM Cognos Business Intelligence Server, IBM SPSS Collaboration and Deployment Services and IBM WebSphere MQ has been published their respective security bulletins. VULNERABILITY DETAILS\nPlease consult the Security Bulletin: Vulnerability in RC4 stream cipher affects WebSphere Application Server (CVE-2015-2808) [http://www-01.ibm.com/support/docview.wss?uid=swg21701503] for vulnerability details and information about fixes. Please consult the Security Bulletin: Vulnerability in RC4 stream cipher affects IBM HTTP Server (CVE-2015-2808) [http://www-01.ibm.com/support/docview.wss?uid=swg21701072] for vulnerability details and information about fixes. Please consult the Security Bulletin: Vulnerability in RC4 stream cipher affects IBM DB2 (CVE-2015-2808) [https://www-304.ibm.com/support/docview.wss?uid=swg21717865] for vulnerability details and information about fixes.",
+              "metadata": {
+                "doc_id": "sample_141_doc_1",
+                "sample_index": 141,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 150,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "The passages do not provide sufficient information to answer this question.",
+          "relevance_score__pred": 0.3846,
+          "relevance_score__gt": 0.0,
+          "relevance_score__deviation": 0.3846,
+          "utilization_score__pred": 0.0,
+          "utilization_score__gt": 0.0,
+          "utilization_score__deviation": 0.0,
+          "completeness_score__pred": 0.0,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": -1.0,
+          "adherence_score__pred": 1.0,
+          "adherence_score__gt": 1.0,
+          "adherence_score__deviation": 0.0
+        },
+        {
+          "query": "What's the procedure to drop an user in Cognos Disclosure Management? \n\nO.S AIX 7.1\n\nCognos Disclosure Management 10.2.4 What's the procedure to drop an user in Cognos Disclosure Management",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "*  - [http://www.ibm.com/i/c.gif] IBM Cognos Disclosure Management 10.2.5 Microsoft Windows Multilingual eAssembly\n   \n   Parts and Platforms Details eAssembly IBM Cognos Disclosure Management 10.2.5 Microsoft Windows Multilingual eAssembly [/support/docview.wss?uid=swg24041034&amp;aid=1] CRY1GML Parts and Platforms Details eImage IBM Cognos Disclosure Management 10.2.5 Microsoft Windows Multilingual Required CN7MBML \n   \n   \n   \n *  - [http://www.ibm.com/i/c.gif] IBM Cognos Disclosure Management with Data Aggregation 10.2.5 Microsoft Windows Multilingual eAssembly\n   \n   \n   Parts and Platforms Details eAssembly IBM Cognos Disclosure Management with Data Aggregation 10.2.5 Microsoft Windows Multilingual eAssembly [/support/docview.wss?uid=swg24041034&amp;aid=1] CRY1HML Parts and Platforms Details eImage IBM Cognos Disclosure Management with Data Aggregation 10.2.5 Microsoft Windows Multilingual Required CN7MCML IBM Cognos TM1 32-bit 10.2.2 Microsoft Windows Multilingual Required CIYF6ML IBM Cognos TM1 64-bit 10.2.2 Microsoft Windows Multilingual Required CIYF7ML IBM Cognos TM1 Client 32-bit 10.2.2 Microsoft Windows Multilingual Required CIYF8ML IBM Cognos TM1 Client 64-bit 10.2.2 Microsoft Windows Multilingual Required CIYF9ML IBM Cognos TM1 10.2.2 AIX Multilingual Required CIYF3ML IBM Cognos TM1 10.2.2 Linux x86-64 Multilingual Required CIYF4ML IBM Cognos TM1 10.2.2 Linux on System z Multilingual Required CIYF5ML \n   \n   \n   \n *  - [http://www.ibm.com/i/c.gif] IBM Cognos Disclosure Management 10.2: Cognos Financial Statement Reporting (FSR) 6.6.1 Microsoft Windows Multilingual eAssembly\n   \n   \n   Parts and Platforms Details eAssembly IBM Cognos Disclosure Management 10.2: Cognos Financial Statement Reporting (FSR) 6.6.1 Microsoft Windows Multilingual eAssembly [/support/docview.wss?uid=swg24041034&amp;aid=1] CRY1IML Parts and Platforms Details eImage IBM Cognos Financial Statement Reporting (FSR) 6.6.1 Microsoft Windows Multilingual Required CI8PYML \n   \n   \n   \n *  - [http://www.ibm.com/i/c.gif] IBM Cognos Disclosure Management EDGAR Engine 10.2 eAssembly\n   \n   \n   Parts and Platforms Details eAssembly IBM Cognos Disclosure Management EDGAR Engine 10.2 eAssembly [/support/docview.wss?uid=swg24041034&amp;aid=1] CRK8DML Parts and Platforms Details eImage IBM Cognos Disclosure Management EDGAR Engine Enablement Key 10.2 Required CIL3DZZ IBM Cognos Financial Statement Reporting (FSR) EDGAR Enablement Script 6.6.1 Microsoft Windows English Required CI8PXEN \n   \n   \n   \n   \n *  - [http://www.ibm.com/i/c.gif] IBM Cognos Disclosure Management XBRL User 10.2 eAssembly\n   \n   \n   Parts and Platforms Details eAssembly IBM Cognos Disclosure Management XBRL User 10.2 eAssembly [/support/docview.wss?uid=swg24041034&amp;aid=1] CRK8CML Parts and Platforms Details eImage IBM Cognos Disclosure Management XBRL Enablement Key 10.2 Required CIL3CZZ IBM Cognos Financial Statement Reporting (FSR) XBRL Enablement Script 6.6.1 Microsoft Windows English Required CI8PWEN",
+              "metadata": {
+                "doc_id": "sample_18_doc_1",
+                "sample_index": 18,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 335,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "DOWNLOADABLE FILES\n\nABSTRACT\n This page describes how to download IBM® Cognos® Disclosure Management. DOWNLOAD DESCRIPTION\nIBM Cognos Disclosure Management is a unified financial governance solution that focuses on improving financial processes and controls, particularly in the final stages before disclosure. To download a product, go to the IBM Passport Advantage® Web Site [http://www.ibm.com/software/howtobuy/passportadvantage/paocustomer/sdma/SDMA?PO=DOWNLOAD_FIND_BY_PART_NUMBER] and then:\n\n\n 1. Do one of the following:\n     If you are a returning customer, sign in. If you are a new customer, register. 2. Under Find it fast, click Download software. 3. If the Software download & media access window appears, click I agree. 4. In the Find downloads & media window, select the download you want and click Continue. 5. Under Select criteria, select a language and one or more platforms. 6. Under Download options, select the options you want, and click Continue. 7.",
+              "metadata": {
+                "doc_id": "sample_18_doc_2",
+                "sample_index": 18,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 138,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "*  - [http://www.ibm.com/i/c.gif] IBM Cognos Disclosure Management 10.2.3 Microsoft Windows Multilingual eAssembly\n   \n   Parts and Platforms Details eAssembly IBM Cognos Disclosure Management 10.2.3 Microsoft Windows Multilingual eAssembly [/support/docview.wss?uid=swg24037296&amp;aid=1] CRRH0ML Parts and Platforms Details eImage IBM Cognos Disclosure Management Quick Start Guide 10.2.3 Multilingual Optional CIYL4ML IBM Cognos Disclosure Management 10.2.3 Microsoft Windows Multilingual Required CIYL5ML IBM Cognos Disclosure Management Samples 10.2.3 Microsoft Windows Multilingual Required CIYL3ML IBM Cognos Financial Statement Reporting (FSR) 6.6.1 Microsoft Windows Multilingual Required CIPY8ML \n   \n   \n   \n *  - [http://www.ibm.com/i/c.gif] IBM Cognos Disclosure Management with Data Aggregation 10.2.3 Microsoft Windows Multilingual eAssembly\n   \n   \n   Parts and Platforms Details eAssembly IBM Cognos Disclosure Management with Data Aggregation 10.2.3 Microsoft Windows Multilingual eAssembly [/support/docview.wss?uid=swg24037296&amp;aid=1] CRRH1ML Parts and Platforms Details eImage IBM Cognos Disclosure Management Quick Start Guide 10.2.3 Multilingual Optional CIYL4ML IBM Cognos Disclosure Management with Data Aggregation 10.2.3 Microsoft Windows Multilingual Required CIYL6ML IBM Cognos Disclosure Management Samples 10.2.3 Microsoft Windows Multilingual Required CIYL3ML IBM Cognos Financial Statement Reporting (FSR) 6.6.1 Microsoft Windows Multilingual Required CIPY8ML IBM Cognos TM1 32-bit 10.2.2 Microsoft Windows Multilingual Required CIYF6ML IBM Cognos TM1 64-bit 10.2.2 Microsoft Windows Multilingual Required CIYF7ML IBM Cognos TM1 Client 32-bit 10.2.2 Microsoft Windows Multilingual Required CIYF8ML IBM Cognos TM1 Client 64-bit 10.2.2 Microsoft Windows Multilingual Required CIYF9ML IBM Cognos TM1 10.2.2 AIX Multilingual Required CIYF3ML IBM Cognos TM1 10.2.2 Linux x86-64 Multilingual Required CIYF4ML IBM Cognos TM1 10.2.2 Linux on System z Multilingual Required CIYF5ML \n   \n   \n   \n   \n *  - [http://www.ibm.com/i/c.gif] IBM Cognos Disclosure Management XBRL User 10.2 eAssembly\n   \n   \n   Parts and Platforms Details eAssembly IBM Cognos Disclosure Management XBRL User 10.2 eAssembly [/support/docview.wss?uid=swg24037296&amp;aid=1] CRK8CML Parts and Platforms Details eImage IBM Cognos Disclosure Management XBRL Enablement Key 10.2 Required CIL3CZZ IBM Cognos Financial Statement Reporting (FSR) XBRL Enablement Script 6.6.1 Microsoft Windows English Required CI8PWEN \n   \n   \n   \n   \n *  - [http://www.ibm.com/i/c.gif] IBM Cognos Disclosure Management EDGAR Engine 10.2 eAssembly\n   \n   \n   Parts and Platforms Details eAssembly IBM Cognos Disclosure Management EDGAR Engine 10.2 eAssembly [/support/docview.wss?uid=swg24037296&amp;aid=1] CRK8DML Parts and Platforms Details eImage IBM Cognos Disclosure Management EDGAR Engine Enablement Key 10.2 Required CIL3DZZ IBM Cognos Financial Statement Reporting (FSR) EDGAR Enablement Script 6.6.1 Microsoft Windows English Required CI8PXEN",
+              "metadata": {
+                "doc_id": "sample_18_doc_3",
+                "sample_index": 18,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 346,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "DOWNLOADABLE FILES\n\nABSTRACT\n This page describes how to download IBM Cognos Disclosure Management. DOWNLOAD DESCRIPTION\nIBM Cognos Disclosure Management is a unified financial governance solution that focuses on improving financial processes and controls, particularly in the final stages before disclosure. Downloading and assembling the product\n\nDownload all of the parts that you need, both required and optional. 1. Access the IBM Passport Advantage® website [http://www.ibm.com/software/passportadvantage] (www.ibm.com/software/passportadvantage). [http://%20www.google.com/]\n    Tip: If you get an error, try using a different web browser to access Passport Advantage. 2. Sign in and navigate to the software downloads page. 3. Find the eAssembly or eAssemblies for your product. The eAssembly part numbers to search for are listed in this document. An eAssembly groups individual product parts (eImages) together. 4.",
+              "metadata": {
+                "doc_id": "sample_18_doc_3",
+                "sample_index": 18,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 123,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "DOWNLOADABLE FILES\n\nABSTRACT\n This page describes how to download IBM Cognos Disclosure Management. DOWNLOAD DESCRIPTION\nIBM Cognos Disclosure Management is a unified financial governance solution that focuses on improving financial processes and controls, particularly in the final stages before disclosure. Downloading and assembling the product\n\nDownload all of the parts that you need, both required and optional. 1. Access the IBM Passport Advantage® website [http://www.ibm.com/software/passportadvantage] (www.ibm.com/software/passportadvantage). [http://%20www.google.com/]\n    Tip: If you get an error, try using a different web browser to access Passport Advantage. 2. Sign in and navigate to the software downloads page. 3. Find the eAssembly or eAssemblies for your product. The eAssembly part numbers to search for are listed in this document. An eAssembly groups individual product parts (eImages) together. 4.",
+              "metadata": {
+                "doc_id": "sample_18_doc_1",
+                "sample_index": 18,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 123,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "The passages do not provide sufficient information to answer this question.",
+          "relevance_score__pred": 0.0,
+          "relevance_score__gt": 0.0,
+          "relevance_score__deviation": 0.0,
+          "utilization_score__pred": 0.0,
+          "utilization_score__gt": 0.0,
+          "utilization_score__deviation": 0.0,
+          "completeness_score__pred": 0.0,
+          "completeness_score__gt": 1.0,
+          "completeness_score__deviation": -1.0,
+          "adherence_score__pred": 1.0,
+          "adherence_score__gt": 0.0,
+          "adherence_score__deviation": 1.0
+        },
+        {
+          "query": "What things are important to consider when installing a fix pack for IIB running on a multi-instance environment? I am planning to apply a fix pack to my current version of IBM Integration Bus (IIB) using multi-instance brokers and I am looking for any important information regarding the process.\n\nFor example:\n\n \n\n- installation and verification tasks\n \n\n- is it possible to back out this fix pack in case there are issues\n \n\n- any specific tasks for multi instance configuration",
+          "retrieved_documents": [
+            {
+              "text": "",
+              "title": "",
+              "content": "* Maintain a serviceable system and be able to install an interim fix when required. WHEN TO UPDATE\nThe latest modification or fix pack should be installed as soon as it is available. You can subscribe to the IBM Support My Notifications [https://www.ibm.com/support/mynotifications] to be notified of any fix pack releases, and you can also bookmark the Operational Decision Manager Download document [http://www.ibm.com/support/docview.wss?uid=swg24031636] page, which lists the latest modifications or fix packs. See the technote Fix pack release notification for Operational Decision Manager [http://www.ibm.com/support/docview.wss?uid=swg21665593] to find out when a modification or fix pack will be available. BEFORE UPDATING\n\n\nThe databases used in the sample server are deleted and recreated during the update. If you are using those databases and want to save the existing content, perform the following steps before updating: \n *  Stop the sample server. In the folder <ODM_HOME>/shared/data/derby, create an archive file containing the resdb and rtsdb folders.",
+              "metadata": {
+                "doc_id": "sample_34_doc_1",
+                "sample_index": 34,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 150,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "WMB IIB SECURITY BULLETIN\n\nSUMMARY\n Multiple security vulnerabilities exist in the IBM® Runtime Environment Java™ Technology Edition Version 6 Service Refresh 16 Fix Pack 41 and earlier releases used by WebSphere Message Broker, and the IBM® Runtime Environment Java™ Technology Edition Version 7 Service Refresh 10 Fix Pack 1 and earlier releases used by WebSphere Message Broker and IBM Integration Bus, and the IBM® Runtime Environment Java™ Technology Edition Version 7R1 Service Refresh 4 Fix Pack 1 and earlier releases used by IBM Integration Bus. These issues were disclosed as part of the IBM Java SDK updates in April 2017. WebSphere Message Broker and IBM Integration Bus have addressed the applicable CVEs \n\nVULNERABILITY DETAILS\nIf you run your own Java code using the IBM Java Runtime delivered with this product, you should evaluate your code to determine whether the complete list of vulnerabilities are applicable to your code.",
+              "metadata": {
+                "doc_id": "sample_36_doc_4",
+                "sample_index": 36,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 148,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "Collect; troubleshooting; data; BIP2066E; deploy; MustGather TECHNOTE (TROUBLESHOOTING)\n\nPROBLEM(ABSTRACT)\n WebSphere Message Broker (WMB) and IBM Integration Bus (IIB) will issue a BIP2066E error message on deployment if the execution group fails to respond. This MustGather document explains how to troubleshoot this problem by yourself, how to generate diagnostic data when the problem is happening, how to collect the available data from your system, and how share that data with IBM support. SYMPTOM\nYour Integration Node (broker) fails to respond to a deployment request that was issued by using either the WMB/IIB Toolkit, the Explorer plugin, or the mqsideploy command. You might see a deployment hang/timeout, or BIP2066E errors in the message log. ENVIRONMENT\nThese instructions are for WebSphere Message Broker or IBM Integration Bus on AIX, HP-UX, Linux, Solaris or Windows systems. Return to the WMB / IIB MustGather index [http://www.ibm.com/support/docview.wss?uid=swg21209857] for other problems.",
+              "metadata": {
+                "doc_id": "sample_94_doc_0",
+                "sample_index": 94,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 144,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "service release; modpack; mod pack; upgrade; refresh; refresh pack DOWNLOADABLE FILES\n\nABSTRACT\n IBM Packaging Utility 1.8 has been made generally available and contains any fixes for client-reported and internally found defects. DOWNLOAD DESCRIPTION\n \n\nTable of Contents Sections Description  * What's new\n\nThe Change history section provides an overview on what is new in this release with a description of any new functions or enhancements when applicable. * Impact assessment\n\nThe How critical is this fix section provides information related to the impact of this release to allow you to assess how your environment may be affected. * Prerequisites\n\nThe Prerequisites section provides important information to review prior to the installation of this release. * Download package\n\nThe Download package section provides the direct link to obtain the download package for installation in your environment.",
+              "metadata": {
+                "doc_id": "sample_25_doc_3",
+                "sample_index": 25,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 134,
+                "title": ""
+              }
+            },
+            {
+              "text": "",
+              "title": "",
+              "content": "7.0.0.0 or 6.1.0.0) and then use the Update Installer to apply fixpacks. IM supports installation directly to a fixpack level therefore all install files included with the base GA code 8.0.0.0 are applied with the fixpack. Any files that should not be overwritten must be listed in a exception list (of non-serviceable files) that the IM installer can reference. This list of non-serviceable files was ommitted or incomplete for IHS V8.0.0.0 and 8.5.0.0 so the install of the first fixpack (regardless of fixpack level) may overwrite files such as admin.passwd and index.html. There are two APAR related to the same event: \n. PM71612: ADDITIONAL NON-SERVICEABLE FILES ADDED FOR IBM HTTP SERVER. http://www-01.ibm.com/support/docview.wss?uid=swg1PM71612 [http://www-01.ibm.com/support/docview.wss?uid=swg1PM71612]\n. PM63634: IHS CONFIG ADMIN.PASSWD FILE WAS RESET AFTER INSTALLING \nFIXPACK 3 ON WAS 8.0.0.2 or 7.0.0.25 on Windows. http://www-01.ibm.com/support/docview.wss?uid=swg1PM63634 [http://www-01.ibm.com/support/docview.wss?uid=swg1PM63634]\n\n.",
+              "metadata": {
+                "doc_id": "sample_35_doc_4",
+                "sample_index": 35,
+                "source": "ragbench",
+                "parser_type": "noop",
+                "chunk_type": "sentence_based",
+                "word_count": 135,
+                "title": ""
+              }
+            }
+          ],
+          "answer": "The passages do not provide sufficient information to answer this question.",
+          "relevance_score__pred": 1.0,
+          "relevance_score__gt": 0.0367,
+          "relevance_score__deviation": 0.9633,
+          "utilization_score__pred": 0.0,
+          "utilization_score__gt": 0.0,
+          "utilization_score__deviation": 0.0,
+          "completeness_score__pred": 0.0,
+          "completeness_score__gt": 0.0,
+          "completeness_score__deviation": 0.0,
+          "adherence_score__pred": 0.0,
+          "adherence_score__gt": 0.0,
+          "adherence_score__deviation": 0.0
+        }
+      ],
+      "summary": [
+        {
+          "metric": "relevance_score",
+          "mean_score": 0.5578,
+          "mean_ground_truth": 0.0409,
+          "std_score": 0.354,
+          "std_ground_truth": 0.045,
+          "mean_abs_error": 0.5266
+        },
+        {
+          "metric": "utilization_score",
+          "mean_score": 0.2155,
+          "mean_ground_truth": 0.0232,
+          "std_score": 0.2554,
+          "std_ground_truth": 0.0237,
+          "mean_abs_error": 0.2078
+        },
+        {
+          "metric": "completeness_score",
+          "mean_score": 0.3161,
+          "mean_ground_truth": 0.7376,
+          "std_score": 0.3389,
+          "std_ground_truth": 0.3456,
+          "mean_abs_error": 0.4998
+        },
+        {
+          "metric": "adherence_score",
+          "mean_score": 0.4,
+          "mean_ground_truth": 0.55,
+          "std_score": 0.4899,
+          "std_ground_truth": 0.4975,
+          "mean_abs_error": 0.55
+        }
+      ]
+    }
+  ]
+}

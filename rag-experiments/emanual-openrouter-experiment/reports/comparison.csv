@@ -1,9 +1,11 @@
 config_name,relevance_score__mean,relevance_score__mae,utilization_score__mean,utilization_score__mae,completeness_score__mean,completeness_score__mae,adherence_score__mean,adherence_score__mae
-emanual_or_v1_baseline,0.2693,0.1382,0.1387,0.105,0.4227,0.3734,0.5333,0.5333
-emanual_or_v8_hyde,0.2774,0.1558,0.1515,0.0917,0.5175,0.3148,0.3158,0.6842
+emanual_or_v1_baseline,0.3305,0.1862,0.1371,0.1405,0.4101,0.4276,0.4316,0.6
+emanual_or_v8_hyde,0.2932,0.1732,0.1548,0.0891,0.51,0.3006,0.3,0.7
+emanual_or_v10_role_aware_bgem3,,,,,,,,
+emanual_or_v9_bge_sentence,0.3315,0.1821,0.1529,0.0895,0.463,0.3623,0.5,0.6
 emanual_or_v7_hybrid_rerank,0.2989,0.1684,0.1322,0.0855,0.386,0.395,0.5,0.6
 emanual_or_v2_hybrid_wsum,0.1872,0.1264,0.071,0.0914,0.4055,0.4236,0.4,0.6
 emanual_or_v4_chunk_sentence,0.3021,0.1596,0.1356,0.0988,0.4461,0.3738,0.5,0.6
-emanual_or_v3_embed_bge,0.3141,0.1797,0.1555,0.1186,0.395,0.4152,0.3684,0.7368
+emanual_or_v3_embed_bge,0.3194,0.1972,0.1445,0.1492,0.4339,0.4022,0.3737,0.6162
 emanual_or_v6_rerank_only,0.261,0.1298,0.1248,0.0877,0.4268,0.3705,0.35,0.65
 emanual_or_v5_hybrid_rrf,0.1913,0.1278,0.078,0.0945,0.3531,0.4283,0.45,0.65

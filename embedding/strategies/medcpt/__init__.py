@@ -1,1 +1,0 @@
-"""MedCPT embedding strategy."""

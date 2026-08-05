@@ -1508,18 +1508,18 @@
             }
           ],
           "answer": "The Door Off Mirror Kit allows exterior rearview mirrors to be installed onto the upper body door hinges after the front doors have been removed. \n\nTo install the Door Off Mirrors, proceed as follows: \n1. Remove both front doors\n2. Remove the cowl bolt closest to the door opening using a #40 Torx head driver, and store in a safe location.\n3. Push the mirror bracket forward onto the a-pillar, making sure to align the bottom of the bracket with the upper door hinge, and the hole from the removed cowl bolt.\n4. Place the bracket bushing behind the mirror bracket (over the cowl bolt hole), then insert the bracket bolt into the mirror bracket, through the bracket bushing.\n5. Insert the hinge shoulder bolt through the bottom of the upper door hinge up into the mirror bracket, then rotate the bracket knob toward the rear of the vehicle to secure the mirror bracket to the a-pillar.\n6. Tighten both the bracket bolt and the hinge shoulder bolt with a #40 Torx head driver.\n7. Lower the mirror assembly onto the mirror bracket.\n8. Insert the three mirror screws into the mirror assembly, and tighten into the mirror bracket using a #30 Torx head driver.\n\nWARNING: All occupants must wear seat belts during off-road operation with doors removed. \nDo not store detached doors inside of the vehicle, as they may fly around and cause personal injury or death in the event of a sudden stop, rough terrain, or a collision.",
-          "relevance_score__pred": NaN,
+          "relevance_score__pred": 0.4815,
           "relevance_score__gt": 0.1304,
-          "relevance_score__deviation": NaN,
-          "utilization_score__pred": NaN,
+          "relevance_score__deviation": 0.3511,
+          "utilization_score__pred": 0.2222,
           "utilization_score__gt": 0.1304,
-          "utilization_score__deviation": NaN,
-          "completeness_score__pred": NaN,
+          "utilization_score__deviation": 0.0918,
+          "completeness_score__pred": 0.4615,
           "completeness_score__gt": 1.0,
-          "completeness_score__deviation": NaN,
-          "adherence_score__pred": NaN,
+          "completeness_score__deviation": -0.5385,
+          "adherence_score__pred": 0.0,
           "adherence_score__gt": 1.0,
-          "adherence_score__deviation": NaN
+          "adherence_score__deviation": -1.0
         },
         {
           "query": "Can I manually activate or deactivate the air conditioner?",
@@ -3246,52 +3246,52 @@
             }
           ],
           "answer": "To unlock all the doors using the key fob, push and release the unlock button on the key fob twice. \n\nNote: When the doors are unlocked, the turn signals will flash and the illuminated entry system will be activated. \n\nNo specific safety warnings are attached to this procedure in the provided passages.",
-          "relevance_score__pred": NaN,
+          "relevance_score__pred": 0.0725,
           "relevance_score__gt": 0.0312,
-          "relevance_score__deviation": NaN,
-          "utilization_score__pred": NaN,
+          "relevance_score__deviation": 0.0412,
+          "utilization_score__pred": 0.029,
           "utilization_score__gt": 0.0312,
-          "utilization_score__deviation": NaN,
-          "completeness_score__pred": NaN,
+          "utilization_score__deviation": -0.0022,
+          "completeness_score__pred": 0.4,
           "completeness_score__gt": 1.0,
-          "completeness_score__deviation": NaN,
-          "adherence_score__pred": NaN,
+          "completeness_score__deviation": -0.6,
+          "adherence_score__pred": 0.0,
           "adherence_score__gt": 1.0,
-          "adherence_score__deviation": NaN
+          "adherence_score__deviation": -1.0
         }
       ],
       "summary": [
         {
           "metric": "relevance_score",
-          "mean_score": 0.178,
+          "mean_score": 0.1879,
           "mean_ground_truth": 0.206,
-          "std_score": 0.1608,
+          "std_score": 0.1683,
           "std_ground_truth": 0.1651,
-          "mean_abs_error": 0.1498
+          "mean_abs_error": 0.1545
         },
         {
           "metric": "utilization_score",
-          "mean_score": 0.1507,
+          "mean_score": 0.1482,
           "mean_ground_truth": 0.1892,
-          "std_score": 0.1082,
+          "std_score": 0.1073,
           "std_ground_truth": 0.1589,
-          "mean_abs_error": 0.125
+          "mean_abs_error": 0.1172
         },
         {
           "metric": "completeness_score",
-          "mean_score": 0.6429,
+          "mean_score": 0.6217,
           "mean_ground_truth": 0.8762,
-          "std_score": 0.3125,
+          "std_score": 0.3033,
           "std_ground_truth": 0.2242,
-          "mean_abs_error": 0.3488
+          "mean_abs_error": 0.3709
         },
         {
           "metric": "adherence_score",
-          "mean_score": 0.1111,
+          "mean_score": 0.1,
           "mean_ground_truth": 1.0,
-          "std_score": 0.3143,
+          "std_score": 0.3,
           "std_ground_truth": 0.0,
-          "mean_abs_error": 0.8889
+          "mean_abs_error": 0.9
         }
       ]
     }

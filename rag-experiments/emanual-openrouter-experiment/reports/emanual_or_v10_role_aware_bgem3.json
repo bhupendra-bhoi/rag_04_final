@@ -1,0 +1,141 @@
+{
+  "title": "RAG Multi-Config Evaluation Report",
+  "strategy_name": "detailed_query",
+  "sections": [
+    {
+      "config_name": "emanual_or_v10_role_aware_bgem3",
+      "config_summary": {
+        "name": "emanual_or_v10_role_aware_bgem3",
+        "mode": "test",
+        "providers": {
+          "openrouter": {
+            "type": "openrouter",
+            "api_key_env": "OPENROUTER_API_KEY",
+            "params": {
+              "cooldown_seconds": 60
+            }
+          }
+        },
+        "chunking": {
+          "type": "sentence",
+          "config": {
+            "max_words": 380,
+            "overlap_sentences": 2
+          }
+        },
+        "embedding": {
+          "type": "sentence_transformer",
+          "config": {
+            "model_name": "BAAI/bge-m3",
+            "dimension": 1024
+          }
+        },
+        "vector_store": {
+          "type": "faiss",
+          "config": {
+            "dimension": 1024
+          }
+        },
+        "retrieval": {
+          "search": {
+            "searches": [
+              {
+                "type": "dense",
+                "config": {
+                  "top_k": 40
+                }
+              },
+              {
+                "type": "sparse",
+                "config": {
+                  "top_k": 40
+                }
+              }
+            ]
+          },
+          "query_transform": null,
+          "fusion": {
+            "type": "rrf",
+            "config": {
+              "top_k": 40,
+              "k": 60
+            }
+          },
+          "rerank": {
+            "type": "cross_encoder",
+            "config": {
+              "model_name": "BAAI/bge-reranker-v2-m3",
+              "top_k": 15
+            }
+          }
+        },
+        "generation": {
+          "strategy": "default",
+          "provider": "openrouter",
+          "config": {
+            "model": "meta-llama/llama-3.3-70b-instruct",
+            "temperature": 0.0,
+            "max_tokens": 512,
+            "system_prompt": "You are a consumer-electronics product-support assistant. Answer questions\nabout device features and settings using ONLY the provided user-manual passages.\n\nCRITICAL RULES:\n1. Answer ONLY from the passages provided. Do not use outside knowledge.\n2. Give exact, step-by-step instructions. Preserve menu paths, button names,\n   setting names, and on-screen labels verbatim\n   (e.g. \"Settings > Support > Self Diagnosis > Signal Information\").\n3. Be concise and procedural - give the steps, not background.\n4. If the passages do not contain the answer, respond with exactly:\n   \"The passages do not provide sufficient information to answer this question.\"\n5. Every step must be directly supported by the passages provided.\n",
+            "user_prompt": "Passages:\n{context}\n\nQuestion: {query}\n\nAnswer (from passages only, give exact steps and menu paths):\n"
+          }
+        },
+        "evaluation": {
+          "type": "trace",
+          "provider": "openrouter",
+          "config": {
+            "model": "meta-llama/llama-3.3-70b-instruct",
+            "temperature": 0.0,
+            "max_tokens": 2000
+          }
+        },
+        "cache": {
+          "enabled": true,
+          "cache_dir": "./cache_openrouter"
+        },
+        "start_index": null,
+        "end_index": null,
+        "logging_config": {
+          "enabled": true,
+          "level": "INFO",
+          "show_progress": true
+        }
+      },
+      "per_query": [],
+      "summary": [
+        {
+          "metric": "relevance_score",
+          "mean_score": NaN,
+          "mean_ground_truth": NaN,
+          "std_score": NaN,
+          "std_ground_truth": NaN,
+          "mean_abs_error": NaN
+        },
+        {
+          "metric": "utilization_score",
+          "mean_score": NaN,
+          "mean_ground_truth": NaN,
+          "std_score": NaN,
+          "std_ground_truth": NaN,
+          "mean_abs_error": NaN
+        },
+        {
+          "metric": "completeness_score",
+          "mean_score": NaN,
+          "mean_ground_truth": NaN,
+          "std_score": NaN,
+          "std_ground_truth": NaN,
+          "mean_abs_error": NaN
+        },
+        {
+          "metric": "adherence_score",
+          "mean_score": NaN,
+          "mean_ground_truth": NaN,
+          "std_score": NaN,
+          "std_ground_truth": NaN,
+          "mean_abs_error": NaN
+        }
+      ]
+    }
+  ]
+}

@@ -177,18 +177,18 @@
             }
           ],
           "answer": "CAUTION: Failure to securely latch the tailgate could result in damage to the vehicle or cargo. To avoid this, after closing, pull back on the tailgate firmly to ensure it is securely latched.",
-          "relevance_score__pred": NaN,
+          "relevance_score__pred": 0.2333,
           "relevance_score__gt": 0.1111,
-          "relevance_score__deviation": NaN,
-          "utilization_score__pred": NaN,
+          "relevance_score__deviation": 0.1222,
+          "utilization_score__pred": 0.1333,
           "utilization_score__gt": 0.1111,
-          "utilization_score__deviation": NaN,
-          "completeness_score__pred": NaN,
+          "utilization_score__deviation": 0.0222,
+          "completeness_score__pred": 0.5714,
           "completeness_score__gt": 1.0,
-          "completeness_score__deviation": NaN,
-          "adherence_score__pred": NaN,
+          "completeness_score__deviation": -0.4286,
+          "adherence_score__pred": 1.0,
           "adherence_score__gt": 1.0,
-          "adherence_score__deviation": NaN
+          "adherence_score__deviation": 0.0
         },
         {
           "query": "What kind of safety features are implemented in this car?",
@@ -1866,35 +1866,35 @@
       "summary": [
         {
           "metric": "relevance_score",
-          "mean_score": 0.3708,
+          "mean_score": 0.3639,
           "mean_ground_truth": 0.206,
-          "std_score": 0.2017,
+          "std_score": 0.1989,
           "std_ground_truth": 0.1651,
-          "mean_abs_error": 0.193
+          "mean_abs_error": 0.1895
         },
         {
           "metric": "utilization_score",
-          "mean_score": 0.2689,
+          "mean_score": 0.2622,
           "mean_ground_truth": 0.1892,
-          "std_score": 0.1616,
+          "std_score": 0.1603,
           "std_ground_truth": 0.1589,
-          "mean_abs_error": 0.1353
+          "mean_abs_error": 0.1296
         },
         {
           "metric": "completeness_score",
-          "mean_score": 0.6322,
+          "mean_score": 0.6291,
           "mean_ground_truth": 0.8762,
-          "std_score": 0.2898,
+          "std_score": 0.2828,
           "std_ground_truth": 0.2242,
-          "mean_abs_error": 0.2889
+          "mean_abs_error": 0.2959
         },
         {
           "metric": "adherence_score",
-          "mean_score": 0.2105,
+          "mean_score": 0.25,
           "mean_ground_truth": 1.0,
-          "std_score": 0.4077,
+          "std_score": 0.433,
           "std_ground_truth": 0.0,
-          "mean_abs_error": 0.7895
+          "mean_abs_error": 0.75
         }
       ]
     }

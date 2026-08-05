@@ -1,0 +1,51 @@
+# emanual PRODUCTION experiment — runs only the chosen final config (see
+# production/configs/emanual.yaml for the rationale), for a clean demo/
+# validation report instead of a full ablation sweep. Isolated dirs so this
+# never collides with the ablation history in emanual-openrouter-experiment/.
+#
+# Credentials: set OPENROUTER_API_KEY (comma-separate multiple keys to rotate).
+
+config_dir: rag-experiments/emanual-production/config
+
+report_dir: rag-experiments/emanual-production/reports
+
+cache:
+  enabled: true
+  cache_dir: ./cache_production_emanual
+
+temp_dir: rag-experiments/emanual-production/temp
+
+# The emanual test split has 132 rows; start small, then raise end_index to
+# 132 for a fuller production validation once you're ready.
+start_index: 0
+end_index: 20
+
+parallel: false
+max_workers: 1
+query_workers: 2
+
+evaluation:
+  type: trace
+  provider: openrouter
+  config:
+    model: meta-llama/llama-3.3-70b-instruct
+    temperature: 0.0
+    max_tokens: 2000
+
+data_loader:
+  type: huggingface
+  config:
+    dataset_name: galileo-ai/ragbench
+    subset: emanual
+    split: test
+    limit: 132
+
+data_parser: noop
+
+data_processing:
+  steps:
+    - type: deduplication
+      config:
+        strategy: content_hash
+
+report_strategy: detailed_query

@@ -335,18 +335,18 @@
             }
           ],
           "answer": "The passages do not provide sufficient information to answer this question.",
-          "relevance_score__pred": NaN,
+          "relevance_score__pred": 0.05,
           "relevance_score__gt": 0.0244,
-          "relevance_score__deviation": NaN,
-          "utilization_score__pred": NaN,
+          "relevance_score__deviation": 0.0256,
+          "utilization_score__pred": 0.0,
           "utilization_score__gt": 0.0244,
-          "utilization_score__deviation": NaN,
-          "completeness_score__pred": NaN,
+          "utilization_score__deviation": -0.0244,
+          "completeness_score__pred": 0.0,
           "completeness_score__gt": 1.0,
-          "completeness_score__deviation": NaN,
-          "adherence_score__pred": NaN,
+          "completeness_score__deviation": -1.0,
+          "adherence_score__pred": 1.0,
           "adherence_score__gt": 1.0,
-          "adherence_score__deviation": NaN
+          "adherence_score__deviation": 0.0
         },
         {
           "query": "What happens if I accidentally push the SOS Call button?",
@@ -1848,35 +1848,35 @@
       "summary": [
         {
           "metric": "relevance_score",
-          "mean_score": 0.4214,
+          "mean_score": 0.4028,
           "mean_ground_truth": 0.206,
-          "std_score": 0.2196,
+          "std_score": 0.2288,
           "std_ground_truth": 0.1651,
-          "mean_abs_error": 0.2532
+          "mean_abs_error": 0.2419
         },
         {
           "metric": "utilization_score",
-          "mean_score": 0.2906,
+          "mean_score": 0.276,
           "mean_ground_truth": 0.1892,
-          "std_score": 0.1612,
+          "std_score": 0.1694,
           "std_ground_truth": 0.1589,
-          "mean_abs_error": 0.1721
+          "mean_abs_error": 0.1647
         },
         {
           "metric": "completeness_score",
-          "mean_score": 0.5869,
+          "mean_score": 0.5575,
           "mean_ground_truth": 0.8762,
-          "std_score": 0.2724,
+          "std_score": 0.2947,
           "std_ground_truth": 0.2242,
-          "mean_abs_error": 0.372
+          "mean_abs_error": 0.4034
         },
         {
           "metric": "adherence_score",
-          "mean_score": 0.2105,
+          "mean_score": 0.25,
           "mean_ground_truth": 1.0,
-          "std_score": 0.4077,
+          "std_score": 0.433,
           "std_ground_truth": 0.0,
-          "mean_abs_error": 0.7895
+          "mean_abs_error": 0.75
         }
       ]
     }

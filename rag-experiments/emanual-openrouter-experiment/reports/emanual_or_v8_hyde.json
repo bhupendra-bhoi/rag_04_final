@@ -537,18 +537,18 @@
             }
           ],
           "answer": "To fix the missing/wrong color issue, follow these steps:\n\n1. Run the \"Start Picture Test\" by going to \"Settings > Support > Self Diagnosis > Start Picture Test\".\n2. If the test results indicate that the problem is not caused by the TV, confirm that the video input connectors are connected to the correct external device video output connectors.\n3. Check the other connections as well. If the TV is connected to an external device via a component cable, confirm that the Pb, Pr, and Y jacks are plugged into their proper connectors.\n4. If the colors on your TV are correct but just a little too dark or bright, try adjusting the following settings: \n   - Go to \"Settings > Picture > Picture Mode\" and adjust the settings.\n   - Go to \"Settings > Picture > Picture Expert Settings\" and adjust the \"Brightness\", \"Sharpness\", and \"Color\" settings.\n5. See if \"Power Saving Mode\" has been enabled by going to \"Settings > General > Eco Solution > Power Saving Mode\".\n6. Try resetting the picture by going to \"Settings > Picture > Expert Settings > Reset Picture\".",
-          "relevance_score__pred": NaN,
+          "relevance_score__pred": 0.5938,
           "relevance_score__gt": 0.0893,
-          "relevance_score__deviation": NaN,
-          "utilization_score__pred": NaN,
+          "relevance_score__deviation": 0.5045,
+          "utilization_score__pred": 0.2188,
           "utilization_score__gt": 0.1786,
-          "utilization_score__deviation": NaN,
-          "completeness_score__pred": NaN,
+          "utilization_score__deviation": 0.0402,
+          "completeness_score__pred": 0.3684,
           "completeness_score__gt": 0.4,
-          "completeness_score__deviation": NaN,
-          "adherence_score__pred": NaN,
+          "completeness_score__deviation": -0.0316,
+          "adherence_score__pred": 0.0,
           "adherence_score__gt": 1.0,
-          "adherence_score__deviation": NaN
+          "adherence_score__deviation": -1.0
         },
         {
           "query": "How do I fix blurring issues on TV screen?",
@@ -1874,35 +1874,35 @@
       "summary": [
         {
           "metric": "relevance_score",
-          "mean_score": 0.2774,
+          "mean_score": 0.2932,
           "mean_ground_truth": 0.1951,
-          "std_score": 0.1821,
+          "std_score": 0.1904,
           "std_ground_truth": 0.187,
-          "mean_abs_error": 0.1558
+          "mean_abs_error": 0.1732
         },
         {
           "metric": "utilization_score",
-          "mean_score": 0.1515,
+          "mean_score": 0.1548,
           "mean_ground_truth": 0.1465,
-          "std_score": 0.1696,
+          "std_score": 0.1659,
           "std_ground_truth": 0.1258,
-          "mean_abs_error": 0.0917
+          "mean_abs_error": 0.0891
         },
         {
           "metric": "completeness_score",
-          "mean_score": 0.5175,
+          "mean_score": 0.51,
           "mean_ground_truth": 0.7481,
-          "std_score": 0.2839,
+          "std_score": 0.2786,
           "std_ground_truth": 0.2503,
-          "mean_abs_error": 0.3148
+          "mean_abs_error": 0.3006
         },
         {
           "metric": "adherence_score",
-          "mean_score": 0.3158,
+          "mean_score": 0.3,
           "mean_ground_truth": 0.9,
-          "std_score": 0.4648,
+          "std_score": 0.4583,
           "std_ground_truth": 0.3,
-          "mean_abs_error": 0.6842
+          "mean_abs_error": 0.7
         }
       ]
     }
