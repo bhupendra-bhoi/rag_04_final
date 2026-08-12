@@ -6,6 +6,9 @@ A Retrieval-Augmented Generation (RAG) system built as a capstone project by **G
 
 This project implements a real-world RAG system with an interactive web interface that allows users to explore different domains, ask questions, and evaluate the quality of generated answers using TRACe metrics. The system is deployed as a Hugging Face Space: [real-world-rag](https://huggingface.co/spaces/HarshitaNalajala/real-world-rag)
 
+<img width="1877" height="1079" alt="image" src="https://github.com/user-attachments/assets/bf8a5825-2ad5-48e8-93af-357c4fdae3eb" />
+
+
 ## Features
 
 ### Interactive Dashboard
